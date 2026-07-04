@@ -17,22 +17,23 @@ export default function About() {
   return (
     <PageTransition>
       {/* Header */}
-      <section className="pt-24 pb-16 bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="pt-24 pb-16 bg-transparent border-b border-white/10 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent pointer-events-none"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-bold font-heading mb-6"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading mb-6 tracking-tight"
           >
-            Meet Harsh
+            Meet <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-support-4">Harsh</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
           >
-            Founder of <span className="text-primary font-semibold">HarshDigitalStudios</span> — a modern AI-powered digital studio focused on helping local businesses build premium online experiences.
+            Founder of <span className="text-white font-semibold">HarshDigitalStudios</span> — a modern AI-powered digital studio focused on helping local businesses build premium online experiences.
           </motion.p>
         </div>
       </section>
@@ -40,26 +41,29 @@ export default function About() {
       {/* Story / Timeline */}
       <section className="py-24 relative">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative border-l-2 border-gray-100 pl-8 ml-4 md:ml-0 md:pl-0 md:border-l-0">
+          <div className="relative border-l-2 border-white/10 pl-8 ml-4 md:ml-0 md:pl-0 md:border-l-0">
             
             {/* Timeline Line for Desktop */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-100 transform -translate-x-1/2"></div>
+            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-white/10 transform -translate-x-1/2"></div>
 
             {[
               { 
                 year: "The Vision", 
                 title: "Empowering Local Businesses", 
-                desc: "I realized that local businesses were losing customers simply because their digital presence didn't match the quality of their physical service. HarshDigitalStudios was born to bridge that gap with premium, enterprise-grade design at accessible pricing." 
+                desc: "I realized that local businesses were losing customers simply because their digital presence didn't match the quality of their physical service. HarshDigitalStudios was born to bridge that gap with premium, enterprise-grade design at accessible pricing.",
+                image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
               },
               { 
                 year: "The Approach", 
                 title: "Design Meets Automation", 
-                desc: "A beautiful website isn't enough. It needs to work for you. By integrating modern AI tools, automated lead captures, and WhatsApp integrations, we turn websites into 24/7 sales machines." 
+                desc: "A beautiful website isn't enough. It needs to work for you. By integrating modern AI tools, automated lead captures, and WhatsApp integrations, we turn websites into 24/7 sales machines.",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
               },
               { 
                 year: "The Future", 
                 title: "AI-First Web Experiences", 
-                desc: "As search engines evolve into AI answer engines, having a structured, fast, and SEO-optimized website is more critical than ever. We ensure our clients are ready for the future of search." 
+                desc: "As search engines evolve into AI answer engines, having a structured, fast, and SEO-optimized website is more critical than ever. We ensure our clients are ready for the future of search.",
+                image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
               }
             ].map((item, index) => (
               <motion.div 
@@ -67,7 +71,7 @@ export default function About() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className={`relative mb-16 md:mb-24 flex flex-col md:flex-row ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
+                className={`group relative mb-16 md:mb-24 flex flex-col md:flex-row ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
               >
                 {/* Timeline Center Dot */}
                 <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 top-1.5 items-center justify-center">
@@ -79,9 +83,20 @@ export default function About() {
                 <div className="md:w-1/2 px-0 md:px-12">
                   <span className="text-accent font-semibold tracking-wider uppercase text-sm mb-2 block">{item.year}</span>
                   <h3 className="text-2xl font-bold font-heading mb-4">{item.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+                  <p className="text-gray-400 leading-relaxed">{item.desc}</p>
                 </div>
-                <div className="hidden md:block md:w-1/2"></div>
+                <div className={`md:w-1/2 ${'image' in item ? 'mt-8 md:mt-0' : 'hidden md:block'}`}>
+                  {'image' in item && item.image && (
+                    <div className="px-0 md:px-12 h-full flex items-center">
+                      <img 
+                        src={item.image} 
+                        alt={item.title} 
+                        className="rounded-[32px] shadow-sm border border-white/10 object-cover w-full aspect-[4/3] group-hover:scale-105 transition-transform duration-500"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                  )}
+                </div>
               </motion.div>
             ))}
           </div>
@@ -89,11 +104,11 @@ export default function About() {
       </section>
 
       {/* Expertise */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4">Core Expertise</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">The skills we use to elevate your digital presence.</p>
+            <p className="text-gray-400 max-w-2xl mx-auto">The skills we use to elevate your digital presence.</p>
           </div>
 
           <div className="flex flex-wrap justify-center gap-4 max-w-5xl mx-auto">
@@ -104,10 +119,10 @@ export default function About() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
-                className="flex items-center gap-3 px-6 py-4 bg-gray-50 rounded-[32px] border border-black/5 hover:border-accent/30 hover:bg-white transition-all shadow-sm"
+                className="flex items-center gap-3 px-6 py-4 bg-surface rounded-[32px] border border-white/10 hover:border-accent/30 hover:bg-transparent transition-all shadow-sm"
               >
                 <item.icon className="w-5 h-5 text-accent" />
-                <span className="font-medium text-primary">{item.title}</span>
+                <span className="font-medium text-white">{item.title}</span>
               </motion.div>
             ))}
           </div>
@@ -120,7 +135,7 @@ export default function About() {
           <h2 className="text-3xl font-bold font-heading mb-6">Ready to transform your business?</h2>
           <Link 
             to="/contact" 
-            className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-primary rounded-full hover:bg-secondary transition-all shadow-lg group"
+            className="premium-button inline-flex items-center justify-center group"
           >
             Book Free Website Audit
             <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />

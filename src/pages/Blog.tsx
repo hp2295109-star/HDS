@@ -23,19 +23,19 @@ export default function Blog() {
       />
 
       {/* Header */}
-      <section className="pt-24 pb-12 bg-white">
+      <section className="pt-24 pb-12 bg-transparent">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
             <div>
               <h1 className="text-4xl font-bold font-heading mb-2">Our Insights</h1>
-              <p className="text-gray-600">Digital strategies for local businesses.</p>
+              <p className="text-gray-400">Digital strategies for local businesses.</p>
             </div>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input 
                 type="text" 
                 placeholder="Search articles..." 
-                className="pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-full focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent w-full md:w-64 transition-all"
+                className="pl-10 pr-4 py-2.5 bg-surface border border-white/20 rounded-full focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent w-full md:w-64 transition-all"
               />
             </div>
           </div>
@@ -45,7 +45,7 @@ export default function Blog() {
               <button 
                 key={i}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                  i === 0 ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  i === 0 ? 'bg-white text-black' : 'bg-white/10 text-gray-400 hover:bg-gray-200'
                 }`}
               >
                 {cat}
@@ -56,7 +56,7 @@ export default function Blog() {
       </section>
 
       {/* Featured Article */}
-      <section className="py-12 bg-gray-50/50 border-t border-gray-100">
+      <section className="py-12 bg-transparent border-t border-white/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <article className="glass-card md:p-12">
             <header className="mb-10 text-center">
@@ -68,7 +68,7 @@ export default function Blog() {
               <h1 className="text-3xl md:text-5xl font-bold font-heading mb-6 leading-tight">
                 The Importance of Having a Website for Local Businesses in 2026
               </h1>
-              <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500">
+              <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-400">
                 <div className="flex items-center gap-2">
                   <User className="w-4 h-4" /> HarshDigitalStudios
                 </div>
@@ -81,8 +81,8 @@ export default function Blog() {
               </div>
             </header>
 
-            <div className="prose prose-lg max-w-none prose-headings:font-heading prose-headings:font-bold prose-a:text-accent hover:prose-a:text-primary">
-              <p className="lead text-xl text-gray-600 mb-8">
+            <div className="prose prose-lg max-w-none prose-headings:font-heading prose-headings:font-bold prose-a:text-accent hover:prose-a:text-white">
+              <p className="lead text-xl text-gray-400 mb-8">
                 In an era dominated by AI search engines, instant gratification, and digital-first consumer behavior, relying solely on a social media profile or word-of-mouth is no longer sufficient for local businesses. A premium website is the cornerstone of modern digital trust.
               </p>
 
@@ -139,12 +139,12 @@ export default function Blog() {
               </p>
             </div>
 
-            <div className="mt-12 text-center bg-gray-50 rounded-[32px] p-8">
+            <div className="mt-12 text-center bg-surface rounded-[32px] p-8">
               <h3 className="text-2xl font-bold font-heading mb-4">Ready to upgrade your digital presence?</h3>
-              <p className="text-gray-600 mb-6">Let's build a website that works as hard as you do.</p>
+              <p className="text-gray-400 mb-6">Let's build a website that works as hard as you do.</p>
               <Link 
                 to="/contact" 
-                className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-primary rounded-full hover:bg-secondary transition-all shadow-lg group"
+                className="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-surface rounded-full hover:bg-white/10 transition-all shadow-lg group"
               >
                 Book Free Website Audit
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />

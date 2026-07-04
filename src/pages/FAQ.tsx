@@ -51,7 +51,7 @@ export default function FAQ() {
 
   return (
     <PageTransition>
-      <section className="pt-24 pb-16 bg-white border-b border-gray-100">
+      <section className="pt-24 pb-16 bg-transparent border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
@@ -64,14 +64,14 @@ export default function FAQ() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
           >
             Everything you need to know about our web design process.
           </motion.p>
         </div>
       </section>
 
-      <section className="py-24 bg-gray-50/50">
+      <section className="py-24 bg-transparent">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-4">
             {faqs.map((faq, index) => {
@@ -83,14 +83,14 @@ export default function FAQ() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
-                  className="bg-white border border-black/5 rounded-[32px] overflow-hidden shadow-sm hover:border-accent/30 transition-colors"
+                  className="bg-transparent border border-white/10 rounded-[32px] overflow-hidden shadow-sm hover:border-accent/30 transition-colors"
                 >
                   <button
                     onClick={() => setOpenIndex(isOpen ? null : index)}
                     className="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none"
                   >
-                    <span className="font-semibold text-primary pr-4">{faq.q}</span>
-                    <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${isOpen ? 'bg-accent/10 text-accent' : 'bg-gray-50 text-gray-400'}`}>
+                    <span className="font-semibold text-white pr-4">{faq.q}</span>
+                    <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${isOpen ? 'bg-accent/10 text-accent' : 'bg-surface text-gray-400'}`}>
                       {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                     </div>
                   </button>
@@ -102,7 +102,7 @@ export default function FAQ() {
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3 }}
                       >
-                        <div className="px-6 pb-6 pt-0 text-gray-600 text-sm leading-relaxed border-t border-gray-50 mt-2 pt-4">
+                        <div className="px-6 pb-6 pt-0 text-gray-400 text-sm leading-relaxed border-t border-gray-50 mt-2 pt-4">
                           {faq.a}
                         </div>
                       </motion.div>

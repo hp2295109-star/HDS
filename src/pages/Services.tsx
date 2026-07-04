@@ -51,7 +51,7 @@ const services = [
 export default function Services() {
   return (
     <PageTransition>
-      <section className="pt-24 pb-16 bg-white border-b border-gray-100">
+      <section className="pt-24 pb-16 bg-transparent border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
@@ -64,14 +64,14 @@ export default function Services() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
           >
             Everything you need to build, scale, and automate your local business online.
           </motion.p>
         </div>
       </section>
 
-      <section className="py-24 bg-gray-50/50">
+      <section className="py-24 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
@@ -88,7 +88,7 @@ export default function Services() {
                 </div>
                 
                 <h3 className="text-xl font-bold font-heading mb-3">{service.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed mb-6 flex-grow">
+                <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-grow">
                   {service.desc}
                 </p>
                 
@@ -96,7 +96,7 @@ export default function Services() {
                   <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Key Benefits</h4>
                   <ul className="space-y-2">
                     {service.benefits.map((benefit, bIndex) => (
-                      <li key={bIndex} className="flex items-center text-sm text-gray-700">
+                      <li key={bIndex} className="flex items-center text-sm text-gray-300">
                         <div className="w-1.5 h-1.5 rounded-full bg-accent mr-2"></div>
                         {benefit}
                       </li>
@@ -106,7 +106,7 @@ export default function Services() {
                 
                 <Link 
                   to="/contact" 
-                  className="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-medium text-primary bg-gray-50 rounded-xl hover:bg-primary hover:text-white transition-colors group-hover:bg-primary group-hover:text-white"
+                  className="premium-button-outline w-full inline-flex items-center justify-center text-sm group"
                 >
                   Book Free Website Audit
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />

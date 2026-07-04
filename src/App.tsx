@@ -9,7 +9,8 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import FloatingContact from './components/FloatingContact';
 import ScrollToTop from './components/ScrollToTop';
-
+import MouseGlow from './components/MouseGlow';
+import BackgroundParticles from './components/BackgroundParticles';
 import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
@@ -44,7 +45,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <div className="flex flex-col min-h-screen">
+      <MouseGlow />
+      <BackgroundParticles />
+      <div className="flex flex-col min-h-screen relative z-10">
         <Navbar />
         <main className="flex-grow pt-24">
           <AnimatedRoutes />

@@ -35,13 +35,13 @@ export default function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white/80 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'
+        scrolled ? 'bg-black/80 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="text-xl font-heading font-bold text-primary tracking-tight">
+          <Link to="/" className="text-xl font-heading font-bold text-white tracking-tight">
             Harsh<span className="text-accent">Digital</span>Studios
           </Link>
 
@@ -52,7 +52,7 @@ export default function Navbar() {
                 key={link.name}
                 to={link.path}
                 className={`text-sm font-medium transition-colors hover:text-accent ${
-                  location.pathname === link.path ? 'text-accent' : 'text-primary'
+                  location.pathname === link.path ? 'text-accent' : 'text-white'
                 }`}
               >
                 {link.name}
@@ -64,7 +64,7 @@ export default function Navbar() {
           <div className="hidden lg:block">
             <Link
               to="/contact"
-              className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-primary rounded-full hover:bg-secondary transition-colors group"
+              className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-surface rounded-full hover:bg-white/10 transition-colors group"
             >
               Book Free Website Audit
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -73,7 +73,7 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2 text-primary"
+            className="lg:hidden p-2 text-white"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
@@ -89,7 +89,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-b border-gray-100 overflow-hidden"
+            className="lg:hidden bg-transparent border-b border-white/10 overflow-hidden"
           >
             <div className="px-4 py-6 space-y-4 flex flex-col">
               {links.map((link) => (
@@ -97,16 +97,16 @@ export default function Navbar() {
                   key={link.name}
                   to={link.path}
                   className={`text-base font-medium px-2 py-2 rounded-lg transition-colors ${
-                    location.pathname === link.path ? 'bg-accent/10 text-accent' : 'text-primary hover:bg-gray-50'
+                    location.pathname === link.path ? 'bg-accent/10 text-accent' : 'text-white hover:bg-surface'
                   }`}
                 >
                   {link.name}
                 </Link>
               ))}
-              <div className="pt-4 mt-2 border-t border-gray-100">
+              <div className="pt-4 mt-2 border-t border-white/10">
                 <Link
                   to="/contact"
-                  className="flex items-center justify-center w-full px-6 py-3 text-sm font-medium text-white bg-primary rounded-full hover:bg-secondary transition-colors"
+                  className="flex items-center justify-center w-full px-6 py-3 text-sm font-medium text-white bg-surface rounded-full hover:bg-white/10 transition-colors"
                 >
                   Book Free Website Audit
                 </Link>

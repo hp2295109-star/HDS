@@ -5,7 +5,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-primary text-white pt-20 pb-10 border-t border-white/10">
+    <footer className="bg-transparent text-white pt-20 pb-10 border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           
@@ -76,26 +76,26 @@ export default function Footer() {
                 href="https://www.instagram.com/harshdigitalstudios" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent transition-colors group"
+                className="w-10 h-10 rounded-full bg-transparent/10 flex items-center justify-center hover:bg-accent transition-colors group"
                 aria-label="Instagram"
               >
-                <Instagram className="w-5 h-5 text-gray-300 group-hover:text-primary transition-colors" />
+                <Instagram className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" />
               </a>
               <a 
                 href="https://wa.me/917470822184" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent transition-colors group"
+                className="w-10 h-10 rounded-full bg-transparent/10 flex items-center justify-center hover:bg-accent transition-colors group"
                 aria-label="WhatsApp"
               >
-                <MessageCircle className="w-5 h-5 text-gray-300 group-hover:text-primary transition-colors" />
+                <MessageCircle className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" />
               </a>
               <a 
                 href="mailto:harshpatelyt1060@gmail.com" 
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent transition-colors group"
+                className="w-10 h-10 rounded-full bg-transparent/10 flex items-center justify-center hover:bg-accent transition-colors group"
                 aria-label="Email"
               >
-                <Mail className="w-5 h-5 text-gray-300 group-hover:text-primary transition-colors" />
+                <Mail className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" />
               </a>
             </div>
           </div>

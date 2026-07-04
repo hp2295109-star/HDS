@@ -9,7 +9,7 @@ export default function FloatingContact() {
         animate={{ scale: 1 }}
         transition={{ delay: 0.5, type: 'spring' }}
         href="tel:+917067363208"
-        className="w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:bg-secondary transition-colors group"
+        className="w-14 h-14 bg-white text-black rounded-full flex items-center justify-center shadow-lg hover:bg-white/10 transition-colors group"
         aria-label="Call Us"
       >
         <Phone className="w-6 h-6 group-hover:scale-110 transition-transform" />

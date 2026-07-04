@@ -6,7 +6,7 @@ import PageTransition from '../components/PageTransition';
 export default function Pricing() {
   return (
     <PageTransition>
-      <section className="pt-24 pb-16 bg-white border-b border-gray-100">
+      <section className="pt-24 pb-16 bg-transparent border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
@@ -19,14 +19,14 @@ export default function Pricing() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
           >
             Premium quality websites at accessible prices for local businesses.
           </motion.p>
         </div>
       </section>
 
-      <section className="py-24 bg-gray-50/50">
+      <section className="py-24 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Pricing Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-24">
@@ -40,7 +40,7 @@ export default function Pricing() {
             >
               <div className="mb-8">
                 <h3 className="text-2xl font-bold font-heading mb-2">Starter Launch</h3>
-                <p className="text-gray-500 text-sm mb-6">Best For: New Local Businesses</p>
+                <p className="text-gray-400 text-sm mb-6">Best For: New Local Businesses</p>
                 <div className="text-4xl font-bold font-heading">₹7k<span className="text-lg text-gray-400 font-normal"> - 10k</span></div>
               </div>
               
@@ -51,7 +51,7 @@ export default function Pricing() {
                       <div className="flex-shrink-0 w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center mt-0.5 mr-3">
                         <Check className="w-3 h-3 text-accent" />
                       </div>
-                      <span className="text-gray-600 text-sm">{feature}</span>
+                      <span className="text-gray-400 text-sm">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -59,9 +59,10 @@ export default function Pricing() {
               
               <Link 
                 to="/contact" 
-                className="w-full inline-flex items-center justify-center px-6 py-4 text-sm font-medium text-primary bg-gray-50 rounded-xl hover:bg-primary hover:text-white transition-colors"
+                className="premium-button-outline w-full inline-flex items-center justify-center text-sm group"
               >
                 Book Free Website Audit
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
 
@@ -71,9 +72,9 @@ export default function Pricing() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="glass-card !bg-primary !border-none !text-white shadow-xl relative flex flex-col transform md:-translate-y-4"
+              className="glass-card shadow-xl relative flex flex-col transform md:-translate-y-4"
             >
-              <div className="absolute top-0 right-8 transform -translate-y-1/2 bg-accent text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
+              <div className="absolute top-0 right-8 transform -translate-y-1/2 bg-accent text-black px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wide shadow-[0_0_15px_rgba(0,240,255,0.4)]">
                 Most Popular
               </div>
               
@@ -98,7 +99,7 @@ export default function Pricing() {
               
               <Link 
                 to="/contact" 
-                className="w-full inline-flex items-center justify-center px-6 py-4 text-sm font-medium text-white bg-accent rounded-xl hover:bg-[#23b379] transition-colors group"
+                className="premium-button w-full inline-flex items-center justify-center text-sm group"
               >
                 Book Free Website Audit
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -111,7 +112,7 @@ export default function Pricing() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10">
               <h2 className="text-3xl font-bold font-heading mb-4">Add-On Services</h2>
-              <p className="text-gray-600">Enhance your digital presence with specialized tools.</p>
+              <p className="text-gray-400">Enhance your digital presence with specialized tools.</p>
             </div>
             
             <div className="glass-card sm:p-10">
@@ -125,10 +126,10 @@ export default function Pricing() {
                   { name: "Professional Product Upload", price: "₹2,999", type: "One-time" }
                 ].map((addon, index) => (
                   <div key={index} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <span className="font-medium text-primary">{addon.name}</span>
+                    <span className="font-medium text-white">{addon.name}</span>
                     <div className="flex items-end sm:items-center gap-2">
                       <span className="font-bold font-heading text-lg">{addon.price}</span>
-                      <span className="text-sm text-gray-500 w-20 text-right sm:text-left">{addon.type}</span>
+                      <span className="text-sm text-gray-400 w-20 text-right sm:text-left">{addon.type}</span>
                     </div>
                   </div>
                 ))}
