@@ -1,0 +1,6 @@
+{
+  "name": "HarshDigitalStudios",
+  "description": "Premium multi-page portfolio website for a modern AI-powered web design agency.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
