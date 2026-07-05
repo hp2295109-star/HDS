@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Instagram, Mail, MessageCircle, Phone } from 'lucide-react';
+import Logo from '../assets/HDS_logo_embedded.svg';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -11,10 +12,10 @@ export default function Footer() {
           
           {/* Brand */}
           <div className="lg:col-span-1">
-            <Link to="/" className="text-2xl font-heading font-bold text-white tracking-tight block mb-6">
-              Harsh<span className="text-accent">Digital</span>Studios
+            <Link to="/" className="inline-flex items-center mb-6">
+              <img src={Logo} alt="Harsh Digital Studio" className="h-12 md:h-14 lg:h-16 w-auto object-contain" />
             </Link>
-            <p className="text-gray-300 mb-8 max-w-xs text-sm leading-relaxed">
+            <p className="text-gray-500 mb-8 max-w-xs text-sm leading-relaxed">
               Building modern websites that help local businesses grow through premium design and AI automation.
             </p>
             <Link 
@@ -34,7 +35,7 @@ export default function Footer() {
                 <li key={item}>
                   <Link 
                     to={`/${item.toLowerCase()}`} 
-                    className="text-gray-300 hover:text-accent transition-colors text-sm"
+                    className="text-gray-500 hover:text-accent transition-colors text-sm"
                   >
                     {item}
                   </Link>
@@ -48,20 +49,20 @@ export default function Footer() {
             <h3 className="text-lg font-heading font-semibold mb-6">Contact Us</h3>
             <ul className="space-y-4">
               <li>
-                <a href="tel:+917067363208" className="flex items-center text-gray-300 hover:text-accent transition-colors text-sm group">
-                  <Phone className="w-4 h-4 mr-3 text-gray-400 group-hover:text-accent transition-colors" />
+                <a href="tel:+917067363208" className="flex items-center text-gray-500 hover:text-accent transition-colors text-sm group">
+                  <Phone className="w-4 h-4 mr-3 text-gray-500 group-hover:text-accent transition-colors" />
                   +91 70673 63208
                 </a>
               </li>
               <li>
-                <a href="https://wa.me/917470822184" target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-300 hover:text-accent transition-colors text-sm group">
-                  <MessageCircle className="w-4 h-4 mr-3 text-gray-400 group-hover:text-accent transition-colors" />
+                <a href="https://wa.me/917470822184" target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-500 hover:text-accent transition-colors text-sm group">
+                  <MessageCircle className="w-4 h-4 mr-3 text-gray-500 group-hover:text-accent transition-colors" />
                   +91 74708 22184
                 </a>
               </li>
               <li>
-                <a href="mailto:harshpatelyt1060@gmail.com" className="flex items-center text-gray-300 hover:text-accent transition-colors text-sm group">
-                  <Mail className="w-4 h-4 mr-3 text-gray-400 group-hover:text-accent transition-colors" />
+                <a href="mailto:harshpatelyt1060@gmail.com" className="flex items-center text-gray-500 hover:text-accent transition-colors text-sm group">
+                  <Mail className="w-4 h-4 mr-3 text-gray-500 group-hover:text-accent transition-colors" />
                   harshpatelyt1060@gmail.com
                 </a>
               </li>
@@ -79,7 +80,7 @@ export default function Footer() {
                 className="w-10 h-10 rounded-full bg-transparent/10 flex items-center justify-center hover:bg-accent transition-colors group"
                 aria-label="Instagram"
               >
-                <Instagram className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" />
+                <Instagram className="w-5 h-5 text-gray-500 group-hover:text-white transition-colors" />
               </a>
               <a 
                 href="https://wa.me/917470822184" 
@@ -88,26 +89,26 @@ export default function Footer() {
                 className="w-10 h-10 rounded-full bg-transparent/10 flex items-center justify-center hover:bg-accent transition-colors group"
                 aria-label="WhatsApp"
               >
-                <MessageCircle className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" />
+                <MessageCircle className="w-5 h-5 text-gray-500 group-hover:text-white transition-colors" />
               </a>
               <a 
                 href="mailto:harshpatelyt1060@gmail.com" 
                 className="w-10 h-10 rounded-full bg-transparent/10 flex items-center justify-center hover:bg-accent transition-colors group"
                 aria-label="Email"
               >
-                <Mail className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" />
+                <Mail className="w-5 h-5 text-gray-500 group-hover:text-white transition-colors" />
               </a>
             </div>
           </div>
         </div>
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between">
-          <p className="text-gray-400 text-sm">
+          <p className="text-gray-500 text-sm">
             &copy; {currentYear} HarshDigitalStudios. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link to="/contact" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</Link>
-            <Link to="/contact" className="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</Link>
+            <Link to="/contact" className="text-gray-500 hover:text-white text-sm transition-colors">Privacy Policy</Link>
+            <Link to="/contact" className="text-gray-500 hover:text-white text-sm transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

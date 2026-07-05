@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import Logo from '../assets/HDS_logo_embedded.svg';
 
 const links = [
   { name: 'Home', path: '/' },
@@ -41,8 +42,8 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="text-xl font-heading font-bold text-white tracking-tight">
-            Harsh<span className="text-accent">Digital</span>Studios
+          <Link to="/" className="flex items-center">
+            <img src={Logo} alt="Harsh Digital Studio" className="h-12 md:h-14 lg:h-16 w-auto object-contain" />
           </Link>
 
           {/* Desktop Navigation */}
