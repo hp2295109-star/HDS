@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowRight, BarChart3, CheckCircle2, Globe, Lightbulb, Search, Smartphone, Users } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
+import HeroSection from '../components/HeroSection';
+import StatsSection from '../components/StatsSection';
 
 export default function Home() {
   return (
@@ -9,84 +11,7 @@ export default function Home() {
       <main className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 lg:grid-rows-6 gap-5 lg:h-[800px]">
           
-          {/* Hero Section */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="lg:col-span-7 lg:row-span-4 glass-card md:p-12 flex flex-col justify-center relative overflow-hidden group"
-          >
-            {/* Background Animated Blobs */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[32px]">
-              <motion.div 
-                animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3], x: [0, 50, 0], y: [0, 30, 0] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-[-20%] left-[-10%] w-96 h-96 bg-accent/20 rounded-full blur-[80px]"
-              />
-              <motion.div 
-                animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2], x: [0, -40, 0], y: [0, -50, 0] }}
-                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute bottom-[-20%] right-[-10%] w-80 h-80 bg-support-4/20 rounded-full blur-[80px]"
-              />
-            </div>
-
-            <div className="absolute top-0 right-0 p-8 opacity-20 hidden md:block">
-              <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="text-accent" strokeWidth="1">
-                <circle cx="12" cy="12" r="10" strokeDasharray="4 4"/>
-              </svg>
-            </div>
-            
-            <div className="relative z-10">
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="inline-flex w-max bg-accent/10 border border-accent/20 text-accent px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-8"
-              >
-                Premium Web Design & AI Automation
-              </motion.div>
-              
-              <motion.h1 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight mb-6 leading-[1.1]"
-              >
-                Build a Website That<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-accent">Works While You Sleep</span>
-              </motion.h1>
-              
-              <motion.p 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="text-lg text-gray-400 mb-10 max-w-lg leading-relaxed"
-              >
-                Modern websites. AI automation. Beautiful user experiences. 
-                Helping local businesses generate more leads and build trust online.
-              </motion.p>
-              
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
-              >
-                <Link 
-                  to="/contact" 
-                  className="premium-button w-full sm:w-auto inline-flex items-center justify-center group"
-                >
-                  Book Free Website Audit
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link 
-                  to="/portfolio" 
-                  className="premium-button-outline w-full sm:w-auto inline-flex items-center justify-center"
-                >
-                  View Portfolio
-                </Link>
-              </motion.div>
-            </div>
-          </motion.div>
+          <HeroSection />
 
           {/* Trust Stats */}
           <motion.div 
@@ -207,6 +132,8 @@ export default function Home() {
 
         </div>
       </main>
+
+      <StatsSection />
 
       {/* Why Need Website Section */}
       <section className="py-24 relative overflow-hidden">

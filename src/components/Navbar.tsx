@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import Logo from '../assets/HDS_logo_embedded.svg';
+import { ThemeToggle } from './ThemeToggle';
 
 const links = [
   { name: 'Home', path: '/' },
@@ -61,25 +62,29 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden lg:block">
+          {/* Desktop Right: Theme Toggle & CTA Button */}
+          <div className="hidden lg:flex items-center space-x-4">
+            <ThemeToggle />
             <Link
               to="/contact"
-              className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-surface rounded-full hover:bg-white/10 transition-colors group"
+              className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-surface rounded-full hover:bg-white/10 transition-colors group border border-border"
             >
               Book Free Website Audit
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden p-2 text-white"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {/* Mobile Right: Theme Toggle & Menu Button */}
+          <div className="flex items-center space-x-2 lg:hidden">
+            <ThemeToggle />
+            <button
+              className="p-2 text-white"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </div>
 

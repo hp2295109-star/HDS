@@ -4,25 +4,68 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-heading: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-
-  --color-primary: #00F0FF;
-  --color-secondary: #0080FF;
-  --color-accent: #00F0FF;
+  
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
   
   --color-support-1: #0A192F;
   --color-support-2: #112240;
   --color-support-3: #233554;
   --color-support-4: #0070F3;
   
-  --color-bg-base: #030509;
-  --color-surface: rgba(255, 255, 255, 0.03);
-  --color-surface-hover: rgba(255, 255, 255, 0.08);
-  --color-border: rgba(255, 255, 255, 0.1);
+  --color-bg-base: var(--bg-base);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+
+  --color-white: var(--text-white);
+  --color-black: var(--text-black);
+  
+  --color-gray-300: var(--gray-300);
+  --color-gray-400: var(--gray-400);
+  --color-gray-500: var(--gray-500);
 }
 
 @layer base {
+  :root {
+    --primary: #00F0FF;
+    --secondary: #0080FF;
+    --accent: #00F0FF;
+    
+    --bg-base: #030509;
+    --surface: rgba(255, 255, 255, 0.03);
+    --surface-hover: rgba(255, 255, 255, 0.08);
+    --border: rgba(255, 255, 255, 0.1);
+
+    --text-white: #ffffff;
+    --text-black: #000000;
+    
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+  }
+  
+  .light {
+    --primary: #0070F3;
+    --secondary: #00F0FF;
+    --accent: #0070F3;
+    
+    --bg-base: #F8FAFC;
+    --surface: rgba(0, 0, 0, 0.04);
+    --surface-hover: rgba(0, 0, 0, 0.08);
+    --border: rgba(0, 0, 0, 0.1);
+
+    --text-white: #0F172A;
+    --text-black: #ffffff;
+    
+    --gray-300: #64748b;
+    --gray-400: #475569;
+    --gray-500: #334155;
+  }
+
   body {
-    @apply bg-bg-base text-white font-sans antialiased overflow-x-hidden;
+    @apply bg-bg-base text-white font-sans antialiased overflow-x-hidden transition-colors duration-500;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -33,6 +76,7 @@
 .glass-card {
   @apply bg-surface backdrop-blur-xl rounded-[32px] p-8 border border-border shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-500 relative overflow-hidden;
 }
+
 .glass-card::before {
   content: '';
   position: absolute;
@@ -42,16 +86,30 @@
   transition: opacity 0.5s;
   pointer-events: none;
 }
+.light .glass-card::before {
+  background: radial-gradient(800px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 112, 243, 0.06), transparent 40%);
+}
+
 .glass-card:hover::before {
   opacity: 1;
 }
+
 .glass-card:hover {
   @apply bg-surface-hover shadow-[0_0_40px_rgba(0,240,255,0.1)] border-accent/30 -translate-y-2;
+}
+
+.light .glass-card:hover {
+  @apply shadow-[0_0_40px_rgba(0,112,243,0.1)];
 }
 
 .premium-button {
   @apply relative overflow-hidden bg-white text-black px-8 py-4 rounded-xl font-bold transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:-translate-y-1 active:translate-y-0 shadow-lg shadow-accent/20;
 }
+
+.light .premium-button {
+  @apply hover:shadow-[0_0_30px_rgba(0,112,243,0.4)];
+}
+
 .premium-button::after {
   content: '';
   position: absolute;
@@ -60,12 +118,21 @@
   transform: translateX(-100%);
   transition: transform 0.6s ease-in-out;
 }
+
+.light .premium-button::after {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+}
+
 .premium-button:hover::after {
   transform: translateX(100%);
 }
 
 .premium-button-outline {
   @apply relative overflow-hidden bg-transparent border border-white/20 text-white px-8 py-4 rounded-xl font-bold transition-all duration-300 hover:bg-white/5 hover:border-accent/50 hover:shadow-[0_0_30px_rgba(0,240,255,0.2)] hover:-translate-y-1 active:translate-y-0;
+}
+
+.light .premium-button-outline {
+  @apply hover:shadow-[0_0_30px_rgba(0,112,243,0.2)];
 }
 
 /* Smooth scrolling */
