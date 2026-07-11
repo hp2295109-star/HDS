@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+// @ts-ignore
 import Logo from '../assets/HDS_logo_embedded.svg';
 import { ThemeToggle } from './ThemeToggle';
 
@@ -95,7 +96,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-transparent border-b border-white/10 overflow-hidden"
+            className="lg:hidden bg-black/95 backdrop-blur-lg border-b border-white/10 overflow-hidden"
           >
             <div className="px-4 py-6 space-y-4 flex flex-col">
               {links.map((link) => (

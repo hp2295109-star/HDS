@@ -126,7 +126,7 @@ export default function Portfolio() {
               
               <div className="space-y-4">
                 <a 
-                  href="https://wa.me/917470822184" 
+                  href="https://wa.me/917067363208" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="flex items-center w-full p-4 rounded-xl bg-surface hover:bg-[#25D366]/10 text-white hover:text-[#25D366] transition-colors group"

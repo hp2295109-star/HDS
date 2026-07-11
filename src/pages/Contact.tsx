@@ -48,7 +48,7 @@ export default function Contact() {
                 </a>
 
                 <a 
-                  href="https://wa.me/917470822184"
+                  href="https://wa.me/917067363208"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center p-6 bg-transparent rounded-2xl border border-white/10 shadow-sm hover:shadow-md hover:border-[#25D366]/30 transition-all group"
@@ -58,7 +58,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-400 font-medium mb-1">Chat on WhatsApp</p>
-                    <p className="text-lg font-bold font-heading text-white">+91 74708 22184</p>
+                    <p className="text-lg font-bold font-heading text-white">+91 70673 63208</p>
                   </div>
                 </a>
 

@@ -528,7 +528,7 @@ const ResultsSection = ({ data }: { data: AssessmentData }) => {
           <button className="premium-button w-full sm:w-auto inline-flex items-center justify-center">
             Book Free Strategy Call
           </button>
-          <a href="https://wa.me/917470822184" className="premium-button-outline w-full sm:w-auto inline-flex items-center justify-center">
+          <a href="https://wa.me/917067363208" className="premium-button-outline w-full sm:w-auto inline-flex items-center justify-center">
             <MessageCircle className="w-5 h-5 mr-2" />
             Chat on WhatsApp
           </a>

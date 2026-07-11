@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
 import { ArrowRight, Instagram, Linkedin, Facebook, MessageCircle, Mail, Phone, MapPin, Clock, Zap, Smartphone, Cpu, Search, CheckCircle2 } from 'lucide-react';
+// @ts-ignore
 import Logo from '../assets/HDS_logo_embedded.svg';
 
 const SocialIcon = ({ Icon, href, label }: { Icon: any, href: string, label: string }) => (
@@ -63,7 +64,7 @@ export default function Footer() {
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Link>
             <a 
-              href="https://wa.me/917470822184" 
+              href="https://wa.me/917067363208" 
               target="_blank" 
               rel="noopener noreferrer"
               className="premium-button-outline w-full sm:w-auto inline-flex items-center justify-center"
@@ -94,7 +95,7 @@ export default function Footer() {
               <SocialIcon Icon={Instagram} href="https://www.instagram.com/harshdigitalstudios" label="Instagram" />
               <SocialIcon Icon={Linkedin} href="#" label="LinkedIn" />
               <SocialIcon Icon={Facebook} href="#" label="Facebook" />
-              <SocialIcon Icon={MessageCircle} href="https://wa.me/917470822184" label="WhatsApp" />
+              <SocialIcon Icon={MessageCircle} href="https://wa.me/917067363208" label="WhatsApp" />
               <SocialIcon Icon={Mail} href="mailto:harshpatelyt1060@gmail.com" label="Email" />
             </div>
           </motion.div>

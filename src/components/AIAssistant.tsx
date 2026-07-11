@@ -4,11 +4,20 @@ import { Sparkles, MessageCircle, X, Send } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { INTENTS, FALLBACK_RESPONSES, Intent } from '../data/chatbotIntents';
 
+interface ChatButton {
+  label: string;
+  href?: string;
+  to?: string;
+  isExternal?: boolean;
+  variant?: 'whatsapp' | 'primary' | 'secondary';
+}
+
 interface Message {
   id: string;
   sender: 'ai' | 'user';
   text: string;
   actionButtons?: boolean;
+  buttons?: ChatButton[];
 }
 
 const DEFAULT_SUGGESTIONS = [
@@ -49,6 +58,9 @@ export default function AIAssistant() {
   const lastResponsesRef = useRef<Record<string, number>>({});
   const leadIntentCountRef = useRef(0);
   const fallbackCountRef = useRef(0);
+  const lastUserMessagesRef = useRef<string[]>([]);
+  const discussedIntentsRef = useRef<Set<string>>(new Set());
+  const hasPitchedConsultationRef = useRef(false);
 
   useEffect(() => {
     // Show popup after 5 seconds
@@ -78,25 +90,44 @@ export default function AIAssistant() {
   }, [messages, isTyping]);
 
   const matchIntent = (text: string): Intent | null => {
-    const cleanInput = text.toLowerCase().replace(/[^a-z0-9 ]/g, '');
+    const cleanInput = text.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').trim();
+    const words = cleanInput.split(/\s+/).filter(Boolean);
+    if (words.length === 0) return null;
+
     let bestMatch: Intent | null = null;
     let maxScore = 0;
 
     for (const intent of INTENTS) {
       let score = 0;
       for (const keyword of intent.keywords) {
-        // use word boundaries for short keywords if needed, but simple includes is often fine for phrases
-        if (cleanInput.includes(keyword)) {
-          // Weight longer keywords higher
-          score += keyword.length;
+        const cleanKeyword = keyword.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').trim();
+        
+        // Exact match gets highest score
+        if (cleanInput === cleanKeyword) {
+          score += 100;
+        } 
+        // Phrase match
+        else if (cleanInput.includes(cleanKeyword)) {
+          score += cleanKeyword.length * 4;
+        } 
+        // Word match
+        else {
+          const kwWords = cleanKeyword.split(/\s+/);
+          const matchedWords = kwWords.filter(w => words.includes(w));
+          if (matchedWords.length === kwWords.length) {
+            score += cleanKeyword.length * 1.5;
+          }
         }
       }
+      
       if (score > maxScore) {
         maxScore = score;
         bestMatch = intent;
       }
     }
-    return bestMatch;
+    
+    // Minimum matching threshold
+    return maxScore > 2 ? bestMatch : null;
   };
 
   const getRandomResponse = (responses: string[], intentId: string) => {
@@ -127,35 +158,111 @@ export default function AIAssistant() {
     setInputValue('');
     setIsTyping(true);
 
+    // Track user message history (last 3 messages)
+    lastUserMessagesRef.current = [...lastUserMessagesRef.current, text].slice(-3);
+
     // Process AI response with random delay (600 - 1200ms)
     const typingDelay = Math.floor(Math.random() * (1200 - 600 + 1) + 600);
 
     setTimeout(() => {
       let aiText = '';
       let actionButtons = false;
+      let msgButtons: ChatButton[] | undefined = undefined;
       let nextSuggestions = DEFAULT_SUGGESTIONS;
       
+      // Check if user has already talked about Website
+      const alreadyDiscussedWebsite = discussedIntentsRef.current.has('website_dev') || 
+                                     discussedIntentsRef.current.has('landing_page') || 
+                                     discussedIntentsRef.current.has('website_redesign');
+
+      // Check for exact word repetition to avoid looping
+      const isRepetitive = lastUserMessagesRef.current.length >= 2 && 
+        lastUserMessagesRef.current[lastUserMessagesRef.current.length - 1].toLowerCase().trim() === 
+        lastUserMessagesRef.current[lastUserMessagesRef.current.length - 2].toLowerCase().trim();
+
       const intent = matchIntent(text);
 
-      if (intent) {
-        fallbackCountRef.current = 0; // reset fallback
+      if (isRepetitive) {
+        // Handle message repetition beautifully
+        aiText = "I see we're looking at that topic again! Let's get you set up with a expert from our team to discuss this directly, or feel free to ask something else.";
+        msgButtons = [
+          { label: 'Book Consultation', to: '/contact', variant: 'primary' },
+          { label: 'Chat on WhatsApp', href: 'https://wa.me/917067363208', isExternal: true, variant: 'whatsapp' }
+        ];
+        nextSuggestions = ['🚀 SEO Services', '📈 Meta Ads', '🤖 AI Automation'];
+      } else if (intent) {
+        fallbackCountRef.current = 0; // reset fallback counter
+        
+        // Save current intent ID to discussed history
+        discussedIntentsRef.current.add(intent.id);
+
         aiText = getRandomResponse(intent.responses, intent.id);
         nextSuggestions = intent.suggestions.length > 0 ? intent.suggestions : DEFAULT_SUGGESTIONS;
 
+        // "If user already selected Website, don't ask again. Continue naturally."
+        if (alreadyDiscussedWebsite && (intent.id === 'website_dev' || intent.id === 'landing_page')) {
+          aiText = "As we already explored your interest in website options, we could also enhance your search rankings with SEO or start getting clients immediately with social media ads. Which of these sounds best?";
+          nextSuggestions = ['🚀 SEO Services', '📈 Meta Ads', '🤖 AI Automation'];
+        }
+
+        // Contextual Button Logic
+        if (intent.id === 'pricing') {
+          msgButtons = [
+            { label: 'Get Custom Quote', to: '/contact', variant: 'primary' },
+            { label: 'Book Consultation', to: '/contact', variant: 'secondary' }
+          ];
+        } else if (intent.id === 'seo' || intent.id === 'local_seo' || intent.id === 'gmb') {
+          msgButtons = [
+            { label: 'Request SEO Audit', to: '/contact', variant: 'primary' },
+            { label: 'Book Strategy Call', to: '/contact', variant: 'secondary' }
+          ];
+        } else if (intent.id === 'meta_ads' || intent.id === 'google_ads' || intent.id === 'lead_generation') {
+          msgButtons = [
+            { label: 'Launch Ad Campaigns', to: '/contact', variant: 'primary' },
+            { label: 'Book Strategy Call', to: '/contact', variant: 'secondary' }
+          ];
+        } else if (intent.id === 'ai_automation' || intent.id === 'whatsapp_automation' || intent.id === 'crm_automation') {
+          msgButtons = [
+            { label: 'Automate My Business', to: '/contact', variant: 'primary' },
+            { label: 'Book Free Consultation', to: '/contact', variant: 'secondary' }
+          ];
+        } else if (intent.id === 'growth_calculator') {
+          msgButtons = [
+            { label: 'Start Calculator', to: '/calculator', variant: 'primary' },
+            { label: 'Get Free Audit', to: '/contact', variant: 'secondary' }
+          ];
+        } else if (intent.id === 'contact' || intent.id === 'consultation') {
+          msgButtons = [
+            { label: 'Book Meeting', to: '/contact', variant: 'primary' },
+            { label: 'Chat on WhatsApp', href: 'https://wa.me/917067363208', isExternal: true, variant: 'whatsapp' }
+          ];
+        } else if (intent.id === 'portfolio') {
+          msgButtons = [
+            { label: 'View Full Portfolio', to: '/portfolio', variant: 'primary' },
+            { label: 'Book Strategy Call', to: '/contact', variant: 'secondary' }
+          ];
+        }
+
+        // Track Lead Intent turns
         if (LEAD_INTENTS.includes(intent.id)) {
           leadIntentCountRef.current += 1;
         }
 
-        // Lead capture condition: after 2 lead-related queries
-        if (leadIntentCountRef.current === 2) {
-          aiText += "\n\nWould you like a free consultation to discuss this in detail?";
-          actionButtons = true;
-          // Reset count so we don't spam it immediately again, or let it stay to prompt later
+        // After 2 lead-related queries, trigger the lead capture consultation pitch
+        if (leadIntentCountRef.current >= 2) {
+          if (!hasPitchedConsultationRef.current) {
+            aiText += "\n\nWould you like a free consultation to discuss this in detail and map out a step-by-step strategy for your business?";
+            msgButtons = [
+              { label: 'Book Meeting', to: '/contact', variant: 'primary' },
+              { label: 'Chat on WhatsApp', href: 'https://wa.me/917067363208', isExternal: true, variant: 'whatsapp' }
+            ];
+            hasPitchedConsultationRef.current = true;
+          }
           leadIntentCountRef.current = 0; 
         }
-        
-        if (intent.actionButtons) {
-            actionButtons = true;
+
+        if (intent.actionButtons && !msgButtons) {
+          actionButtons = true;
         }
 
       } else {
@@ -165,9 +272,23 @@ export default function AIAssistant() {
         nextSuggestions = FALLBACK_SUGGESTIONS;
         
         if (fallbackCountRef.current >= 2) {
-            aiText = "I think it would be best to speak directly with our team. Would you like to connect on WhatsApp or book a call?";
-            actionButtons = true;
-            fallbackCountRef.current = 0;
+          aiText = "I think it would be best to speak directly with our team of specialists. Would you like to connect on WhatsApp or book a consultation call?";
+          msgButtons = [
+            { label: 'Book Consultation', to: '/contact', variant: 'primary' },
+            { label: 'Chat on WhatsApp', href: 'https://wa.me/917067363208', isExternal: true, variant: 'whatsapp' }
+          ];
+          fallbackCountRef.current = 0;
+        }
+      }
+
+      // Filter out website suggestions if the user has already talked about websites
+      if (alreadyDiscussedWebsite || discussedIntentsRef.current.has('website_dev') || discussedIntentsRef.current.has('landing_page')) {
+        nextSuggestions = nextSuggestions.filter(s => 
+          !s.toLowerCase().includes('website') && 
+          !s.toLowerCase().includes('landing')
+        );
+        if (nextSuggestions.length === 0) {
+          nextSuggestions = ['🚀 SEO Services', '📈 Meta Ads', '🤖 AI Automation', '📅 Book Meeting'];
         }
       }
 
@@ -175,7 +296,8 @@ export default function AIAssistant() {
         id: (Date.now() + 1).toString(),
         sender: 'ai',
         text: aiText,
-        actionButtons
+        actionButtons: actionButtons && !msgButtons,
+        buttons: msgButtons
       };
 
       setMessages(prev => [...prev, aiMsg]);
@@ -313,9 +435,47 @@ export default function AIAssistant() {
                   }`}>
                     {msg.text}
                     
-                    {msg.actionButtons && (
+                    {msg.buttons && msg.buttons.length > 0 && (
                       <div className="mt-4 space-y-2">
-                        <a href="https://wa.me/917470822184" target="_blank" rel="noopener noreferrer" className="block w-full text-center py-2.5 bg-[#25D366] text-white rounded-xl font-bold text-xs hover:bg-[#20bd5a] transition-colors shadow-sm">
+                        {msg.buttons.map((btn, idx) => {
+                          const className = btn.variant === 'whatsapp' 
+                            ? "block w-full text-center py-2.5 bg-[#25D366] text-white rounded-xl font-bold text-xs hover:bg-[#20bd5a] transition-colors shadow-sm"
+                            : btn.variant === 'primary'
+                            ? "block w-full text-center py-2.5 bg-accent text-white rounded-xl font-bold text-xs hover:bg-accent/80 transition-colors shadow-sm"
+                            : "block w-full text-center py-2.5 bg-white/10 text-white rounded-xl font-bold text-xs hover:bg-white/20 transition-colors";
+                          
+                          if (btn.isExternal && btn.href) {
+                            return (
+                              <a 
+                                key={idx}
+                                href={btn.href} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className={className}
+                              >
+                                {btn.label}
+                              </a>
+                            );
+                          } else if (btn.to) {
+                            return (
+                              <Link 
+                                key={idx}
+                                to={btn.to} 
+                                onClick={() => setIsOpen(false)} 
+                                className={className}
+                              >
+                                {btn.label}
+                              </Link>
+                            );
+                          }
+                          return null;
+                        })}
+                      </div>
+                    )}
+
+                    {msg.actionButtons && !msg.buttons && (
+                      <div className="mt-4 space-y-2">
+                        <a href="https://wa.me/917067363208" target="_blank" rel="noopener noreferrer" className="block w-full text-center py-2.5 bg-[#25D366] text-white rounded-xl font-bold text-xs hover:bg-[#20bd5a] transition-colors shadow-sm">
                           Chat on WhatsApp
                         </a>
                         <Link to="/contact" onClick={() => setIsOpen(false)} className="block w-full text-center py-2.5 bg-white/10 text-white rounded-xl font-bold text-xs hover:bg-white/20 transition-colors">

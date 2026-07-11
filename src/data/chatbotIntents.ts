@@ -392,6 +392,18 @@ export const INTENTS: Intent[] = [
     suggestions: ['Book Meeting', 'Chat on WhatsApp']
   },
   {
+    id: 'maintenance',
+    keywords: ['maintenance', 'maintain', 'upkeep', 'updates website', 'monthly support', 'updates and support'],
+    responses: [
+      "We provide regular maintenance packages to ensure your website remains secure, updated, and fast.",
+      "Our maintenance services cover software updates, security backups, and periodic content changes.",
+      "Keep your website running smoothly. We offer proactive monthly support and optimization retainers.",
+      "We take care of the tech so you can focus on your business. Our upkeep services are reliable and hassle-free.",
+      "From security monitoring to speed optimization, our maintenance packages keep your digital storefront pristine."
+    ],
+    suggestions: ['Support', 'Hosting', 'Book Consultation']
+  },
+  {
     id: 'growth_calculator',
     keywords: ['calculator', 'growth calculator', 'assessment', 'audit', 'score'],
     responses: [

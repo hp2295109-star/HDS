@@ -4,6 +4,9 @@ import { ArrowRight, BarChart3, CheckCircle2, Globe, Lightbulb, Search, Smartpho
 import PageTransition from '../components/PageTransition';
 import HeroSection from '../components/HeroSection';
 import StatsSection from '../components/StatsSection';
+import IndustriesSection from '../components/IndustriesSection';
+import HowWeWorkSection from '../components/HowWeWorkSection';
+import WhyChooseSection from '../components/WhyChooseSection';
 
 export default function Home() {
   return (
@@ -117,7 +120,7 @@ export default function Home() {
               <div className="space-y-4">
                 <div className="flex items-center space-x-4 text-sm">
                   <span className="opacity-60 text-xs uppercase tracking-widest font-bold">WA:</span>
-                  <span className="font-mono text-base">+91 74708 22184</span>
+                  <span className="font-mono text-base">+91 70673 63208</span>
                 </div>
                 <div className="flex items-center space-x-4 text-sm">
                   <span className="opacity-60 text-xs uppercase tracking-widest font-bold">IG:</span>
@@ -177,6 +180,47 @@ export default function Home() {
               Explore Our Services
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Industries We Help Grow Section */}
+      <IndustriesSection />
+
+      {/* How We Work Section */}
+      <HowWeWorkSection />
+
+      {/* Why Choose Harsh Digital Studios Section */}
+      <WhyChooseSection />
+
+      {/* Business Growth Calculator CTA Section */}
+      <section className="py-20 bg-transparent relative z-10 border-t border-white/5">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-gradient-to-br from-accent/15 via-secondary/5 to-transparent border border-[#00F0FF]/20 rounded-[32px] p-8 md:p-12 text-center relative overflow-hidden group shadow-[0_0_30px_rgba(0,240,255,0.05)] hover:border-[#00F0FF]/40 transition-all duration-500">
+            {/* Ambient Background Light */}
+            <div className="absolute top-[-20%] right-[-10%] w-60 h-60 bg-accent/10 rounded-full blur-[80px]" />
+            
+            <div className="relative z-10 max-w-2xl mx-auto">
+              <span className="inline-flex items-center space-x-1.5 bg-[#00F0FF]/10 text-[#00F0FF] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+                <BarChart3 className="w-3.5 h-3.5 animate-pulse" />
+                <span>AI-Powered Strategy Tool</span>
+              </span>
+              
+              <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4 text-white">
+                Calculate Your Digital Growth Potential
+              </h2>
+              <p className="text-gray-400 text-sm md:text-base mb-8 leading-relaxed font-sans">
+                Answer 10 simple questions about your business to instantly receive a personalized growth audit, online visibility score, and a custom 90-day digital action plan.
+              </p>
+              
+              <Link 
+                to="/business-growth-calculator" 
+                className="premium-button inline-flex items-center justify-center gap-2"
+              >
+                Start Free Assessment
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>

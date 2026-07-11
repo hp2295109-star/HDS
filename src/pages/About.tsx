@@ -33,7 +33,7 @@ export default function About() {
             transition={{ delay: 0.1 }}
             className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
           >
-            Founder of <span className="text-white font-semibold">HarshDigitalStudios</span> — a modern AI-powered digital studio focused on helping local businesses build premium online experiences.
+            Founder of <span className="text-white font-semibold">Harsh Digital Studios</span> — leading professional website designer and local SEO specialist empowering businesses across <span className="text-accent">Raigarh, Chhattisgarh</span> with high-performance digital marketing platforms.
           </motion.p>
         </div>
       </section>
@@ -48,21 +48,21 @@ export default function About() {
 
             {[
               { 
-                year: "The Vision", 
-                title: "Empowering Local Businesses", 
-                desc: "I realized that local businesses were losing customers simply because their digital presence didn't match the quality of their physical service. HarshDigitalStudios was born to bridge that gap with premium, enterprise-grade design at accessible pricing.",
+                year: "The Mission", 
+                title: "Empowering Local Commerce in Raigarh", 
+                desc: "I observed that remarkable local showrooms, clinics, salons, and businesses across Chhattisgarh were losing local market share simply because their online presence didn't match the premium quality of their real-world service. Harsh Digital Studios was founded to bridge this gap with professional website development in Raigarh, raising the bar for local digital credibility.",
                 image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
               },
               { 
-                year: "The Approach", 
-                title: "Design Meets Automation", 
-                desc: "A beautiful website isn't enough. It needs to work for you. By integrating modern AI tools, automated lead captures, and WhatsApp integrations, we turn websites into 24/7 sales machines.",
+                year: "The Innovation", 
+                title: "Premium Website Development & AI Systems", 
+                desc: "A beautiful design is only half the battle. To turn searchers into long-term clients, your business needs a high-performance system. We engineer custom mobile-responsive web portals, landing page designs, and integrate intelligent automated WhatsApp messaging to make sure every visitor can connect with your brand instantly.",
                 image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
               },
               { 
-                year: "The Future", 
-                title: "AI-First Web Experiences", 
-                desc: "As search engines evolve into AI answer engines, having a structured, fast, and SEO-optimized website is more critical than ever. We ensure our clients are ready for the future of search.",
+                year: "The Local Impact", 
+                title: "Dominating Google Business & Search Engines", 
+                desc: "With the rise of local 'near me' searches, appearing on top of Google Maps and local search packs is the single most valuable source of high-intent buyers. We deliver complete local SEO services and Google Business Profile optimization to help local Raigarh enterprises win sustainable, long-term visibility without continuous high advertising fees.",
                 image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
               }
             ].map((item, index) => (

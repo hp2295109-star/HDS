@@ -11,6 +11,7 @@ import ScrollToTop from './components/ScrollToTop';
 import MouseGlow from './components/MouseGlow';
 import BackgroundParticles from './components/BackgroundParticles';
 import { ThemeProvider } from './components/ThemeProvider';
+import SEOManager from './components/SEOManager';
 
 import Home from './pages/Home';
 import About from './pages/About';
@@ -28,18 +29,20 @@ function AnimatedRoutes() {
   
   return (
     <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/pricing" element={<Pricing />} />
-        <Route path="/portfolio" element={<Portfolio />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/faq" element={<FAQ />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/testimonials" element={<Testimonials />} />
-        <Route path="/business-growth-calculator" element={<BusinessGrowthCalculator />} />
-      </Routes>
+      <div key={location.pathname}>
+        <Routes location={location}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/testimonials" element={<Testimonials />} />
+          <Route path="/business-growth-calculator" element={<BusinessGrowthCalculator />} />
+        </Routes>
+      </div>
     </AnimatePresence>
   );
 }
@@ -48,6 +51,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
+        <SEOManager />
         <ScrollToTop />
         <MouseGlow />
         <BackgroundParticles />
