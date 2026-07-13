@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 // @ts-ignore
 import Logo from '../assets/HDS_logo_embedded.svg';
 import { ThemeToggle } from './ThemeToggle';
+import { openSaaSModal } from './SaaSModals';
 
 const links = [
   { name: 'Home', path: '/' },
@@ -66,13 +67,13 @@ export default function Navbar() {
           {/* Desktop Right: Theme Toggle & CTA Button */}
           <div className="hidden lg:flex items-center space-x-4">
             <ThemeToggle />
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-surface rounded-full hover:bg-white/10 transition-colors group border border-border"
+            <button
+              onClick={() => openSaaSModal('audit', 'Website Audit', 'Navbar Desktop')}
+              className="inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white bg-surface rounded-full hover:bg-white/10 transition-colors group border border-border cursor-pointer"
             >
               Book Free Website Audit
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            </button>
           </div>
 
           {/* Mobile Right: Theme Toggle & Menu Button */}
@@ -111,12 +112,12 @@ export default function Navbar() {
                 </Link>
               ))}
               <div className="pt-4 mt-2 border-t border-white/10">
-                <Link
-                  to="/contact"
-                  className="flex items-center justify-center w-full px-6 py-3 text-sm font-medium text-white bg-surface rounded-full hover:bg-white/10 transition-colors"
+                <button
+                  onClick={() => { setIsOpen(false); openSaaSModal('audit', 'Website Audit', 'Navbar Mobile'); }}
+                  className="flex items-center justify-center w-full px-6 py-3 text-sm font-medium text-white bg-surface rounded-full hover:bg-white/10 transition-colors cursor-pointer"
                 >
                   Book Free Website Audit
-                </Link>
+                </button>
               </div>
             </div>
           </motion.div>

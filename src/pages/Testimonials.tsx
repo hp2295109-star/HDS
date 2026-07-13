@@ -3,6 +3,7 @@ import { Star } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { openSaaSModal } from '../components/SaaSModals';
 
 export default function Testimonials() {
   return (
@@ -61,13 +62,13 @@ export default function Testimonials() {
               </div>
 
               <div className="mt-10 pt-8 border-t border-white/10">
-                <Link 
-                  to="/contact" 
-                  className="inline-flex items-center text-white font-medium hover:text-accent transition-colors group"
+                <button 
+                  onClick={() => openSaaSModal('audit', 'Testimonials CTA', 'Testimonials Page')}
+                  className="inline-flex items-center text-white font-medium hover:text-accent transition-colors group cursor-pointer"
                 >
                   Book Free Website Audit To Get Started
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                </button>
               </div>
             </motion.div>
 

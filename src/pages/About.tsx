@@ -2,6 +2,7 @@ import { motion } from 'motion/react';
 import { ArrowRight, Code, Layout, LineChart, Megaphone, MonitorSmartphone, Search, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PageTransition from '../components/PageTransition';
+import { openSaaSModal } from '../components/SaaSModals';
 
 const expertise = [
   { icon: Layout, title: "Website Design", desc: "Premium, conversion-focused interfaces." },
@@ -133,13 +134,13 @@ export default function About() {
       <section className="py-24 text-center">
         <div className="max-w-3xl mx-auto px-4">
           <h2 className="text-3xl font-bold font-heading mb-6">Ready to transform your business?</h2>
-          <Link 
-            to="/contact" 
-            className="premium-button inline-flex items-center justify-center group"
+          <button 
+            onClick={() => openSaaSModal('audit', 'About Page CTA', 'About Page')}
+            className="premium-button inline-flex items-center justify-center group cursor-pointer"
           >
             Book Free Website Audit
             <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-          </Link>
+          </button>
         </div>
       </section>
     </PageTransition>

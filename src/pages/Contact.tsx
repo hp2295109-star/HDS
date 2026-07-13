@@ -1,8 +1,43 @@
 import { motion } from 'motion/react';
-import { Instagram, Mail, MapPin, MessageCircle, Phone, ArrowRight } from 'lucide-react';
+import { Instagram, Mail, MapPin, MessageCircle, Phone, ArrowRight, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
+import { useSupabaseForm } from '../hooks/useSupabaseForm';
+import { supabaseService } from '../services/supabaseService';
 
 export default function Contact() {
+  const {
+    values,
+    errors,
+    isLoading,
+    isSuccess,
+    isError,
+    statusMessage,
+    handleChange,
+    handleSubmit
+  } = useSupabaseForm({
+    formKey: 'contact-page',
+    initialValues: {
+      name: '',
+      email: '',
+      phone: '',
+      business_name: '',
+      website: '',
+      message: ''
+    },
+    validateFields: ['name', 'email', 'phone', 'business_name', 'message'],
+    submitFn: async (formValues) => {
+      return supabaseService.submitWebsiteAudit({
+        website: formValues.website || 'No website yet',
+        business_name: formValues.business_name,
+        name: formValues.name,
+        phone: formValues.phone,
+        email: formValues.email,
+        notes: formValues.message,
+        status: 'New'
+      });
+    }
+  });
+
   return (
     <PageTransition>
       <section className="pt-24 pb-16 bg-transparent border-b border-white/10">
@@ -97,26 +132,149 @@ export default function Contact() {
               <h3 className="text-2xl font-bold font-heading mb-6">Book Your Free Audit</h3>
               <p className="text-gray-400 mb-8">Fill out the form below or message us directly on WhatsApp to get started with your free website audit.</p>
               
-              <form className="space-y-4 flex-grow flex flex-col" onSubmit={(e) => e.preventDefault()}>
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">Full Name</label>
-                  <input type="text" id="name" className="w-full px-4 py-3 bg-surface border border-white/20 rounded-xl focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors" placeholder="John Doe" />
+              {isSuccess ? (
+                <div className="flex flex-col items-center justify-center text-center py-12 flex-grow">
+                  <div className="w-16 h-16 bg-green-500/10 border border-green-500/20 rounded-full flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(34,197,94,0.15)]">
+                    <CheckCircle2 className="w-10 h-10 text-green-400" />
+                  </div>
+                  <h4 className="text-xl font-bold font-heading text-white mb-2">Audit Requested!</h4>
+                  <p className="text-gray-400 text-sm max-w-sm leading-relaxed">
+                    Thank you! We have received your website audit request. Our team will review it and get back to you within 24 hours.
+                  </p>
                 </div>
-                <div>
-                  <label htmlFor="business" className="block text-sm font-medium text-gray-300 mb-1">Business Name</label>
-                  <input type="text" id="business" className="w-full px-4 py-3 bg-surface border border-white/20 rounded-xl focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors" placeholder="Your Business Ltd." />
-                </div>
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">How can we help?</label>
-                  <textarea id="message" rows={4} className="w-full px-4 py-3 bg-surface border border-white/20 rounded-xl focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors resize-none" placeholder="I need a website for my new salon..."></textarea>
-                </div>
-                <div className="pt-4 mt-auto">
-                  <button type="submit" className="w-full flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-surface rounded-xl hover:bg-white/10 transition-colors group">
-                    Send Message
-                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </button>
-                </div>
-              </form>
+              ) : (
+                <form className="space-y-4 flex-grow flex flex-col" onSubmit={handleSubmit}>
+                  {isError && (
+                    <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start text-red-400 text-xs">
+                      <AlertCircle className="w-5 h-5 mr-3 mt-0.5 shrink-0" />
+                      <span>{statusMessage}</span>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">Full Name</label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={values.name}
+                        onChange={handleChange}
+                        className={`w-full px-4 py-3 bg-surface border rounded-xl text-sm focus:outline-none focus:ring-1 transition-colors ${
+                          errors.name ? 'border-red-500/50 focus:ring-red-500/50' : 'border-white/20 focus:border-accent focus:ring-accent'
+                        }`}
+                        placeholder="John Doe"
+                        disabled={isLoading}
+                      />
+                      {errors.name && <p className="text-xs text-red-400 mt-1">{errors.name}</p>}
+                    </div>
+
+                    <div>
+                      <label htmlFor="business" className="block text-sm font-medium text-gray-300 mb-1">Business Name</label>
+                      <input
+                        type="text"
+                        id="business"
+                        name="business_name"
+                        value={values.business_name}
+                        onChange={handleChange}
+                        className={`w-full px-4 py-3 bg-surface border rounded-xl text-sm focus:outline-none focus:ring-1 transition-colors ${
+                          errors.business_name ? 'border-red-500/50 focus:ring-red-500/50' : 'border-white/20 focus:border-accent focus:ring-accent'
+                        }`}
+                        placeholder="Your Business Ltd."
+                        disabled={isLoading}
+                      />
+                      {errors.business_name && <p className="text-xs text-red-400 mt-1">{errors.business_name}</p>}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={values.email}
+                        onChange={handleChange}
+                        className={`w-full px-4 py-3 bg-surface border rounded-xl text-sm focus:outline-none focus:ring-1 transition-colors ${
+                          errors.email ? 'border-red-500/50 focus:ring-red-500/50' : 'border-white/20 focus:border-accent focus:ring-accent'
+                        }`}
+                        placeholder="you@example.com"
+                        disabled={isLoading}
+                      />
+                      {errors.email && <p className="text-xs text-red-400 mt-1">{errors.email}</p>}
+                    </div>
+
+                    <div>
+                      <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-1">Phone Number</label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={values.phone}
+                        onChange={handleChange}
+                        className={`w-full px-4 py-3 bg-surface border rounded-xl text-sm focus:outline-none focus:ring-1 transition-colors ${
+                          errors.phone ? 'border-red-500/50 focus:ring-red-500/50' : 'border-white/20 focus:border-accent focus:ring-accent'
+                        }`}
+                        placeholder="+91 98765 43210"
+                        disabled={isLoading}
+                      />
+                      {errors.phone && <p className="text-xs text-red-400 mt-1">{errors.phone}</p>}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="website" className="block text-sm font-medium text-gray-300 mb-1">Website URL (Optional)</label>
+                    <input
+                      type="text"
+                      id="website"
+                      name="website"
+                      value={values.website}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 bg-surface border border-white/20 rounded-xl text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors"
+                      placeholder="e.g. yourbusiness.com (if you have one)"
+                      disabled={isLoading}
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">How can we help?</label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={values.message}
+                      onChange={handleChange}
+                      rows={4}
+                      className={`w-full px-4 py-3 bg-surface border rounded-xl text-sm focus:outline-none focus:ring-1 transition-colors resize-none ${
+                        errors.message ? 'border-red-500/50 focus:ring-red-500/50' : 'border-white/20 focus:border-accent focus:ring-accent'
+                      }`}
+                      placeholder="I need a website for my new salon..."
+                      disabled={isLoading}
+                    />
+                    {errors.message && <p className="text-xs text-red-400 mt-1">{errors.message}</p>}
+                  </div>
+
+                  <div className="pt-4 mt-auto">
+                    <button
+                      type="submit"
+                      disabled={isLoading}
+                      className="w-full flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-surface rounded-xl hover:bg-white/10 transition-colors group disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="w-5 h-5 mr-2 animate-spin text-white" />
+                          Submitting...
+                        </>
+                      ) : (
+                        <>
+                          Send Message / Request Audit
+                          <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
 
           </div>

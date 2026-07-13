@@ -2,6 +2,7 @@ import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Check } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
+import { openSaaSModal } from '../components/SaaSModals';
 
 export default function Pricing() {
   return (
@@ -57,13 +58,13 @@ export default function Pricing() {
                 </ul>
               </div>
               
-              <Link 
-                to="/contact" 
-                className="premium-button-outline w-full inline-flex items-center justify-center text-sm group"
+              <button 
+                onClick={() => openSaaSModal('audit', 'Starter Package Audit', 'Pricing Page')}
+                className="premium-button-outline w-full inline-flex items-center justify-center text-sm group cursor-pointer"
               >
                 Book Free Website Audit
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              </button>
             </motion.div>
 
             {/* Growth */}
@@ -97,13 +98,13 @@ export default function Pricing() {
                 </ul>
               </div>
               
-              <Link 
-                to="/contact" 
-                className="premium-button w-full inline-flex items-center justify-center text-sm group"
+              <button 
+                onClick={() => openSaaSModal('audit', 'Growth Package Audit', 'Pricing Page')}
+                className="premium-button w-full inline-flex items-center justify-center text-sm group cursor-pointer"
               >
                 Book Free Website Audit
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              </button>
             </motion.div>
 
           </div>

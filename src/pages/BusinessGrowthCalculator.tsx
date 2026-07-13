@@ -7,6 +7,7 @@ import {
   TrendingUp, Activity, PlayCircle, Target, Award, Search, LayoutTemplate, X
 } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
+import { supabaseService } from '../services/supabaseService';
 
 // --- Types ---
 interface AssessmentData {
@@ -20,6 +21,9 @@ interface AssessmentData {
   usesWhatsApp: string;
   targetCity: string;
   mainGoal: string;
+  name?: string;
+  email?: string;
+  phone?: string;
 }
 
 const initialData: AssessmentData = {
@@ -32,7 +36,10 @@ const initialData: AssessmentData = {
   socialMedia: '',
   usesWhatsApp: '',
   targetCity: '',
-  mainGoal: ''
+  mainGoal: '',
+  name: '',
+  email: '',
+  phone: ''
 };
 
 // --- Components ---
@@ -212,6 +219,26 @@ const CalculatorForm = ({ onSubmit, data, setData }: { onSubmit: () => void, dat
                   <option value="brand">Better Brand Image</option>
                   <option value="automation">Automate Operations</option>
                 </select>
+              </div>
+            </div>
+
+            {/* Contact Details (Required for Lead Generation) */}
+            <div className="pt-6 border-t border-white/10 space-y-4 text-left">
+              <h4 className="text-sm font-bold text-accent uppercase tracking-wider">Your Contact Information</h4>
+              <p className="text-xs text-gray-400">Where should we send your customized digital growth report?</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-300">Full Name</label>
+                  <input required type="text" name="name" value={data.name || ''} onChange={handleChange} placeholder="John Doe" className="w-full bg-surface border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent/50 transition-colors" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-300">Email Address</label>
+                  <input required type="email" name="email" value={data.email || ''} onChange={handleChange} placeholder="you@example.com" className="w-full bg-surface border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent/50 transition-colors" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-300">Phone / WhatsApp</label>
+                  <input required type="tel" name="phone" value={data.phone || ''} onChange={handleChange} placeholder="+91 98765 43210" className="w-full bg-surface border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent/50 transition-colors" />
+                </div>
               </div>
             </div>
 
@@ -552,8 +579,24 @@ export default function BusinessGrowthCalculator() {
     }, 100);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setIsSubmitting(true);
+    
+    try {
+      await supabaseService.submitLead({
+        name: data.name || 'Anonymous Calculator User',
+        email: data.email || 'no-email@provided.com',
+        phone: data.phone || 'no-phone',
+        business_name: `${data.businessType.toUpperCase()} Business`,
+        service: 'Business Growth Audit',
+        budget: data.monthlyRevenue,
+        message: `Goal: ${data.mainGoal}. Website: ${data.hasWebsite}. GMB: ${data.hasGMB}. SEO: ${data.seoStatus}. Ads: ${data.runningAds}. Target Market: ${data.targetCity}.`,
+        status: 'New'
+      });
+    } catch (err) {
+      console.error('Error saving calculator lead:', err);
+    }
+
     // Simulate API call and analysis
     setTimeout(() => {
       setIsSubmitting(false);

@@ -7,6 +7,7 @@ import { AnimatePresence } from 'motion/react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AIAssistant from './components/AIAssistant';
+import SaaSModals from './components/SaaSModals';
 import ScrollToTop from './components/ScrollToTop';
 import MouseGlow from './components/MouseGlow';
 import BackgroundParticles from './components/BackgroundParticles';
@@ -62,6 +63,7 @@ export default function App() {
           </main>
           <Footer />
           <AIAssistant />
+          <SaaSModals />
         </div>
       </BrowserRouter>
     </ThemeProvider>

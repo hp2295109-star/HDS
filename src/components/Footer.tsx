@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
-import { ArrowRight, Instagram, Linkedin, Facebook, MessageCircle, Mail, Phone, MapPin, Clock, Zap, Smartphone, Cpu, Search, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Instagram, Linkedin, Facebook, MessageCircle, Mail, Phone, MapPin, Clock, Zap, Smartphone, Cpu, Search, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
+import { useSupabaseForm } from '../hooks/useSupabaseForm';
+import { supabaseService } from '../services/supabaseService';
+import { openSaaSModal } from './SaaSModals';
 // @ts-ignore
 import Logo from '../assets/HDS_logo_embedded.svg';
 
@@ -21,6 +24,24 @@ export default function Footer() {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
   const currentYear = new Date().getFullYear();
+
+  const {
+    values: newsletterValues,
+    errors: newsletterErrors,
+    isLoading: newsletterIsLoading,
+    isSuccess: newsletterIsSuccess,
+    isError: newsletterIsError,
+    statusMessage: newsletterStatusMessage,
+    handleChange: newsletterHandleChange,
+    handleSubmit: newsletterHandleSubmit
+  } = useSupabaseForm({
+    formKey: 'newsletter-footer',
+    initialValues: { email: '' },
+    validateFields: ['email'],
+    submitFn: async (formValues) => {
+      return supabaseService.submitNewsletter(formValues);
+    }
+  });
 
   return (
     <footer ref={containerRef} className="bg-[#0B0F19] text-white relative overflow-hidden border-t border-accent/20">
@@ -56,13 +77,13 @@ export default function Footer() {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link 
-              to="/contact" 
-              className="premium-button w-full sm:w-auto inline-flex items-center justify-center"
+            <button 
+              onClick={() => openSaaSModal('booking', 'General Consultation', 'Footer CTA')}
+              className="premium-button w-full sm:w-auto inline-flex items-center justify-center cursor-pointer"
             >
               Book Free Consultation
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            </button>
             <a 
               href="https://wa.me/917067363208" 
               target="_blank" 
@@ -88,10 +109,48 @@ export default function Footer() {
             <Link to="/" className="inline-block mb-6">
               <img src={Logo} alt="Harsh Digital Studios" className="h-12 md:h-14 w-auto object-contain" />
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed mb-8 max-w-xs">
+            <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-xs">
               Harsh Digital Studios is an AI-powered creative digital agency helping businesses grow with premium websites, SEO, Meta Ads, branding, and automation.
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="mb-6 max-w-xs">
+              <p className="text-xs font-bold uppercase tracking-wider text-accent mb-2">Subscribe to our newsletter</p>
+              {newsletterIsSuccess ? (
+                <div className="flex items-center text-green-400 text-xs gap-1.5 py-1 bg-green-500/10 border border-green-500/20 px-3 rounded-xl">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>Subscribed successfully!</span>
+                </div>
+              ) : (
+                <form onSubmit={newsletterHandleSubmit} className="flex flex-col gap-2">
+                  <div className="flex gap-1.5">
+                    <input
+                      type="email"
+                      name="email"
+                      value={newsletterValues.email}
+                      onChange={newsletterHandleChange}
+                      placeholder="business-owner@gmail.com"
+                      disabled={newsletterIsLoading}
+                      className={`px-3 py-2 bg-white/5 border rounded-xl text-xs text-white focus:outline-none focus:ring-1 w-full transition-all ${
+                        newsletterErrors.email ? 'border-red-500/50 focus:ring-red-500/50' : 'border-white/10 focus:border-accent/50 focus:ring-accent/30'
+                      }`}
+                    />
+                    <button
+                      type="submit"
+                      disabled={newsletterIsLoading}
+                      className="px-3 py-2 bg-accent text-black font-bold rounded-xl text-xs hover:bg-accent/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[50px]"
+                    >
+                      {newsletterIsLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin text-black" /> : 'Join'}
+                    </button>
+                  </div>
+                  {newsletterErrors.email && (
+                    <p className="text-[10px] text-red-400 font-medium">{newsletterErrors.email}</p>
+                  )}
+                  {newsletterIsError && !newsletterErrors.email && (
+                    <p className="text-[10px] text-red-400 font-medium">{newsletterStatusMessage}</p>
+                  )}
+                </form>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-3 mb-4">
               <SocialIcon Icon={Instagram} href="https://www.instagram.com/harshdigitalstudios" label="Instagram" />
               <SocialIcon Icon={Linkedin} href="#" label="LinkedIn" />
               <SocialIcon Icon={Facebook} href="#" label="Facebook" />
