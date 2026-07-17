@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   ArrowRight, CheckCircle2, Shield, Search, Smartphone, Globe, 
   MessageSquare, Star, ArrowUpRight, Zap, Play, ChevronDown, 
@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import { supabaseService } from '../services/supabaseService';
+import { useLanguage } from '../components/LanguageProvider';
 
 // Interfaces
 interface ServicePillar {
@@ -20,17 +21,23 @@ interface ServicePillar {
   benefits: string[];
 }
 
-interface DemoTemplate {
+interface GalleryProject {
   id: string;
   title: string;
-  niche: string;
+  industry: string;
+  url: string;
   features: string[];
-  link?: string;
-  imageAlt: string;
+  desc: string;
+  colorClass: string;
+  accentColor: string;
+  badgeColor: string;
+  mockupBg: string;
   icon: string;
+  tagline: string;
 }
 
 export default function Home() {
+  const { t, language } = useLanguage();
   // Leads form state
   const [leadName, setLeadName] = useState('');
   const [leadBusiness, setLeadBusiness] = useState('');
@@ -46,7 +53,7 @@ export default function Home() {
 
   // UI Interactive States
   const [activeServiceTab, setActiveServiceTab] = useState<'all' | 'Design' | 'SEO' | 'Marketing' | 'Maintenance'>('all');
-  const [activeDemoId, setActiveDemoId] = useState('salon');
+  const [galleryFilter, setGalleryFilter] = useState('All');
   const [expandedFaqId, setExpandedFaqId] = useState<number | null>(null);
   const [liveStatsIndex, setLiveStatsIndex] = useState(0);
 
@@ -166,54 +173,184 @@ export default function Home() {
     }
   ];
 
-  // 5 Niche Demo Templates
-  const demoTemplates: DemoTemplate[] = [
-    {
-      id: "salon",
-      title: "Unique Salon",
-      niche: "Beauty & Wellness",
-      features: ["Premium visual treatments menu", "Direct WhatsApp booking pre-fills", "Stylists & therapists bios grid", "Fully responsive before/after gallery"],
-      link: "https://uniquesalons.netlify.app/",
-      imageAlt: "Unique Salon Template Mockup",
-      icon: "✨"
-    },
-    {
-      id: "textile",
-      title: "Anmol Textile",
-      niche: "Retail & Fashion",
-      features: ["Premium visual product catalogs", "Instagram feed synchronization", "Direct inquiry for fabric customization", "Elegant high-contrast display layout"],
-      link: "https://anmoltextile.netlify.app/",
-      imageAlt: "Anmol Textile Template Mockup",
-      icon: "🛍️"
-    },
+  // 10 Premium Portfolio Projects
+  const galleryProjects: GalleryProject[] = [
     {
       id: "jewellers",
       title: "Puja Jewellers",
-      niche: "Luxury Retail",
-      features: ["Stunning high-res catalog displays", "Live gold rate indicator widget", "Secure direct WhatsApp inquiry integration", "Bespoke customized design consultation form"],
-      link: "https://pujajewellers.netlify.app/",
-      imageAlt: "Puja Jewellers Template Mockup",
+      industry: "Jewellery",
+      url: "https://pujajewellers.netlify.app/",
+      tagline: "Luxury Digital Showroom & Gold Rates",
+      desc: "A high-end luxury jewelry digital catalog engineered to showcase exquisite collections, featuring direct gold rate feeds and single-click WhatsApp inquiry routing.",
+      features: ["Live gold rate indicator widget", "Exquisite category catalog layouts", "Secure direct WhatsApp inquiry", "Bespoke custom consultation form"],
+      colorClass: "from-amber-600/20 via-yellow-600/5 to-neutral-950",
+      accentColor: "text-amber-400 border-amber-500/20",
+      badgeColor: "bg-amber-400/10 text-amber-300 border-amber-400/20",
+      mockupBg: "bg-gradient-to-tr from-amber-950 via-neutral-900 to-amber-900",
       icon: "💎"
     },
     {
       id: "gym",
-      title: "The Muscle Gym",
-      niche: "Fitness & Health",
-      features: ["Dynamic interactive class schedule", "Trainer profile cards with credentials", "Membership pricing comparison table", "Lead-generating free trial pass form"],
-      link: "https://themuscle.netlify.app/",
-      imageAlt: "The Muscle Gym Template Mockup",
+      title: "The Muscle Factory",
+      industry: "Gym & Fitness",
+      url: "https://themuscle.netlify.app/",
+      tagline: "High-Octane Fitness Hub & Schedules",
+      desc: "A high-energy, dark-themed fitness club interface designed to boost memberships with integrated class timetables, interactive pricing calculators, and free pass registration.",
+      features: ["Interactive class timetable grids", "Trainer credentials & bios", "Tiered membership comparison matrix", "High-conversion trial pass grabber"],
+      colorClass: "from-red-600/20 via-orange-600/5 to-neutral-950",
+      accentColor: "text-red-400 border-red-500/20",
+      badgeColor: "bg-red-400/10 text-red-300 border-red-400/20",
+      mockupBg: "bg-gradient-to-tr from-red-950 via-neutral-900 to-orange-900",
       icon: "🏋️‍♂️"
+    },
+    {
+      id: "salon",
+      title: "Unique Salon",
+      industry: "Salon & Beauty",
+      url: "https://uniquesalons.netlify.app/",
+      tagline: "Modern Grooming & Aesthetic Booking",
+      desc: "A premium hair and beauty lounge platform showcasing stylized menus, specialist portfolios, visual treatment cards, and direct calendar reservation hooks.",
+      features: ["Stylized service menu breakdowns", "Direct calendar reservation hooks", "Before-and-after visual sliders", "Interactive client reviews showcase"],
+      colorClass: "from-pink-600/20 via-purple-600/5 to-neutral-950",
+      accentColor: "text-pink-400 border-pink-500/20",
+      badgeColor: "bg-pink-400/10 text-pink-300 border-pink-400/20",
+      mockupBg: "bg-gradient-to-tr from-pink-950 via-neutral-900 to-purple-900",
+      icon: "✨"
+    },
+    {
+      id: "travels",
+      title: "Sahu Travels",
+      industry: "Travel Agency",
+      url: "https://sahu-travels.pages.dev/",
+      tagline: "Custom Itineraries & Holiday Planners",
+      desc: "An immersive, adventure-driven agency template designed to convert wanderlust into bookings. Features custom holiday packages and instant itinerary guides.",
+      features: ["Dynamic package cost estimator", "Wanderlust-inducing grid cards", "Instant itinerary downloaders", "Lead-capture inquiry triggers"],
+      colorClass: "from-cyan-600/20 via-blue-600/5 to-neutral-950",
+      accentColor: "text-cyan-400 border-cyan-500/20",
+      badgeColor: "bg-cyan-400/10 text-cyan-300 border-cyan-400/20",
+      mockupBg: "bg-gradient-to-tr from-cyan-950 via-neutral-900 to-blue-900",
+      icon: "✈️"
+    },
+    {
+      id: "textile",
+      title: "Anmol Textile",
+      industry: "Textile & Fashion",
+      url: "https://anmoltextile.netlify.app/",
+      tagline: "Premium Fabric Catalog & Inquiry",
+      desc: "A rich textile catalog showcase designed to exhibit fine garments, custom fabrics, and wholesale inventories with direct fabric customization inquires.",
+      features: ["High-res texture detail viewer", "Wholesale supply inquiry routing", "Custom design requests forms", "Visual lookbook grid arrays"],
+      colorClass: "from-indigo-600/20 via-blue-600/5 to-neutral-950",
+      accentColor: "text-indigo-400 border-indigo-500/20",
+      badgeColor: "bg-indigo-400/10 text-indigo-300 border-indigo-400/20",
+      mockupBg: "bg-gradient-to-tr from-indigo-950 via-neutral-900 to-blue-900",
+      icon: "🛍️"
+    },
+    {
+      id: "samglanz",
+      title: "SamGlanz",
+      industry: "Fashion Jewellery",
+      url: "https://samglanz.pages.dev/",
+      tagline: "Chic Accessories Catalogue & Sliders",
+      desc: "A highly-aesthetic, minimal rose-gold digital jewelry catalogue presenting bespoke necklaces, rings, and premium collections for modern buyers.",
+      features: ["Minimalist collection sliders", "Instagram lookbook curation", "Elegant micro-interaction cards", "One-click WhatsApp inquiry pathways"],
+      colorClass: "from-rose-600/20 via-orange-600/5 to-neutral-950",
+      accentColor: "text-rose-400 border-rose-500/20",
+      badgeColor: "bg-rose-400/10 text-rose-300 border-rose-400/20",
+      mockupBg: "bg-gradient-to-tr from-rose-950 via-neutral-900 to-neutral-950",
+      icon: "💍"
+    },
+    {
+      id: "dental",
+      title: "Anand Dental Clinic",
+      industry: "Dental Clinic",
+      url: "https://anand-dental-clinic.pages.dev/",
+      tagline: "Patient Care, Trust & Appointment Scheduler",
+      desc: "A patient-centric clinical hub that streamlines appointment bookings, showcases dental treatments, and establishes medical trust through case studies.",
+      features: ["Instant calendar appointment scheduler", "Interactive oral care blogs", "Stethoscope & treatment menu tables", "Patient-before-after success logs"],
+      colorClass: "from-emerald-600/20 via-teal-600/5 to-neutral-950",
+      accentColor: "text-emerald-400 border-emerald-500/20",
+      badgeColor: "bg-emerald-400/10 text-emerald-300 border-emerald-400/20",
+      mockupBg: "bg-gradient-to-tr from-emerald-950 via-neutral-900 to-teal-900",
+      icon: "🦷"
+    },
+    {
+      id: "portfolio",
+      title: "Soniya Naik",
+      industry: "Personal Portfolio",
+      url: "https://soniya-naik.pages.dev/",
+      tagline: "Aesthetic Developer Resume & GitHub Hub",
+      desc: "A creative, high-contrast digital resume highlighting professional achievements, skill-matrices, interactive code repositories, and work portfolios.",
+      features: ["Staggered timeline history blocks", "Skill competency visualizations", "Direct contact form funneling", "GitHub repositories live links"],
+      colorClass: "from-violet-600/20 via-fuchsia-600/5 to-neutral-950",
+      accentColor: "text-violet-400 border-violet-500/20",
+      badgeColor: "bg-violet-400/10 text-violet-300 border-violet-400/20",
+      mockupBg: "bg-gradient-to-tr from-violet-950 via-neutral-900 to-fuchsia-950",
+      icon: "👩‍💻"
+    },
+    {
+      id: "femina",
+      title: "FEMINA RGH",
+      industry: "Women's Fashion",
+      url: "https://femina.pages.dev/",
+      tagline: "Curated Apparel Lookbook",
+      desc: "An ultra-chic fashion house lookbook showcasing modern trends, curated summer/winter collections, and visual product boards for female shoppers.",
+      features: ["Curated seasonal fashion grids", "Visual trend hot-spots panels", "Interactive styling cards", "WhatsApp direct buying options"],
+      colorClass: "from-fuchsia-600/20 via-pink-600/5 to-neutral-950",
+      accentColor: "text-fuchsia-400 border-fuchsia-500/20",
+      badgeColor: "bg-fuchsia-400/10 text-fuchsia-300 border-fuchsia-400/20",
+      mockupBg: "bg-gradient-to-tr from-fuchsia-950 via-neutral-900 to-pink-950",
+      icon: "👗"
     },
     {
       id: "aesthetics",
       title: "Rama Aesthetics",
-      niche: "Skin Clinic & Wellness",
-      features: ["Detailed treatment lists & pricing grids", "Interactive doctor slot booking requests", "High-retention post-care instruction FAQs", "Exquisite pastel and warm cream color palette"],
-      link: "https://ramaaesthetics.netlify.app/",
-      imageAlt: "Rama Aesthetics Skin Clinic Mockup",
+      industry: "Aesthetic Clinic",
+      url: "https://rama-asthetics.pages.dev/",
+      tagline: "Cosmetic Dermatology Clinic Platform",
+      desc: "An elite cosmetic dermatology platform focusing on advanced treatments, practitioner expertise, customer safety guidelines, and direct skin consult routing.",
+      features: ["Treatment detail & pricing grids", "Interactive slot booking triggers", "Exquisite skin-care instructions FAQs", "Elegant warm sand visual aesthetics"],
+      colorClass: "from-orange-600/20 via-yellow-600/5 to-neutral-950",
+      accentColor: "text-orange-400 border-orange-500/20",
+      badgeColor: "bg-orange-400/10 text-orange-300 border-orange-400/20",
+      mockupBg: "bg-gradient-to-tr from-orange-950 via-neutral-900 to-yellow-900",
       icon: "🩺"
     }
   ];
+
+  // Project Image Mapping for Website Design Gallery (Unsplash high-res visual mockups matching each industry)
+  const projectImages: Record<string, string> = {
+    jewellers: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800&q=80",
+    gym: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+    salon: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80",
+    travels: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80",
+    textile: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80",
+    samglanz: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80",
+    dental: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800&q=80",
+    portfolio: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80",
+    femina: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=80",
+    aesthetics: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80"
+  };
+
+  // Pre-fill fields and smooth scroll to contact form
+  const handleRequestSimilar = (projectName: string, industry: string) => {
+    setLeadMessage(`I want a website similar to the "${projectName}" (${industry}) demo. Please share details on timeline and pricing.`);
+    setLeadBusiness(projectName);
+    
+    // Auto-map service dropdown
+    let matchedService = "Business Website Design";
+    const lowerIndustry = industry.toLowerCase();
+    if (lowerIndustry.includes("gym") || lowerIndustry.includes("fitness") || lowerIndustry.includes("portfolio")) {
+      matchedService = "Landing Page Design";
+    } else if (lowerIndustry.includes("redesign")) {
+      matchedService = "Website Redesign";
+    }
+    setLeadService(matchedService);
+
+    const contactSection = document.getElementById('contact-form');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   // FAQs - 20+ High impact covering all services and details
   const faqs = [
@@ -277,8 +414,6 @@ export default function Home() {
     }
   };
 
-  const selectedDemo = demoTemplates.find(d => d.id === activeDemoId) || demoTemplates[0];
-
   return (
     <PageTransition>
       {/* 1. HERO SECTION WITH TARGET PROOF & LIVE FEED */}
@@ -293,33 +428,33 @@ export default function Home() {
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
               <div className="inline-flex items-center space-x-2 bg-white/[0.04] border border-white/5 px-3 py-1.5 rounded-full text-xs text-gray-400 font-mono">
                 <Award className="w-4 h-4 text-accent" />
-                <span>MBA Marketer & Professional Web Designer</span>
+                <span>{t('hero.badge', 'MBA Marketer & Professional Web Designer')}</span>
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold font-heading text-white tracking-tight leading-[1.1]">
-                Stop Posting.<br />
+                {t('hero.title.line1', 'Stop Posting.')}<br />
                 <span className="bg-gradient-to-r from-[#00F0FF] to-secondary bg-clip-text text-transparent">
-                  Start Building Your Local Brand.
+                  {t('hero.title.line2', 'Start Building Your Local Brand.')}
                 </span>
               </h1>
 
               <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-sans">
-                I help business owners in <span className="text-white font-semibold">Raigarh, Tamnar, and Kharsia</span> double their customer bookings with premium website designs, local Google Maps ranking, and high-impact search strategies. Zero agency bloat. Pure results.
+                {t('hero.subtitle', 'I help business owners in Raigarh, Tamnar, and Kharsia double their customer bookings with premium website designs, local Google Maps ranking, and high-impact search strategies. Zero agency bloat. Pure results.')}
               </p>
 
               {/* Trust highlights */}
               <div className="grid grid-cols-3 gap-4 pt-4 max-w-md mx-auto lg:mx-0">
                 <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-3 text-center">
                   <div className="text-accent text-xl font-bold font-mono">100%</div>
-                  <div className="text-[10px] text-gray-500 uppercase font-bold tracking-wider mt-0.5">Speed Index</div>
+                  <div className="text-[10px] text-gray-500 uppercase font-bold tracking-wider mt-0.5">{language === 'hi' ? 'स्पीड इंडेक्स' : 'Speed Index'}</div>
                 </div>
                 <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-3 text-center">
                   <div className="text-secondary text-xl font-bold font-mono">2.4x</div>
-                  <div className="text-[10px] text-gray-500 uppercase font-bold tracking-wider mt-0.5">Lead Multiplier</div>
+                  <div className="text-[10px] text-gray-500 uppercase font-bold tracking-wider mt-0.5">{language === 'hi' ? 'लीड मल्टीप्लायर' : 'Lead Multiplier'}</div>
                 </div>
                 <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-3 text-center">
                   <div className="text-[#0080FF] text-xl font-bold font-mono">1-on-1</div>
-                  <div className="text-[10px] text-gray-500 uppercase font-bold tracking-wider mt-0.5">Direct Accountability</div>
+                  <div className="text-[10px] text-gray-500 uppercase font-bold tracking-wider mt-0.5">{language === 'hi' ? 'सीधी जवाबदेही' : 'Direct Accountability'}</div>
                 </div>
               </div>
 
@@ -329,13 +464,13 @@ export default function Home() {
                   href="#contact-form" 
                   className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-accent to-secondary text-black font-extrabold text-xs uppercase tracking-wider rounded-xl hover:opacity-90 transition-all text-center cursor-pointer shadow-lg shadow-accent/10"
                 >
-                  Book Free Strategy Call
+                  {t('hero.cta.bookCall', 'Book Free Strategy Call')}
                 </a>
                 <Link 
                   to="/portfolio" 
                   className="w-full sm:w-auto px-8 py-4 bg-white/5 border border-white/10 hover:border-accent hover:bg-accent/5 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all text-center"
                 >
-                  Explore Demo Designs
+                  {t('hero.cta.exploreDemos', 'Explore Demo Designs')}
                 </Link>
               </div>
             </div>
@@ -494,136 +629,294 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. DEMO DESIGNS INTERACTIVE SHOWCASE */}
+      {/* 3. WEBSITE DESIGN GALLERY */}
       <section className="py-24 bg-transparent border-t border-white/5 relative" id="demo-showcase">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center mb-16">
-            <span className="inline-flex items-center space-x-1.5 bg-[#00F0FF]/10 text-[#00F0FF] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
-              <span>Niche Previews</span>
+            <span className="inline-flex items-center space-x-1.5 bg-accent/10 text-accent px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4 border border-accent/20">
+              <Sparkles className="w-3.5 h-3.5 text-accent" />
+              <span>{language === 'hi' ? 'वेबसाइट डिज़ाइन गैलरी' : 'Website Design Gallery'}</span>
             </span>
             <h2 className="text-3xl md:text-5xl font-bold font-heading text-white tracking-tight">
-              Pre-Built Premium Demo Designs
+              {language === 'hi' ? 'वेबसाइट डिज़ाइन गैलरी' : 'Website Design Gallery'}
             </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto mt-3 text-base">
-              Explore dynamic, high-converting layouts fully customized for local niches. Instantly copy a template, or request a custom build.
+            <p className="text-gray-400 max-w-2xl mx-auto mt-3 text-sm md:text-base leading-relaxed">
+              Explore real website demos I've designed for different industries. Click any project to experience the live website.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Left selector menu (Col-4) */}
-            <div className="lg:col-span-4 space-y-3">
-              {demoTemplates.map(demo => (
-                <button
-                  key={demo.id}
-                  onClick={() => setActiveDemoId(demo.id)}
-                  className={`w-full text-left p-5 rounded-2xl border transition-all flex items-center space-x-4 cursor-pointer ${
-                    activeDemoId === demo.id 
-                      ? 'bg-accent/10 border-accent/40 shadow-sm' 
-                      : 'bg-white/[0.01] border-white/5 hover:bg-white/[0.02] hover:border-white/10'
-                  }`}
+          {/* Industry Filter Tabs */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
+            {["All", "Luxury & Jewellery", "Beauty & Fitness", "Medical & Clinical", "Fashion & Textile", "Creative Portfolio"].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setGalleryFilter(tab)}
+                className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full border transition-all cursor-pointer ${
+                  galleryFilter === tab
+                    ? "bg-accent text-black border-accent"
+                    : "bg-white/[0.02] text-gray-400 border-white/5 hover:bg-white/[0.05] hover:text-white"
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          {/* Featured Project at the Top */}
+          {(() => {
+            if (galleryFilter !== "All" && galleryFilter !== "Luxury & Jewellery") return null;
+            const featured = galleryProjects[0];
+            return (
+              <div className="mb-16">
+                <div className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-ping"></span>
+                  <span>Featured Masterpiece</span>
+                </div>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="bg-[#09090D] border border-white/10 rounded-[32px] overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-0 shadow-2xl hover:border-accent/30 hover:shadow-[0_0_50px_rgba(0,240,255,0.06)] transition-all duration-500 group"
                 >
-                  <span className="text-2xl shrink-0">{demo.icon}</span>
-                  <div>
-                    <h3 className={`text-sm font-bold ${activeDemoId === demo.id ? 'text-accent' : 'text-white'}`}>
-                      {demo.title}
-                    </h3>
-                    <p className="text-[11px] text-gray-500 font-mono mt-0.5">{demo.niche}</p>
+                  {/* Left: Beautiful Mockup with actual image */}
+                  <div className="lg:col-span-7 relative min-h-[320px] sm:min-h-[400px] overflow-hidden flex flex-col justify-between">
+                    <img
+                      src={projectImages[featured.id]}
+                      alt={`${featured.title} Mockup`}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                      referrerPolicy="no-referrer"
+                    />
+                    
+                    {/* Dark gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60 flex flex-col justify-between p-6 md:p-8" />
+                    
+                    {/* Browser Mockup Bar on top of image */}
+                    <div className="relative z-10 flex items-center justify-between border-b border-white/10 pb-4">
+                      <div className="flex items-center space-x-2">
+                        <span className="w-3 h-3 rounded-full bg-red-500/50 block"></span>
+                        <span className="w-3 h-3 rounded-full bg-yellow-500/50 block"></span>
+                        <span className="w-3 h-3 rounded-full bg-green-500/50 block"></span>
+                      </div>
+                      <div className="text-[10px] bg-black/60 text-amber-300 font-mono px-4 py-1.5 rounded-full max-w-[240px] sm:max-w-[320px] truncate border border-amber-500/20 shadow-inner">
+                        {featured.url.replace("https://", "")}
+                      </div>
+                      <div className="px-2.5 py-1 bg-emerald-500/15 border border-emerald-500/30 rounded-lg text-[10px] text-emerald-400 font-mono font-bold uppercase tracking-wider">
+                        100/100 SPEED
+                      </div>
+                    </div>
+
+                    {/* Mock Landing Page Body */}
+                    <div className="relative z-10 flex-grow flex flex-col justify-center py-8">
+                      <div className="max-w-md bg-black/40 backdrop-blur-md p-6 rounded-2xl border border-white/5 shadow-2xl">
+                        <span className="px-3 py-1 bg-amber-400/10 border border-amber-400/20 text-amber-300 font-mono text-[10px] uppercase tracking-widest rounded-full font-bold">
+                          💎 {featured.tagline.toUpperCase()}
+                        </span>
+                        <h3 className="text-2xl sm:text-3xl font-extrabold font-heading text-white mt-4 tracking-tight leading-tight">
+                          Elevating Luxury Retail & Jewellery brands.
+                        </h3>
+                        <p className="text-gray-300 text-xs sm:text-sm mt-3 leading-relaxed">
+                          A curated digital showroom featuring high-res collection catalogs, real-time gold rates, and automatic WhatsApp inquiries.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Bottom mock ribbon */}
+                    <div className="relative z-10 pt-4 border-t border-white/10 flex flex-wrap justify-between items-center gap-3 text-[10px] text-gray-400 font-mono">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>LIVE GOLD RATE: ₹7,250/g (24K)</span>
+                      </div>
+                      <span>SECURE WHATSAPP DESK READY</span>
+                    </div>
                   </div>
-                </button>
-              ))}
+
+                  {/* Right: Info Area */}
+                  <div className="lg:col-span-5 p-8 sm:p-10 flex flex-col justify-between">
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2 mb-4">
+                        <span className="px-2.5 py-1 bg-accent/10 border border-accent/20 text-accent font-mono text-[9px] uppercase tracking-widest rounded-full">
+                          Featured Demo
+                        </span>
+                        <span className="px-2.5 py-1 bg-white/5 border border-white/10 text-gray-400 font-mono text-[9px] uppercase tracking-widest rounded-full">
+                          Portfolio Project
+                        </span>
+                      </div>
+
+                      <h3 className="text-2xl sm:text-3xl font-extrabold text-white font-heading tracking-tight mb-2">
+                        {featured.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-gray-400 font-mono mb-4 text-accent">
+                        Industry: {featured.industry}
+                      </p>
+                      
+                      <p className="text-gray-300 text-xs sm:text-sm leading-relaxed mb-6">
+                        {featured.desc}
+                      </p>
+
+                      <div className="space-y-3 pt-4 border-t border-white/5 mb-8">
+                        <h4 className="text-[10px] uppercase font-bold text-gray-400 tracking-widest mb-1">Key Conversion Highlights:</h4>
+                        {featured.features.map((feat, idx) => (
+                          <div key={idx} className="flex items-start text-xs text-gray-300">
+                            <CheckCircle2 className="w-4 h-4 text-accent mr-2 shrink-0 mt-0.5" />
+                            <span>{feat}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <a
+                        href={featured.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 py-4 bg-accent hover:bg-accent/90 text-black text-center text-xs font-extrabold uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2"
+                      >
+                        <span>View Live Demo</span>
+                        <ArrowUpRight className="w-4 h-4" />
+                      </a>
+                      <button
+                        onClick={() => handleRequestSimilar(featured.title, featured.industry)}
+                        className="flex-1 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center cursor-pointer"
+                      >
+                        Request Similar Website
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            );
+          })()}
+
+          {/* Grid of Projects */}
+          <div>
+            <div className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-8 flex items-center gap-2">
+              <span>{galleryFilter === "All" ? "All Website Demos" : `${galleryFilter} Projects`}</span>
+              <span className="h-px bg-white/10 flex-grow"></span>
             </div>
 
-            {/* Right mockup window & feature checklist (Col-8) */}
-            <div className="lg:col-span-8 bg-neutral-950 border border-white/10 rounded-[32px] p-6 md:p-8 relative overflow-hidden shadow-2xl">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-2xl" />
-              
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-white/5 mb-6">
-                <div>
-                  <span className="text-[10px] font-mono text-accent uppercase tracking-widest">{selectedDemo.niche}</span>
-                  <h3 className="text-xl md:text-2xl font-bold text-white mt-1">{selectedDemo.title}</h3>
-                </div>
-
-                {selectedDemo.link && (
-                  <a
-                    href={selectedDemo.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-white/5 border border-white/10 text-xs text-white font-bold hover:bg-white/10 rounded-xl transition-all"
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {galleryProjects
+                .filter(project => {
+                  if (galleryFilter === "All") {
+                    return project.id !== "jewellers";
+                  }
+                  const ind = project.industry.toLowerCase();
+                  if (galleryFilter === "Luxury & Jewellery") {
+                    return ind.includes("jewel") || ind.includes("luxury");
+                  }
+                  if (galleryFilter === "Beauty & Fitness") {
+                    return ind.includes("gym") || ind.includes("fitness") || ind.includes("salon") || ind.includes("beauty");
+                  }
+                  if (galleryFilter === "Medical & Clinical") {
+                    return ind.includes("clinic") || ind.includes("dental") || ind.includes("aesthetic");
+                  }
+                  if (galleryFilter === "Fashion & Textile") {
+                    return ind.includes("fashion") || ind.includes("textile") || ind.includes("apparel");
+                  }
+                  if (galleryFilter === "Creative Portfolio") {
+                    return ind.includes("portfolio") || ind.includes("personal") || ind.includes("travel");
+                  }
+                  return true;
+                })
+                .map((project, index) => (
+                  <motion.div
+                    key={project.id}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: (index % 3) * 0.05 }}
+                    whileHover={{ y: -8, transition: { duration: 0.2, ease: "easeOut" } }}
+                    className="bg-[#09090D] border border-white/5 rounded-3xl overflow-hidden flex flex-col justify-between shadow-lg hover:border-accent/30 hover:shadow-[0_15px_30px_rgba(0,240,255,0.03)] transition-all duration-300 group"
                   >
-                    <span>Live Demo</span>
-                    <ArrowUpRight className="w-4 h-4 text-accent" />
-                  </a>
-                )}
-              </div>
+                    {/* Card Thumbnail Area */}
+                    <div className="relative overflow-hidden aspect-[16:10] w-full border-b border-white/5">
+                      <img
+                        src={projectImages[project.id]}
+                        alt={`${project.title} Mockup`}
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                        referrerPolicy="no-referrer"
+                      />
+                      
+                      {/* Browser Mockup Header overlaying the image */}
+                      <div className="absolute top-0 inset-x-0 bg-black/60 backdrop-blur-md border-b border-white/10 px-4 py-2.5 flex items-center justify-between">
+                        <div className="flex items-center space-x-1.5 shrink-0">
+                          <span className="w-2 h-2 rounded-full bg-red-500/50 block"></span>
+                          <span className="w-2 h-2 rounded-full bg-yellow-500/50 block"></span>
+                          <span className="w-2 h-2 rounded-full bg-green-500/50 block"></span>
+                        </div>
+                        <div className="text-[9px] text-gray-300 font-mono px-3 py-0.5 rounded-full max-w-[140px] truncate bg-black/40 border border-white/5">
+                          {project.url.replace("https://", "")}
+                        </div>
+                        <span className="text-[8px] text-emerald-400 font-mono bg-emerald-500/20 px-1.5 py-0.5 rounded font-semibold border border-emerald-500/30">100/100</span>
+                      </div>
 
-              {/* Blueprint details */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                <div>
-                  <h4 className="text-xs uppercase font-bold text-gray-400 tracking-wider mb-3">Key Conversion Modules:</h4>
-                  <ul className="space-y-3">
-                    {selectedDemo.features.map((feat, fIdx) => (
-                      <li key={fIdx} className="text-xs text-gray-300 flex items-start">
-                        <CheckCircle2 className="w-4 h-4 text-[#00F0FF] mr-2 shrink-0 mt-0.5" />
-                        <span>{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
+                      {/* Gradient Overlay for Title/Icon over image */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-4">
+                        <div className="flex justify-between items-end">
+                          <div>
+                            <span className="inline-flex items-center text-[8px] font-extrabold uppercase tracking-widest text-accent bg-accent/10 border border-accent/25 px-2.5 py-0.5 rounded-full mb-1">
+                              {project.industry}
+                            </span>
+                            <h4 className="text-base font-extrabold text-white font-heading tracking-tight leading-tight group-hover:text-accent transition-colors">
+                              {project.title}
+                            </h4>
+                          </div>
+                          <span className="text-2xl filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                            {project.icon}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
 
-                  <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3">
-                    <a
-                      href="#contact-form"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setLeadMessage(`I want a website similar to the ${selectedDemo.title} demo.`);
-                        setLeadService(selectedDemo.niche === "Beauty & Wellness" ? "Business Website Design" : "Landing Page Design");
-                        const contactForm = document.getElementById('contact-form');
-                        if (contactForm) {
-                          contactForm.scrollIntoView({ behavior: 'smooth' });
-                        }
-                      }}
-                      className="px-5 py-3 bg-accent text-black font-extrabold text-xs rounded-xl hover:opacity-90 transition-all inline-flex items-center justify-center text-center"
-                    >
-                      Request Similar Website
-                    </a>
+                    {/* Card Content Area */}
+                    <div className="p-6 flex-grow flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="text-[10px] font-mono text-gray-500">Tagline: {project.tagline}</span>
+                          <span className="px-2 py-0.5 bg-white/5 border border-white/10 text-[9px] font-mono text-gray-400 rounded-full shrink-0">
+                            Portfolio Project
+                          </span>
+                        </div>
+                        
+                        <p className="text-xs text-gray-300 leading-relaxed mb-4 line-clamp-3">
+                          {project.desc}
+                        </p>
 
-                    <a
-                      href={`https://wa.me/917067363208?text=Hello%20Harsh%20Patel%2C%20I%20want%20a%20website%20similar%20to%20the%20${encodeURIComponent(selectedDemo.title)}%20demo%2E`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-5 py-3 bg-[#25D366] text-white font-bold text-xs rounded-xl hover:bg-opacity-90 transition-all inline-flex items-center justify-center gap-2 text-center"
-                    >
-                      <MessageSquare className="w-4 h-4 fill-current" />
-                      <span>WhatsApp CTA</span>
-                    </a>
-                  </div>
-                </div>
+                        <div className="flex flex-wrap gap-1.5 mb-6">
+                          {project.features.slice(0, 2).map((feat, fIdx) => (
+                            <span key={fIdx} className="text-[9px] text-gray-400 bg-white/5 px-2.5 py-1 rounded-md border border-white/5">
+                              {feat}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
 
-                {/* Simulated Web View Mockup */}
-                <div className="bg-[#0B0F19] border border-white/10 rounded-2xl p-4 shadow-inner relative group h-56 flex flex-col justify-between overflow-hidden">
-                  <div className="flex items-center space-x-1.5 pb-2 border-b border-white/5 mb-3">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/50 block"></span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/50 block"></span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-green-500/50 block"></span>
-                    <span className="text-[10px] text-gray-500 font-mono pl-2 truncate">https://hds-demo-preview.local/{selectedDemo.id}</span>
-                  </div>
-
-                  <div className="flex-grow flex flex-col justify-center items-center text-center p-3">
-                    <span className="text-4xl mb-2">{selectedDemo.icon}</span>
-                    <p className="text-xs font-bold text-white">{selectedDemo.title}</p>
-                    <p className="text-[10px] text-gray-400 mt-1">Pre-styled interactive local database ready</p>
-                  </div>
-
-                  <div className="text-[9px] text-gray-500 font-mono text-center pt-2 border-t border-white/5">
-                    CORE WEB VITALS: SPEED INDEX <span className="text-emerald-400">100/100</span>
-                  </div>
-                </div>
-              </div>
-
+                      <div className="space-y-2.5">
+                        <a
+                          href={project.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-center text-[11px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5"
+                        >
+                          <span>View Live Demo</span>
+                          <ArrowUpRight className="w-3.5 h-3.5 text-accent" />
+                        </a>
+                        <button
+                          onClick={() => handleRequestSimilar(project.title, project.industry)}
+                          className="w-full py-3 bg-accent/10 hover:bg-accent hover:text-black border border-accent/20 hover:border-accent text-accent text-center text-[11px] font-extrabold uppercase tracking-wider rounded-xl transition-all cursor-pointer"
+                        >
+                          Request Similar Website
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
             </div>
           </div>
 
-          {/* CTA Link to Dedicated Demo Designs page */}
+          {/* Direct WhatsApp Prompt */}
           <div className="mt-16 text-center">
             <Link
               to="/portfolio"
@@ -802,11 +1095,15 @@ export default function Home() {
             <div className="max-w-3xl mx-auto text-center mb-10">
               <span className="inline-flex items-center space-x-1.5 bg-accent/15 text-accent px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Free Digital Growth Audit</span>
+                <span>{language === 'hi' ? 'फ्री डिजिटल ग्रोथ ऑडिट' : 'Free Digital Growth Audit'}</span>
               </span>
-              <h2 className="text-2xl md:text-4xl font-bold font-heading text-white">Let's Fuel Your Local Business</h2>
+              <h2 className="text-2xl md:text-4xl font-bold font-heading text-white">
+                {language === 'hi' ? 'आइए आपके स्थानीय व्यवसाय को बढ़ाएं' : "Let's Fuel Your Local Business"}
+              </h2>
               <p className="text-gray-400 text-xs md:text-sm mt-2 max-w-xl mx-auto leading-relaxed">
-                Fill out our secure CRM form below. Harsh Patel will manually analyze your online presence and call/WhatsApp you with a tailored 90-day expansion blueprint.
+                {language === 'hi'
+                  ? 'नीचे दिए गए सुरक्षित फॉर्म को भरें। हर्ष पटेल व्यक्तिगत रूप से आपकी ऑनलाइन उपस्थिति का विश्लेषण करेंगे और आपको 90 दिनों का विस्तार ब्लूप्रिंट व्हाट्सएप/कॉल पर साझा करेंगे।'
+                  : 'Fill out our secure CRM form below. Harsh Patel will manually analyze your online presence and call/WhatsApp you with a tailored 90-day expansion blueprint.'}
               </p>
             </div>
 
@@ -815,8 +1112,14 @@ export default function Home() {
                 <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/25 rounded-full flex items-center justify-center text-emerald-400 mx-auto mb-4">
                   <CheckCircle2 className="w-8 h-8 animate-bounce" />
                 </div>
-                <h3 className="text-lg font-bold text-white">Lead Securely Routed!</h3>
-                <p className="text-xs text-gray-400 mt-2">Thank you! Your requirements have been synchronized with the HDS CRM. Harsh Patel will contact you via WhatsApp within 2 hours.</p>
+                <h3 className="text-lg font-bold text-white">
+                  {language === 'hi' ? 'लीड सुरक्षित रूप से सिंक हुई!' : 'Lead Securely Routed!'}
+                </h3>
+                <p className="text-xs text-gray-400 mt-2">
+                  {language === 'hi'
+                    ? 'धन्यवाद! आपकी आवश्यकताएं HDS CRM के साथ सिंक हो गई हैं। हर्ष पटेल 2 घंटे के भीतर व्हाट्सएप के माध्यम से आपसे संपर्क करेंगे।'
+                    : 'Thank you! Your requirements have been synchronized with the HDS CRM. Harsh Patel will contact you via WhatsApp within 2 hours.'}
+                </p>
                 
                 <a
                   href={`https://wa.me/917067363208?text=Hello%20Harsh%20Patel%2C%20I%20just%20submitted%20the%20CRM%20form%20for%20my%20business%2E%20Let's%20discuss%20my%20digital%20growth%21`}
@@ -825,7 +1128,7 @@ export default function Home() {
                   className="mt-6 w-full inline-flex items-center justify-center gap-2 py-3 bg-[#25D366] hover:bg-opacity-90 text-white font-bold text-xs rounded-xl"
                 >
                   <MessageSquare className="w-4 h-4 fill-current" />
-                  <span>Speed up on WhatsApp</span>
+                  <span>{language === 'hi' ? 'व्हाट्सएप पर तुरंत चैट करें' : 'Speed up on WhatsApp'}</span>
                 </a>
               </div>
             ) : (
@@ -839,24 +1142,28 @@ export default function Home() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">Full Name / Owner</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                      {language === 'hi' ? 'पूरा नाम / मालिक' : 'Full Name / Owner'}
+                    </label>
                     <input
                       type="text"
                       required
                       value={leadName}
                       onChange={(e) => setLeadName(e.target.value)}
-                      placeholder="e.g. Harsh Patel"
+                      placeholder={language === 'hi' ? 'जैसे: हर्ष पटेल' : 'e.g. Harsh Patel'}
                       className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-accent"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">Business Name</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                      {language === 'hi' ? 'व्यवसाय का नाम' : 'Business Name'}
+                    </label>
                     <input
                       type="text"
                       value={leadBusiness}
                       onChange={(e) => setLeadBusiness(e.target.value)}
-                      placeholder="e.g. Apex Gym & Fitness"
+                      placeholder={language === 'hi' ? 'जैसे: अपैक्स जिम एंड फिटनेस' : 'e.g. Apex Gym & Fitness'}
                       className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-accent"
                     />
                   </div>
@@ -864,7 +1171,9 @@ export default function Home() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">Phone Number (WhatsApp)</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                      {language === 'hi' ? 'फ़ोन नंबर (व्हाट्सएप)' : 'Phone Number (WhatsApp)'}
+                    </label>
                     <input
                       type="tel"
                       required
@@ -876,7 +1185,9 @@ export default function Home() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">Email Address</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                      {language === 'hi' ? 'ईमेल पता' : 'Email Address'}
+                    </label>
                     <input
                       type="email"
                       value={leadEmail}
@@ -889,7 +1200,9 @@ export default function Home() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">Required Service</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                      {language === 'hi' ? 'आवश्यक सेवा' : 'Required Service'}
+                    </label>
                     <select
                       value={leadService}
                       onChange={(e) => setLeadService(e.target.value)}
@@ -908,7 +1221,9 @@ export default function Home() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">Estimated Budget</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                      {language === 'hi' ? 'अनुमानित बजट' : 'Estimated Budget'}
+                    </label>
                     <select
                       value={leadBudget}
                       onChange={(e) => setLeadBudget(e.target.value)}
@@ -922,7 +1237,9 @@ export default function Home() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">Target Market / City</label>
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                      {language === 'hi' ? 'लक्ष्य शहर / क्षेत्र' : 'Target Market / City'}
+                    </label>
                     <select
                       value={leadCity}
                       onChange={(e) => setLeadCity(e.target.value)}
@@ -937,12 +1254,14 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">Specific Requirements / Target Competitor</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                    {language === 'hi' ? 'अतिरिक्त आवश्यकताएं / संदेश' : 'Specific Requirements / Target Competitor'}
+                  </label>
                   <textarea
                     rows={4}
                     value={leadMessage}
                     onChange={(e) => setLeadMessage(e.target.value)}
-                    placeholder="Briefly tell us what you do or link your top competitor's website..."
+                    placeholder={language === 'hi' ? 'संक्षेप में हमें बताएं कि आपका व्यवसाय क्या है या शीर्ष प्रतिद्वंद्वी की वेबसाइट का लिंक दें...' : "Briefly tell us what you do or link your top competitor's website..."}
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-accent resize-none"
                   ></textarea>
                 </div>
@@ -950,7 +1269,9 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-white/5">
                   <div className="flex items-center space-x-2 text-[10px] text-gray-500">
                     <Shield className="w-4 h-4 text-accent" />
-                    <span>Secure encryption enabled. Your info is never sold.</span>
+                    <span>
+                      {language === 'hi' ? 'सुरक्षित एन्क्रिप्शन सक्षम है। आपकी जानकारी गोपनीय रहेगी।' : 'Secure encryption enabled. Your info is never sold.'}
+                    </span>
                   </div>
 
                   <button
@@ -961,11 +1282,11 @@ export default function Home() {
                     {isSubmitting ? (
                       <>
                         <RefreshCw className="w-4 h-4 animate-spin" />
-                        <span>Synchronizing Lead...</span>
+                        <span>{language === 'hi' ? 'सिंक किया जा रहा है...' : 'Synchronizing Lead...'}</span>
                       </>
                     ) : (
                       <>
-                        <span>Submit Growth Inquiry</span>
+                        <span>{language === 'hi' ? 'पूछताछ भेजें' : 'Submit Growth Inquiry'}</span>
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}

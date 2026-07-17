@@ -12,6 +12,7 @@ import ScrollToTop from './components/ScrollToTop';
 import MouseGlow from './components/MouseGlow';
 import BackgroundParticles from './components/BackgroundParticles';
 import { ThemeProvider } from './components/ThemeProvider';
+import { LanguageProvider } from './components/LanguageProvider';
 import SEOManager from './components/SEOManager';
 
 import Home from './pages/Home';
@@ -54,21 +55,23 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter>
-        <SEOManager />
-        <ScrollToTop />
-        <MouseGlow />
-        <BackgroundParticles />
-        <div className="flex flex-col min-h-screen relative z-10">
-          <Navbar />
-          <main className="flex-grow pt-24">
-            <AnimatedRoutes />
-          </main>
-          <Footer />
-          <AIAssistant />
-          <SaaSModals />
-        </div>
-      </BrowserRouter>
+      <LanguageProvider>
+        <BrowserRouter>
+          <SEOManager />
+          <ScrollToTop />
+          <MouseGlow />
+          <BackgroundParticles />
+          <div className="flex flex-col min-h-screen relative z-10">
+            <Navbar />
+            <main className="flex-grow pt-24">
+              <AnimatedRoutes />
+            </main>
+            <Footer />
+            <AIAssistant />
+            <SaaSModals />
+          </div>
+        </BrowserRouter>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }

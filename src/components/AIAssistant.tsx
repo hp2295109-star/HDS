@@ -335,6 +335,7 @@ export default function AIAssistant() {
               initial={{ opacity: 0, y: 10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
+              transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
               className="mb-4 bg-surface/90 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-xl max-w-[240px] relative origin-bottom-right cursor-pointer group"
               onClick={() => { setIsOpen(true); setShowPopup(false); }}
             >
@@ -389,10 +390,10 @@ export default function AIAssistant() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            initial={{ opacity: 0, y: 15, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
+            exit={{ opacity: 0, y: 15, scale: 0.96 }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 lg:bottom-10 lg:right-10 z-50 w-[calc(100vw-32px)] sm:w-[380px] h-[600px] max-h-[calc(100vh-80px)] bg-[#0A0A0A]/95 backdrop-blur-2xl border border-white/10 rounded-[24px] shadow-[0_0_40px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden origin-bottom-right"
           >
             {/* Header */}

@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function MouseGlow() {
-  const [mousePosition, setMousePosition] = useState({ x: -1000, y: -1000 });
+  const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      if (glowRef.current) {
+        glowRef.current.style.background = `radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px, rgba(0, 240, 255, 0.03), transparent 40%)`;
+      }
       
       // Update global CSS variables for glass cards
       document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
@@ -18,9 +20,10 @@ export default function MouseGlow() {
 
   return (
     <div
+      ref={glowRef}
       className="pointer-events-none fixed inset-0 z-30 transition-opacity duration-300"
       style={{
-        background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(0, 240, 255, 0.03), transparent 40%)`
+        background: `radial-gradient(600px circle at -1000px -1000px, rgba(0, 240, 255, 0.03), transparent 40%)`
       }}
     />
   );
