@@ -416,7 +416,7 @@ function BookConsultationForm({ service, source, onClose }: { service?: string; 
               <option value="Website Development">Website Development</option>
               <option value="SEO Optimization">SEO Optimization</option>
               <option value="Meta Ads & Marketing">Meta Ads & Marketing</option>
-              <option value="AI Automation">AI Automation</option>
+              <option value="Google Business Profile Optimization">Google Business Profile (GBP) Optimization</option>
               <option value="Custom CRM/SaaS Design">Custom CRM/SaaS Design</option>
             </select>
           </div>
@@ -587,7 +587,7 @@ function LeadCaptureForm({ service = 'Website Development', source, onClose }: {
                 <option value="Website Development">Website Development</option>
                 <option value="SEO Optimization">SEO Optimization</option>
                 <option value="Meta Ads">Meta Ads & Paid Campaigns</option>
-                <option value="AI Automation">AI Automation</option>
+                <option value="Local SEO & Google Maps">Local SEO & Google Maps</option>
                 <option value="Other Project">Other Custom Request</option>
               </select>
             </div>

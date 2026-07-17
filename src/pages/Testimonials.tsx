@@ -46,9 +46,9 @@ export default function Testimonials() {
                 ))}
               </div>
               
-              <h2 className="text-3xl font-bold font-heading mb-4 text-white">Coming Soon</h2>
+              <h2 className="text-3xl font-bold font-heading mb-4 text-white">Building Success Stories</h2>
               <p className="text-xl text-gray-400 mb-8 italic">
-                "Your business could be featured here after working with HarshDigitalStudios to transform your digital presence."
+                "I'm currently helping local businesses build their online presence. As I complete more client projects, genuine testimonials and case studies will be added here."
               </p>
               
               <div className="flex items-center justify-center">

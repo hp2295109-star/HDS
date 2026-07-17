@@ -1,12 +1,16 @@
 import { motion } from 'motion/react';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Instagram, Mail, MapPin, MessageCircle, Phone, ArrowRight, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 import { useSupabaseForm } from '../hooks/useSupabaseForm';
 import { supabaseService } from '../services/supabaseService';
 
 export default function Contact() {
+  const location = useLocation();
   const {
     values,
+    setValues,
     errors,
     isLoading,
     isSuccess,
@@ -37,6 +41,17 @@ export default function Contact() {
       });
     }
   });
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const demoName = params.get('prefill') || params.get('demo');
+    if (demoName) {
+      setValues((prev: any) => ({
+        ...prev,
+        message: `I want a website similar to the ${demoName} demo.`
+      }));
+    }
+  }, [location.search, setValues]);
 
   return (
     <PageTransition>

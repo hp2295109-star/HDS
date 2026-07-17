@@ -1,15 +1,28 @@
 import { createClient } from '@supabase/supabase-js';
 
+// Helper to validate if a string is a valid HTTP/HTTPS URL
+const isValidUrl = (url: string): boolean => {
+  if (!url) return false;
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+  } catch (e) {
+    return false;
+  }
+};
+
 // Get environment variables with fallback values to prevent crashes if not set yet
 const metaEnv = (import.meta as any).env || {};
-const supabaseUrl = metaEnv.VITE_SUPABASE_URL || 'https://placeholder-project.supabase.co';
+const rawSupabaseUrl = metaEnv.VITE_SUPABASE_URL || '';
+const supabaseUrl = isValidUrl(rawSupabaseUrl) ? rawSupabaseUrl : 'https://placeholder-project.supabase.co';
 const supabaseAnonKey = metaEnv.VITE_SUPABASE_ANON_KEY || 'placeholder-anon-key';
 
 // Logging a clear warning if env vars are missing
 export const isSupabaseConfigured = 
   !!metaEnv.VITE_SUPABASE_URL && 
-  !!metaEnv.VITE_SUPABASE_ANON_KEY &&
-  metaEnv.VITE_SUPABASE_URL !== 'https://placeholder-project.supabase.co';
+  isValidUrl(rawSupabaseUrl) &&
+  rawSupabaseUrl !== 'https://placeholder-project.supabase.co' &&
+  !rawSupabaseUrl.includes('your-supabase-project');
 
 if (!isSupabaseConfigured) {
   console.warn(

@@ -42,8 +42,8 @@ export default function StatsSection() {
   const stats = [
     {
       icon: Globe,
-      value: "20+",
-      label: "Landing Pages Designed"
+      value: "4",
+      label: "Premium Demo Designs"
     },
     {
       icon: Gauge,

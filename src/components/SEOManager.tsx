@@ -8,30 +8,30 @@ export default function SEOManager() {
     const path = location.pathname;
     
     // 1. Dynamic Meta Configuration depending on the current page path
-    let title = "Harsh Digital Studios | Website Development & SEO in Raigarh, Chhattisgarh";
-    let desc = "Harsh Digital Studios is a premium digital agency in Raigarh, Chhattisgarh. We design high-performance websites, local SEO, Google Business Profile optimization, and AI automation.";
-    let keywords = "website development in raigarh, website designer in raigarh, seo services in raigarh, digital marketing agency in raigarh, google business profile optimization, ai automation services in raigarh, meta ads agency in raigarh, business website development, landing page design, responsive website development";
+    let title = "Harsh Patel | Premium Freelance Website Designer & SEO Expert Raigarh";
+    let desc = "Harsh Patel (MBA) is an award-winning freelance website designer & local SEO specialist in Raigarh, Chhattisgarh. Build custom fast-loading websites, rank high on Google, and grow your brand.";
+    let keywords = "website designer in raigarh, website design in raigarh, seo services in raigarh, google business profile expert in raigarh, social media marketing in raigarh, harsh patel, digital marketer raigarh, web designer kharsia, local seo tamnar, custom website chhattisgarh, landing page designer raigarh";
     const canonical = `https://harshdigitalstudios.com${path}`;
     
     // Map specific page paths
     if (path === '/') {
-      title = "Harsh Digital Studios | Website Development & SEO in Raigarh, Chhattisgarh";
-      desc = "Looking for website development in Raigarh, Chhattisgarh? We build fast, mobile responsive websites, boost Google visibility with Local SEO, and automate workflows with AI.";
+      title = "Harsh Patel | Premium Website Designer & SEO Specialist Raigarh";
+      desc = "Stop Posting. Start Building Your Brand. Premium custom websites and elite local SEO services in Raigarh, Tamnar, Kharsia, and Chhattisgarh by Harsh Patel (MBA). Book a free consultation.";
     } else if (path === '/about') {
-      title = "About Us | Harsh Digital Studios - Digital Marketing in Raigarh";
-      desc = "Meet the founder Harsh and learn how Harsh Digital Studios helps local businesses in Raigarh, Chhattisgarh build trust and credibility with premium digital solutions.";
+      title = "About Harsh Patel | MBA Marketer & Freelance Web Designer in Raigarh";
+      desc = "Learn about Harsh Patel, an MBA-trained digital marketer, B.Com graduate, and founder of Harsh Digital Studios. Offering expert local SEO, GBP optimization, and website design in Chhattisgarh.";
     } else if (path === '/services') {
-      title = "Our Services | Website Design, SEO & Google Profile Optimization Raigarh";
-      desc = "Explore our premium services: high-performance business website development, landing page design, search engine optimization (SEO), and AI automated messaging.";
+      title = "Premium Freelance Digital Marketing & Web Design Services Raigarh";
+      desc = "Elite freelance services: custom business website design, landing pages, website speed optimization, local SEO, Google Business Profile management, and Meta Ads in Raigarh.";
     } else if (path === '/pricing') {
-      title = "Transparent Pricing | Web Design & Marketing Services in Raigarh";
-      desc = "Check out our affordable, transparent website development and SEO pricing models. Perfect for local shops, clinics, gyms, salons, and cafés in Raigarh.";
+      title = "Web Design & Local SEO Packages | Harsh Patel Freelancer Raigarh";
+      desc = "Transparent, performance-driven web design and local SEO packages optimized for businesses in Raigarh, Tamnar, and Kharsia. Perfect for clinics, salons, gyms, and retail stores.";
     } else if (path === '/portfolio') {
-      title = "Our Portfolio | Best Web Designing & Business Websites in Raigarh";
-      desc = "See how we help businesses in Raigarh grow. Browse our premium design, local SEO case studies, and fast mobile responsive website portfolio.";
+      title = "Premium Demo Website Designs & Client Portfolio | Raigarh SEO";
+      desc = "Browse premium conversion-focused demo website designs built for local business categories (showrooms, clinics, salons). Custom built for maximum performance & search rank.";
     } else if (path === '/blog') {
-      title = "Insights & Learning | Harsh Digital Studios - Local Business Growth Blog";
-      desc = "Read our practical guides on Google Business Profile optimization, website development in Raigarh, SEO tactics, and how AI can scale your local business.";
+      title = "Digital Growth Blog | Local SEO & Website Design Tips for Raigarh";
+      desc = "Read free, high-impact guides on Google Business Profile rankings, local SEO, website performance, and digital marketing strategies by certified expert Harsh Patel.";
     } else if (path === '/faq') {
       title = "Frequently Asked Questions | Web Design & SEO Raigarh";
       desc = "Got questions about website development, domain hosting, local search rankings, or maintenance? Read our transparent FAQ for Raigarh businesses.";
@@ -182,6 +182,32 @@ export default function SEOManager() {
           "name": "Raigarh"
         },
         "description": "Local search engine optimization (SEO) designed to help businesses appear on the top of Google Maps and regional search outputs."
+      },
+      // Person Schema for Harsh Patel
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Harsh Patel",
+        "url": "https://harshdigitalstudios.com",
+        "jobTitle": "Premium Freelance Website Designer & Digital Marketing Expert",
+        "alumniOf": {
+          "@type": "EducationalOrganization",
+          "name": "Master of Business Administration (MBA)"
+        },
+        "hasCredential": [
+          {
+            "@type": "EducationalOccupationalCredential",
+            "name": "Bachelor of Commerce (B.Com)"
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            "name": "Professional Digital Marketing Certification"
+          }
+        ],
+        "knowsAbout": [
+          "Website Design", "SEO", "Local SEO", "Google Business Profile Optimization", 
+          "Meta Ads", "Social Media Management", "Website Speed Optimization", "UI/UX Design"
+        ]
       }
     ];
 

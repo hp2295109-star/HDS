@@ -24,6 +24,7 @@ import FAQ from './pages/FAQ';
 import Contact from './pages/Contact';
 import Testimonials from './pages/Testimonials';
 import BusinessGrowthCalculator from './pages/BusinessGrowthCalculator';
+import AdminDashboard from './pages/AdminDashboard';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -42,6 +43,8 @@ function AnimatedRoutes() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/business-growth-calculator" element={<BusinessGrowthCalculator />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
         </Routes>
       </div>
     </AnimatePresence>
