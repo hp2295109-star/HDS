@@ -173,151 +173,70 @@ export default function Home() {
     }
   ];
 
-  // 10 Premium Portfolio Projects
-  const galleryProjects: GalleryProject[] = [
-    {
-      id: "jewellers",
-      title: "Puja Jewellers",
-      industry: "Jewellery",
-      url: "https://pujajewellers.netlify.app/",
-      tagline: "Luxury Digital Showroom & Gold Rates",
-      desc: "A high-end luxury jewelry digital catalog engineered to showcase exquisite collections, featuring direct gold rate feeds and single-click WhatsApp inquiry routing.",
-      features: ["Live gold rate indicator widget", "Exquisite category catalog layouts", "Secure direct WhatsApp inquiry", "Bespoke custom consultation form"],
-      colorClass: "from-amber-600/20 via-yellow-600/5 to-neutral-950",
-      accentColor: "text-amber-400 border-amber-500/20",
-      badgeColor: "bg-amber-400/10 text-amber-300 border-amber-400/20",
-      mockupBg: "bg-gradient-to-tr from-amber-950 via-neutral-900 to-amber-900",
-      icon: "💎"
-    },
-    {
-      id: "gym",
-      title: "The Muscle Factory",
-      industry: "Gym & Fitness",
-      url: "https://themuscle.netlify.app/",
-      tagline: "High-Octane Fitness Hub & Schedules",
-      desc: "A high-energy, dark-themed fitness club interface designed to boost memberships with integrated class timetables, interactive pricing calculators, and free pass registration.",
-      features: ["Interactive class timetable grids", "Trainer credentials & bios", "Tiered membership comparison matrix", "High-conversion trial pass grabber"],
-      colorClass: "from-red-600/20 via-orange-600/5 to-neutral-950",
-      accentColor: "text-red-400 border-red-500/20",
-      badgeColor: "bg-red-400/10 text-red-300 border-red-400/20",
-      mockupBg: "bg-gradient-to-tr from-red-950 via-neutral-900 to-orange-900",
-      icon: "🏋️‍♂️"
-    },
-    {
-      id: "salon",
-      title: "Unique Salon",
-      industry: "Salon & Beauty",
-      url: "https://uniquesalons.netlify.app/",
-      tagline: "Modern Grooming & Aesthetic Booking",
-      desc: "A premium hair and beauty lounge platform showcasing stylized menus, specialist portfolios, visual treatment cards, and direct calendar reservation hooks.",
-      features: ["Stylized service menu breakdowns", "Direct calendar reservation hooks", "Before-and-after visual sliders", "Interactive client reviews showcase"],
-      colorClass: "from-pink-600/20 via-purple-600/5 to-neutral-950",
-      accentColor: "text-pink-400 border-pink-500/20",
-      badgeColor: "bg-pink-400/10 text-pink-300 border-pink-400/20",
-      mockupBg: "bg-gradient-to-tr from-pink-950 via-neutral-900 to-purple-900",
-      icon: "✨"
-    },
-    {
-      id: "travels",
-      title: "Sahu Travels",
-      industry: "Travel Agency",
-      url: "https://sahu-travels.pages.dev/",
-      tagline: "Custom Itineraries & Holiday Planners",
-      desc: "An immersive, adventure-driven agency template designed to convert wanderlust into bookings. Features custom holiday packages and instant itinerary guides.",
-      features: ["Dynamic package cost estimator", "Wanderlust-inducing grid cards", "Instant itinerary downloaders", "Lead-capture inquiry triggers"],
-      colorClass: "from-cyan-600/20 via-blue-600/5 to-neutral-950",
-      accentColor: "text-cyan-400 border-cyan-500/20",
-      badgeColor: "bg-cyan-400/10 text-cyan-300 border-cyan-400/20",
-      mockupBg: "bg-gradient-to-tr from-cyan-950 via-neutral-900 to-blue-900",
-      icon: "✈️"
-    },
-    {
-      id: "textile",
-      title: "Anmol Textile",
-      industry: "Textile & Fashion",
-      url: "https://anmoltextile.netlify.app/",
-      tagline: "Premium Fabric Catalog & Inquiry",
-      desc: "A rich textile catalog showcase designed to exhibit fine garments, custom fabrics, and wholesale inventories with direct fabric customization inquires.",
-      features: ["High-res texture detail viewer", "Wholesale supply inquiry routing", "Custom design requests forms", "Visual lookbook grid arrays"],
-      colorClass: "from-indigo-600/20 via-blue-600/5 to-neutral-950",
-      accentColor: "text-indigo-400 border-indigo-500/20",
-      badgeColor: "bg-indigo-400/10 text-indigo-300 border-indigo-400/20",
-      mockupBg: "bg-gradient-to-tr from-indigo-950 via-neutral-900 to-blue-900",
-      icon: "🛍️"
-    },
-    {
-      id: "samglanz",
-      title: "SamGlanz",
-      industry: "Fashion Jewellery",
-      url: "https://samglanz.pages.dev/",
-      tagline: "Chic Accessories Catalogue & Sliders",
-      desc: "A highly-aesthetic, minimal rose-gold digital jewelry catalogue presenting bespoke necklaces, rings, and premium collections for modern buyers.",
-      features: ["Minimalist collection sliders", "Instagram lookbook curation", "Elegant micro-interaction cards", "One-click WhatsApp inquiry pathways"],
-      colorClass: "from-rose-600/20 via-orange-600/5 to-neutral-950",
-      accentColor: "text-rose-400 border-rose-500/20",
-      badgeColor: "bg-rose-400/10 text-rose-300 border-rose-400/20",
-      mockupBg: "bg-gradient-to-tr from-rose-950 via-neutral-900 to-neutral-950",
-      icon: "💍"
-    },
-    {
-      id: "dental",
-      title: "Anand Dental Clinic",
-      industry: "Dental Clinic",
-      url: "https://anand-dental-clinic.pages.dev/",
-      tagline: "Patient Care, Trust & Appointment Scheduler",
-      desc: "A patient-centric clinical hub that streamlines appointment bookings, showcases dental treatments, and establishes medical trust through case studies.",
-      features: ["Instant calendar appointment scheduler", "Interactive oral care blogs", "Stethoscope & treatment menu tables", "Patient-before-after success logs"],
-      colorClass: "from-emerald-600/20 via-teal-600/5 to-neutral-950",
-      accentColor: "text-emerald-400 border-emerald-500/20",
-      badgeColor: "bg-emerald-400/10 text-emerald-300 border-emerald-400/20",
-      mockupBg: "bg-gradient-to-tr from-emerald-950 via-neutral-900 to-teal-900",
-      icon: "🦷"
-    },
-    {
-      id: "portfolio",
-      title: "Soniya Naik",
-      industry: "Personal Portfolio",
-      url: "https://soniya-naik.pages.dev/",
-      tagline: "Aesthetic Developer Resume & GitHub Hub",
-      desc: "A creative, high-contrast digital resume highlighting professional achievements, skill-matrices, interactive code repositories, and work portfolios.",
-      features: ["Staggered timeline history blocks", "Skill competency visualizations", "Direct contact form funneling", "GitHub repositories live links"],
-      colorClass: "from-violet-600/20 via-fuchsia-600/5 to-neutral-950",
-      accentColor: "text-violet-400 border-violet-500/20",
-      badgeColor: "bg-violet-400/10 text-violet-300 border-violet-400/20",
-      mockupBg: "bg-gradient-to-tr from-violet-950 via-neutral-900 to-fuchsia-950",
-      icon: "👩‍💻"
-    },
-    {
-      id: "femina",
-      title: "FEMINA RGH",
-      industry: "Women's Fashion",
-      url: "https://femina.pages.dev/",
-      tagline: "Curated Apparel Lookbook",
-      desc: "An ultra-chic fashion house lookbook showcasing modern trends, curated summer/winter collections, and visual product boards for female shoppers.",
-      features: ["Curated seasonal fashion grids", "Visual trend hot-spots panels", "Interactive styling cards", "WhatsApp direct buying options"],
-      colorClass: "from-fuchsia-600/20 via-pink-600/5 to-neutral-950",
-      accentColor: "text-fuchsia-400 border-fuchsia-500/20",
-      badgeColor: "bg-fuchsia-400/10 text-fuchsia-300 border-fuchsia-400/20",
-      mockupBg: "bg-gradient-to-tr from-fuchsia-950 via-neutral-900 to-pink-950",
-      icon: "👗"
-    },
-    {
-      id: "aesthetics",
-      title: "Rama Aesthetics",
-      industry: "Aesthetic Clinic",
-      url: "https://rama-asthetics.pages.dev/",
-      tagline: "Cosmetic Dermatology Clinic Platform",
-      desc: "An elite cosmetic dermatology platform focusing on advanced treatments, practitioner expertise, customer safety guidelines, and direct skin consult routing.",
-      features: ["Treatment detail & pricing grids", "Interactive slot booking triggers", "Exquisite skin-care instructions FAQs", "Elegant warm sand visual aesthetics"],
-      colorClass: "from-orange-600/20 via-yellow-600/5 to-neutral-950",
-      accentColor: "text-orange-400 border-orange-500/20",
-      badgeColor: "bg-orange-400/10 text-orange-300 border-orange-400/20",
-      mockupBg: "bg-gradient-to-tr from-orange-950 via-neutral-900 to-yellow-900",
-      icon: "🩺"
-    }
-  ];
+  // Dynamic Portfolio Projects State loaded from Supabase / LocalStorage fallback
+  const [galleryProjects, setGalleryProjects] = useState<GalleryProject[]>([]);
 
-  // Project Image Mapping for Website Design Gallery (Unsplash high-res visual mockups matching each industry)
+  useEffect(() => {
+    async function loadProjects() {
+      try {
+        const data = await supabaseService.getPortfolioProjects();
+        // Filter out hidden ones and sort by display order
+        const visible = data
+          .filter(p => !p.hidden)
+          .sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
+
+        const mapped = visible.map(p => {
+          let ind = p.category;
+          if (ind === "Luxury & Jewellery") ind = "Jewellery";
+          if (ind === "Beauty & Fitness") ind = "Gym & Fitness";
+          if (ind === "Medical & Clinical") ind = "Aesthetic Clinic";
+          if (ind === "Fashion & Textile") ind = "Textile & Fashion";
+          if (ind === "Creative Portfolio") ind = "Personal Portfolio";
+
+          return {
+            id: p.id || 'project-' + Math.random(),
+            title: p.title,
+            industry: ind,
+            url: p.url,
+            tagline: p.tagline || (p.description.length > 50 ? p.description.slice(0, 47) + "..." : p.description),
+            desc: p.description,
+            features: p.features || ["Custom Design", "Mobile Friendly", "WhatsApp Ready"],
+            colorClass: p.category.includes("Beauty") ? "from-pink-600/20 via-purple-600/5 to-neutral-950" :
+                        p.category.includes("Luxury") ? "from-amber-600/20 via-yellow-600/5 to-neutral-950" :
+                        p.category.includes("Clinical") ? "from-emerald-600/20 via-teal-600/5 to-neutral-950" :
+                        p.category.includes("Fashion") ? "from-indigo-600/20 via-blue-600/5 to-neutral-950" :
+                        "from-cyan-600/20 via-blue-600/5 to-neutral-950",
+            accentColor: p.category.includes("Beauty") ? "text-pink-400 border-pink-500/20" :
+                        p.category.includes("Luxury") ? "text-amber-400 border-amber-500/20" :
+                        p.category.includes("Clinical") ? "text-emerald-400 border-emerald-500/20" :
+                        p.category.includes("Fashion") ? "text-indigo-400 border-indigo-500/20" :
+                        "text-cyan-400 border-cyan-500/20",
+            badgeColor: p.category.includes("Beauty") ? "bg-pink-400/10 text-pink-300 border-pink-400/20" :
+                        p.category.includes("Luxury") ? "bg-amber-400/10 text-amber-300 border-amber-400/20" :
+                        p.category.includes("Clinical") ? "bg-emerald-400/10 text-emerald-300 border-emerald-400/20" :
+                        p.category.includes("Fashion") ? "bg-indigo-400/10 text-indigo-300 border-indigo-400/20" :
+                        "bg-cyan-400/10 text-cyan-300 border-cyan-400/20",
+            mockupBg: p.category.includes("Beauty") ? "bg-gradient-to-tr from-pink-950 via-neutral-900 to-purple-900" :
+                      p.category.includes("Luxury") ? "bg-gradient-to-tr from-amber-950 via-neutral-900 to-amber-900" :
+                      p.category.includes("Clinical") ? "bg-gradient-to-tr from-emerald-950 via-neutral-900 to-teal-900" :
+                      p.category.includes("Fashion") ? "bg-gradient-to-tr from-indigo-950 via-neutral-900 to-blue-900" :
+                      "bg-gradient-to-tr from-cyan-950 via-neutral-900 to-blue-900",
+            icon: p.icon || (p.category.includes("Beauty") ? "✨" :
+                             p.category.includes("Luxury") ? "💎" :
+                             p.category.includes("Clinical") ? "🩺" :
+                             p.category.includes("Fashion") ? "🛍️" : "✈️"),
+            thumbnail: p.thumbnail
+          };
+        });
+        setGalleryProjects(mapped);
+      } catch (err) {
+        console.error('Error loading gallery projects on home page:', err);
+      }
+    }
+    loadProjects();
+  }, []);
+
+  // Project Image Mapping fallback for default mockups
   const projectImages: Record<string, string> = {
     jewellers: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800&q=80",
     gym: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
@@ -667,6 +586,7 @@ export default function Home() {
           {(() => {
             if (galleryFilter !== "All" && galleryFilter !== "Luxury & Jewellery") return null;
             const featured = galleryProjects[0];
+            if (!featured) return null;
             return (
               <div className="mb-16">
                 <div className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
@@ -683,7 +603,7 @@ export default function Home() {
                   {/* Left: Beautiful Mockup with actual image */}
                   <div className="lg:col-span-7 relative min-h-[320px] sm:min-h-[400px] overflow-hidden flex flex-col justify-between">
                     <img
-                      src={projectImages[featured.id]}
+                      src={(featured as any).thumbnail || projectImages[featured.id]}
                       alt={`${featured.title} Mockup`}
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                       referrerPolicy="no-referrer"
@@ -833,7 +753,7 @@ export default function Home() {
                     {/* Card Thumbnail Area */}
                     <div className="relative overflow-hidden aspect-[16:10] w-full border-b border-card-border">
                       <img
-                        src={projectImages[project.id]}
+                        src={(project as any).thumbnail || projectImages[project.id]}
                         alt={`${project.title} Mockup`}
                         className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                         referrerPolicy="no-referrer"

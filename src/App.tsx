@@ -2,7 +2,7 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence } from 'motion/react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -26,6 +26,46 @@ import Contact from './pages/Contact';
 import Testimonials from './pages/Testimonials';
 import BusinessGrowthCalculator from './pages/BusinessGrowthCalculator';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminLogin from './pages/AdminLogin';
+import { useState, useEffect } from 'react';
+import { supabase, isSupabaseConfigured } from './lib/supabase';
+import { Loader2 } from 'lucide-react';
+
+function AdminRedirect() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        if (!isSupabaseConfigured) {
+          const sandboxAuth = localStorage.getItem('hds_sandbox_auth');
+          if (sandboxAuth === 'active') {
+            navigate('/admin/dashboard', { replace: true });
+          } else {
+            navigate('/admin/login', { replace: true });
+          }
+          return;
+        }
+
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          navigate('/admin/dashboard', { replace: true });
+        } else {
+          navigate('/admin/login', { replace: true });
+        }
+      } catch (err) {
+        navigate('/admin/login', { replace: true });
+      }
+    };
+    checkSession();
+  }, [navigate]);
+
+  return (
+    <div className="min-h-[60vh] flex items-center justify-center bg-bg-base">
+      <Loader2 className="w-8 h-8 text-accent animate-spin" />
+    </div>
+  );
+}
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -44,7 +84,9 @@ function AnimatedRoutes() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/business-growth-calculator" element={<BusinessGrowthCalculator />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin" element={<AdminRedirect />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
         </Routes>
       </div>

@@ -1,5 +1,5 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
-import { Lead, ContactMessage, Newsletter, WebsiteAudit, BookedCall, Testimonial, BlogPost } from '../types/supabase';
+import { Lead, ContactMessage, Newsletter, WebsiteAudit, BookedCall, Testimonial, BlogPost, PortfolioProject } from '../types/supabase';
 
 // Helper to simulate network latency for fallback mode
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -32,7 +32,8 @@ export const supabaseService = {
             budget: lead.budget,
             message: lead.message,
             status: lead.status || 'New',
-            source: lead.source || window.location.pathname,
+            source_page: lead.source || (lead as any).source_page || window.location.pathname,
+            notes: lead.notes || '',
             ip_address: lead.ip_address || 'client-side-submission',
             device: lead.device || (window.navigator?.userAgent || 'unknown'),
             city: lead.city || ''
@@ -360,7 +361,10 @@ export const supabaseService = {
     try {
       const { data, error } = await supabase.from('leads').select('*').order('created_at', { ascending: false });
       if (error) throw error;
-      return data || [];
+      return (data || []).map((l: any) => ({
+        ...l,
+        source: l.source_page || l.source
+      }));
     } catch (err) {
       console.error('Error fetching leads:', err);
       return JSON.parse(localStorage.getItem('hds_leads') || '[]');
@@ -593,6 +597,328 @@ export const supabaseService = {
     } catch (err) {
       console.error('Error deleting booked call:', err);
       return false;
+    }
+  },
+
+  async getPortfolioProjects(): Promise<PortfolioProject[]> {
+    const defaultPortfolioProjects: PortfolioProject[] = [
+      {
+        id: "jewellers",
+        title: "Puja Jewellers",
+        category: "Luxury & Jewellery",
+        description: "A high-end luxury jewelry digital catalog engineered to showcase exquisite collections, featuring direct gold rate feeds and single-click WhatsApp inquiry routing.",
+        thumbnail: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800&q=80",
+        url: "https://pujajewellers.netlify.app/",
+        featured: true,
+        hidden: false,
+        display_order: 1,
+        tagline: "Luxury Digital Showroom & Gold Rates",
+        features: ["Live gold rate indicator widget", "Exquisite category catalog layouts", "Secure direct WhatsApp inquiry", "Bespoke custom consultation form"],
+        icon: "💎"
+      },
+      {
+        id: "gym",
+        title: "The Muscle Factory",
+        category: "Beauty & Fitness",
+        description: "A high-energy, dark-themed fitness club interface designed to boost memberships with integrated class timetables, interactive pricing calculators, and free pass registration.",
+        thumbnail: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+        url: "https://themuscle.netlify.app/",
+        featured: false,
+        hidden: false,
+        display_order: 2,
+        tagline: "High-Octane Fitness Hub & Schedules",
+        features: ["Interactive class timetable grids", "Trainer credentials & bios", "Tiered membership comparison matrix", "High-conversion trial pass grabber"],
+        icon: "🏋️‍♂️"
+      },
+      {
+        id: "salon",
+        title: "Unique Salon",
+        category: "Beauty & Fitness",
+        description: "A premium hair and beauty lounge platform showcasing stylized menus, specialist portfolios, visual treatment cards, and direct calendar reservation hooks.",
+        thumbnail: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80",
+        url: "https://uniquesalons.netlify.app/",
+        featured: false,
+        hidden: false,
+        display_order: 3,
+        tagline: "Modern Grooming & Aesthetic Booking",
+        features: ["Stylized service menu breakdowns", "Direct calendar reservation hooks", "Before-and-after visual sliders", "Interactive client reviews showcase"],
+        icon: "✨"
+      },
+      {
+        id: "travels",
+        title: "Sahu Travels",
+        category: "Creative Portfolio",
+        description: "An immersive, adventure-driven agency template designed to convert wanderlust into bookings. Features custom holiday packages and instant itinerary guides.",
+        thumbnail: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80",
+        url: "https://sahu-travels.pages.dev/",
+        featured: false,
+        hidden: false,
+        display_order: 4,
+        tagline: "Custom Itineraries & Holiday Planners",
+        features: ["Dynamic package cost estimator", "Wanderlust-inducing grid cards", "Instant itinerary downloaders", "Lead-capture inquiry triggers"],
+        icon: "✈️"
+      },
+      {
+        id: "textile",
+        title: "Anmol Textile",
+        category: "Fashion & Textile",
+        description: "A rich textile catalog showcase designed to exhibit fine garments, custom fabrics, and wholesale inventories with direct fabric customization inquires.",
+        thumbnail: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80",
+        url: "https://anmoltextile.netlify.app/",
+        featured: false,
+        hidden: false,
+        display_order: 5,
+        tagline: "Premium Fabric Catalog & Inquiry",
+        features: ["High-res texture detail viewer", "Wholesale supply inquiry routing", "Custom design requests forms", "Visual lookbook grid arrays"],
+        icon: "🛍️"
+      },
+      {
+        id: "samglanz",
+        title: "SamGlanz",
+        category: "Luxury & Jewellery",
+        description: "A highly-aesthetic, minimal rose-gold digital jewelry catalogue presenting bespoke necklaces, rings, and premium collections for modern buyers.",
+        thumbnail: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80",
+        url: "https://samglanz.pages.dev/",
+        featured: false,
+        hidden: false,
+        display_order: 6,
+        tagline: "Chic Accessories Catalogue & Sliders",
+        features: ["Minimalist collection sliders", "Instagram lookbook curation", "Elegant micro-interaction cards", "One-click WhatsApp inquiry pathways"],
+        icon: "💍"
+      },
+      {
+        id: "dental",
+        title: "Anand Dental Clinic",
+        category: "Medical & Clinical",
+        description: "A patient-centric clinical hub that streamlines appointment bookings, showcases dental treatments, and establishes medical trust through case studies.",
+        thumbnail: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800&q=80",
+        url: "https://anand-dental-clinic.pages.dev/",
+        featured: false,
+        hidden: false,
+        display_order: 7,
+        tagline: "Patient Care, Trust & Appointment Scheduler",
+        features: ["Instant calendar appointment scheduler", "Interactive oral care blogs", "Stethoscope & treatment menu tables", "Patient-before-after success logs"],
+        icon: "🦷"
+      },
+      {
+        id: "portfolio",
+        title: "Soniya Naik",
+        category: "Creative Portfolio",
+        description: "A creative, high-contrast digital resume highlighting professional achievements, skill-matrices, interactive code repositories, and work portfolios.",
+        thumbnail: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80",
+        url: "https://soniya-naik.pages.dev/",
+        featured: false,
+        hidden: false,
+        display_order: 8,
+        tagline: "Aesthetic Developer Resume & GitHub Hub",
+        features: ["Staggered timeline history blocks", "Skill competency visualizations", "Direct contact form funneling", "GitHub repositories live links"],
+        icon: "👩‍💻"
+      },
+      {
+        id: "femina",
+        title: "FEMINA RGH",
+        category: "Fashion & Textile",
+        description: "An ultra-chic fashion house lookbook showcasing modern trends, curated summer/winter collections, and visual product boards for female shoppers.",
+        thumbnail: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=80",
+        url: "https://femina.pages.dev/",
+        featured: false,
+        hidden: false,
+        display_order: 9,
+        tagline: "Curated Apparel Lookbook",
+        features: ["Curated seasonal fashion grids", "Visual trend hot-spots panels", "Interactive styling cards", "WhatsApp direct buying options"],
+        icon: "👗"
+      },
+      {
+        id: "aesthetics",
+        title: "Rama Aesthetics",
+        category: "Medical & Clinical",
+        description: "An elite cosmetic dermatology platform focusing on advanced treatments, practitioner expertise, customer safety guidelines, and direct skin consult routing.",
+        thumbnail: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80",
+        url: "https://rama-asthetics.pages.dev/",
+        featured: false,
+        hidden: false,
+        display_order: 10,
+        tagline: "Cosmetic Dermatology Clinic Platform",
+        features: ["Treatment detail & pricing grids", "Interactive slot booking triggers", "Exquisite skin-care instructions FAQs", "Elegant warm sand visual aesthetics"],
+        icon: "🩺"
+      }
+    ];
+
+    if (!isSupabaseConfigured) {
+      const saved = localStorage.getItem('hds_portfolio_projects');
+      if (!saved) {
+        localStorage.setItem('hds_portfolio_projects', JSON.stringify(defaultPortfolioProjects));
+        return defaultPortfolioProjects;
+      }
+      return JSON.parse(saved);
+    }
+    try {
+      const { data, error } = await supabase
+        .from('portfolio_projects')
+        .select('*')
+        .order('display_order', { ascending: true });
+      if (error) throw error;
+      if (!data || data.length === 0) {
+        return defaultPortfolioProjects;
+      }
+      return data.map((p: any) => ({
+        ...p,
+        thumbnail: p.thumbnail_url || p.thumbnail,
+        url: p.demo_url || p.url,
+      }));
+    } catch (err) {
+      console.error('Error fetching portfolio projects from Supabase:', err);
+      const saved = localStorage.getItem('hds_portfolio_projects');
+      if (!saved) {
+        localStorage.setItem('hds_portfolio_projects', JSON.stringify(defaultPortfolioProjects));
+        return defaultPortfolioProjects;
+      }
+      return JSON.parse(saved);
+    }
+  },
+
+  async savePortfolioProject(project: PortfolioProject): Promise<boolean> {
+    const defaultPortfolioProjects: PortfolioProject[] = [
+      {
+        id: "jewellers",
+        title: "Puja Jewellers",
+        category: "Luxury & Jewellery",
+        description: "A high-end luxury jewelry digital catalog engineered to showcase exquisite collections, featuring direct gold rate feeds and single-click WhatsApp inquiry routing.",
+        thumbnail: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800&q=80",
+        url: "https://pujajewellers.netlify.app/",
+        featured: true,
+        hidden: false,
+        display_order: 1,
+        tagline: "Luxury Digital Showroom & Gold Rates",
+        features: ["Live gold rate indicator widget", "Exquisite category catalog layouts", "Secure direct WhatsApp inquiry", "Bespoke custom consultation form"],
+        icon: "💎"
+      },
+      {
+        id: "gym",
+        title: "The Muscle Factory",
+        category: "Beauty & Fitness",
+        description: "A high-energy, dark-themed fitness club interface designed to boost memberships with integrated class timetables, interactive pricing calculators, and free pass registration.",
+        thumbnail: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+        url: "https://themuscle.netlify.app/",
+        featured: false,
+        hidden: false,
+        display_order: 2,
+        tagline: "High-Octane Fitness Hub & Schedules",
+        features: ["Interactive class timetable grids", "Trainer credentials & bios", "Tiered membership comparison matrix", "High-conversion trial pass grabber"],
+        icon: "🏋️‍♂️"
+      },
+      {
+        id: "salon",
+        title: "Unique Salon",
+        category: "Beauty & Fitness",
+        description: "A premium hair and beauty lounge platform showcasing stylized menus, specialist portfolios, visual treatment cards, and direct calendar reservation hooks.",
+        thumbnail: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80",
+        url: "https://uniquesalons.netlify.app/",
+        featured: false,
+        hidden: false,
+        display_order: 3,
+        tagline: "Modern Grooming & Aesthetic Booking",
+        features: ["Stylized service menu breakdowns", "Direct calendar reservation hooks", "Before-and-after visual sliders", "Interactive client reviews showcase"],
+        icon: "✨"
+      }
+    ];
+
+    if (!isSupabaseConfigured) {
+      const saved = localStorage.getItem('hds_portfolio_projects');
+      const projects: PortfolioProject[] = saved ? JSON.parse(saved) : [...defaultPortfolioProjects];
+      if (project.id) {
+        const idx = projects.findIndex(p => p.id === project.id);
+        if (idx !== -1) {
+          projects[idx] = { ...projects[idx], ...project };
+        } else {
+          projects.push(project);
+        }
+      } else {
+        project.id = 'project-' + Math.random().toString(36).substr(2, 9);
+        project.created_at = new Date().toISOString();
+        projects.push(project);
+      }
+      localStorage.setItem('hds_portfolio_projects', JSON.stringify(projects));
+      return true;
+    }
+    try {
+      const dbProject: any = {
+        title: project.title,
+        category: project.category,
+        description: project.description,
+        thumbnail_url: project.thumbnail,
+        demo_url: project.url,
+        featured: project.featured === true,
+        display_order: Number(project.display_order) || 1,
+        hidden: project.hidden === true,
+        tagline: project.tagline || null,
+        features: project.features || [],
+        icon: project.icon || '🚀'
+      };
+
+      if (project.id && !project.id.startsWith('project-')) {
+        const { error } = await supabase
+          .from('portfolio_projects')
+          .update(dbProject)
+          .eq('id', project.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from('portfolio_projects')
+          .insert([dbProject]);
+        if (error) throw error;
+      }
+      return true;
+    } catch (err) {
+      console.error('Error saving portfolio project to Supabase:', err);
+      const saved = localStorage.getItem('hds_portfolio_projects');
+      const projects: PortfolioProject[] = saved ? JSON.parse(saved) : [...defaultPortfolioProjects];
+      if (project.id) {
+        const idx = projects.findIndex(p => p.id === project.id);
+        if (idx !== -1) {
+          projects[idx] = { ...projects[idx], ...project };
+        } else {
+          projects.push(project);
+        }
+      } else {
+        project.id = 'project-' + Math.random().toString(36).substr(2, 9);
+        project.created_at = new Date().toISOString();
+        projects.push(project);
+      }
+      localStorage.setItem('hds_portfolio_projects', JSON.stringify(projects));
+      return true;
+    }
+  },
+
+  async deletePortfolioProject(id: string): Promise<boolean> {
+    if (!isSupabaseConfigured) {
+      const saved = localStorage.getItem('hds_portfolio_projects');
+      const projects: PortfolioProject[] = saved ? JSON.parse(saved) : [];
+      const filtered = projects.filter(p => p.id !== id);
+      localStorage.setItem('hds_portfolio_projects', JSON.stringify(filtered));
+      return true;
+    }
+    try {
+      if (id.startsWith('project-')) {
+        const saved = localStorage.getItem('hds_portfolio_projects');
+        const projects: PortfolioProject[] = saved ? JSON.parse(saved) : [];
+        const filtered = projects.filter(p => p.id !== id);
+        localStorage.setItem('hds_portfolio_projects', JSON.stringify(filtered));
+        return true;
+      }
+      const { error } = await supabase
+        .from('portfolio_projects')
+        .delete()
+        .eq('id', id);
+      if (error) throw error;
+      return true;
+    } catch (err) {
+      console.error('Error deleting portfolio project from Supabase:', err);
+      const saved = localStorage.getItem('hds_portfolio_projects');
+      const projects: PortfolioProject[] = saved ? JSON.parse(saved) : [];
+      const filtered = projects.filter(p => p.id !== id);
+      localStorage.setItem('hds_portfolio_projects', JSON.stringify(filtered));
+      return true;
     }
   }
 };

@@ -8,11 +8,12 @@ export interface Lead {
   service: string;
   budget: string;
   message: string;
-  status?: 'New' | 'Contacted' | 'In Progress' | 'Converted' | 'Lost';
+  status?: 'New' | 'Contacted' | 'In Progress' | 'Converted' | 'Closed';
   source?: string;
   ip_address?: string;
   device?: string;
   city?: string;
+  notes?: string;
 }
 
 export interface ContactMessage {
@@ -78,3 +79,20 @@ export interface BlogPost {
   published: boolean;
   created_at?: string;
 }
+
+export interface PortfolioProject {
+  id?: string;
+  created_at?: string;
+  title: string;
+  category: string;
+  description: string;
+  thumbnail: string;
+  url: string;
+  featured: boolean;
+  hidden: boolean;
+  display_order: number;
+  features?: string[];
+  tagline?: string;
+  icon?: string;
+}
+
