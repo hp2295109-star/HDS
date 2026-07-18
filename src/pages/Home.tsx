@@ -10,6 +10,7 @@ import {
 import PageTransition from '../components/PageTransition';
 import { supabaseService } from '../services/supabaseService';
 import { useLanguage } from '../components/LanguageProvider';
+import { useCMS } from '../hooks/useCMS';
 
 // Interfaces
 interface ServicePillar {
@@ -38,6 +39,7 @@ interface GalleryProject {
 
 export default function Home() {
   const { t, language } = useLanguage();
+  const { cmsContent } = useCMS();
   // Leads form state
   const [leadName, setLeadName] = useState('');
   const [leadBusiness, setLeadBusiness] = useState('');
@@ -74,7 +76,7 @@ export default function Home() {
   }, []);
 
   // 12 Services Matrix (Prominent with detailed prices, benefit bullets)
-  const servicePillars: ServicePillar[] = [
+  const servicePillars: ServicePillar[] = cmsContent.services.pillars || [
     {
       id: "biz-web",
       title: "Business Website Design",
@@ -272,7 +274,7 @@ export default function Home() {
   };
 
   // FAQs - 20+ High impact covering all services and details
-  const faqs = [
+  const faqs = cmsContent.faqs?.faqs || [
     { q: "Who is Harsh Patel and why should I choose a freelancer over a digital agency?", a: "Harsh Patel is a professional freelance developer, digital marketing specialist, and local business growth consultant based in Raigarh, Chhattisgarh. Holding a Bachelor of Commerce (B.Com) and an MBA in Marketing, Harsh blends technical full-stack code with real-world business psychology. Unlike large agencies that charge hefty overheads and pass your project to junior interns, Harsh works with you directly. You get transparent pricing, direct WhatsApp communication, faster launch speeds, and 1-on-1 accountability." },
     { q: "Which areas in Chhattisgarh do you specialize in serving?", a: "While we design for clients nationwide, we offer highly optimized local SEO and website development solutions specifically tailored for local business owners in Raigarh, Tamnar, Kharsia, Gharghoda, Sarangarh, and surrounding industrial zones. We understand local customer search psychology, the local competitor landscapes, and geographical ranking strategies in Chhattisgarh." },
     { q: "How much does a basic business website cost?", a: "Our premium landing pages and single-page sales funnels start at ₹7,000. Full multi-page business websites with complete Local SEO and WhatsApp lead automation typically range from ₹15,000 to ₹35,000 depending on features, copy length, and integrations. We provide flat upfront quotes with absolutely zero hidden annual charges." },
@@ -336,217 +338,221 @@ export default function Home() {
   return (
     <PageTransition>
       {/* 1. HERO SECTION WITH TARGET PROOF & LIVE FEED */}
-      <section className="relative pt-8 pb-20 overflow-hidden border-b border-white/5">
-        <div className="absolute top-[-10%] left-[10%] w-[350px] h-[350px] bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-[10%] right-[5%] w-[400px] h-[400px] bg-secondary/5 rounded-full blur-[120px] pointer-events-none" />
+      {cmsContent.visibility.showHero && (
+        <section className="relative pt-8 pb-20 overflow-hidden border-b border-white/5">
+          <div className="absolute top-[-10%] left-[10%] w-[350px] h-[350px] bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute bottom-[10%] right-[5%] w-[400px] h-[400px] bg-secondary/5 rounded-full blur-[120px] pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left Column Text */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center space-x-2 bg-white/[0.04] border border-white/5 px-3 py-1.5 rounded-full text-xs text-gray-400 font-mono">
-                <Award className="w-4 h-4 text-accent" />
-                <span>{t('hero.badge', 'MBA Marketer & Professional Web Designer')}</span>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+              {/* Left Column Text */}
+              <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <div className="inline-flex items-center space-x-2 bg-white/[0.04] border border-white/5 px-3 py-1.5 rounded-full text-xs text-gray-400 font-mono">
+                  <Award className="w-4 h-4 text-accent" />
+                  <span>{cmsContent.hero.badge || t('hero.badge', 'MBA Marketer & Professional Web Designer')}</span>
+                </div>
+
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold font-heading text-white tracking-tight leading-[1.1]">
+                  {cmsContent.hero.titleLine1 || t('hero.title.line1', 'Stop Posting.')}<br />
+                  <span className="bg-gradient-to-r from-[#00F0FF] to-secondary bg-clip-text text-transparent">
+                    {cmsContent.hero.titleLine2 || t('hero.title.line2', 'Start Building Your Local Brand.')}
+                  </span>
+                </h1>
+
+                <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-sans">
+                  {cmsContent.hero.subtitle || t('hero.subtitle', 'I help business owners in Raigarh, Tamnar, and Kharsia double their customer bookings with premium website designs, local Google Maps ranking, and high-impact search strategies. Zero agency bloat. Pure results.')}
+                </p>
+
+                {/* Trust highlights */}
+                <div className="grid grid-cols-3 gap-4 pt-4 max-w-md mx-auto lg:mx-0">
+                  <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-3 text-center">
+                    <div className="text-accent text-xl font-bold font-mono">{cmsContent.hero.stat1Value || "100%"}</div>
+                    <div className="text-[10px] text-gray-500 uppercase font-bold tracking-wider mt-0.5">{cmsContent.hero.stat1Label || (language === 'hi' ? 'स्पीड इंडेक्स' : 'Speed Index')}</div>
+                  </div>
+                  <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-3 text-center">
+                    <div className="text-secondary text-xl font-bold font-mono">{cmsContent.hero.stat2Value || "2.4x"}</div>
+                    <div className="text-[10px] text-gray-500 uppercase font-bold tracking-wider mt-0.5">{cmsContent.hero.stat2Label || (language === 'hi' ? 'लीड मल्टीप्लायर' : 'Lead Multiplier')}</div>
+                  </div>
+                  <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-3 text-center">
+                    <div className="text-[#0080FF] text-xl font-bold font-mono">{cmsContent.hero.stat3Value || "1-on-1"}</div>
+                    <div className="text-[10px] text-gray-500 uppercase font-bold tracking-wider mt-0.5">{cmsContent.hero.stat3Label || (language === 'hi' ? 'सीधी जवाबदेही' : 'Direct Accountability')}</div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-6">
+                  <a 
+                    href="#contact-form" 
+                    className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-accent to-secondary text-black font-extrabold text-xs uppercase tracking-wider rounded-xl hover:opacity-90 transition-all text-center cursor-pointer shadow-lg shadow-accent/10"
+                  >
+                    {cmsContent.hero.ctaBookCall || t('hero.cta.bookCall', 'Book Free Strategy Call')}
+                  </a>
+                  <Link 
+                    to="/portfolio" 
+                    className="w-full sm:w-auto px-8 py-4 bg-white/5 border border-white/10 hover:border-accent hover:bg-accent/5 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all text-center"
+                  >
+                    {cmsContent.hero.ctaExploreDemos || t('hero.cta.exploreDemos', 'Explore Demo Designs')}
+                  </Link>
+                </div>
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold font-heading text-white tracking-tight leading-[1.1]">
-                {t('hero.title.line1', 'Stop Posting.')}<br />
-                <span className="bg-gradient-to-r from-[#00F0FF] to-secondary bg-clip-text text-transparent">
-                  {t('hero.title.line2', 'Start Building Your Local Brand.')}
-                </span>
-              </h1>
-
-              <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-sans">
-                {t('hero.subtitle', 'I help business owners in Raigarh, Tamnar, and Kharsia double their customer bookings with premium website designs, local Google Maps ranking, and high-impact search strategies. Zero agency bloat. Pure results.')}
-              </p>
-
-              {/* Trust highlights */}
-              <div className="grid grid-cols-3 gap-4 pt-4 max-w-md mx-auto lg:mx-0">
-                <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-3 text-center">
-                  <div className="text-accent text-xl font-bold font-mono">100%</div>
-                  <div className="text-[10px] text-gray-500 uppercase font-bold tracking-wider mt-0.5">{language === 'hi' ? 'स्पीड इंडेक्स' : 'Speed Index'}</div>
+              {/* Right Column Bento Box Grid */}
+              <div className="lg:col-span-5 grid grid-cols-2 gap-4">
+                
+                {/* Card 1: Speed Meter */}
+                <div className="bg-white/[0.01] border border-white/5 rounded-3xl p-5 flex flex-col justify-between h-48 relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-accent/5 rounded-full blur-xl" />
+                  <div className="flex justify-between items-start">
+                    <div className="w-9 h-9 bg-accent/10 rounded-xl flex items-center justify-center text-accent">
+                      <Zap className="w-5 h-5" />
+                    </div>
+                    <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest bg-emerald-400/10 px-2 py-0.5 rounded">Core Web Vitals</span>
+                  </div>
+                  <div>
+                    <div className="text-3xl font-bold text-white font-mono">{cmsContent.hero.speedScore || "99+"}</div>
+                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mt-1">Lighthouse Score</h3>
+                    <p className="text-[10px] text-gray-500 mt-1">Lightweight clean code beats heavy templates.</p>
+                  </div>
                 </div>
-                <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-3 text-center">
-                  <div className="text-secondary text-xl font-bold font-mono">2.4x</div>
-                  <div className="text-[10px] text-gray-500 uppercase font-bold tracking-wider mt-0.5">{language === 'hi' ? 'लीड मल्टीप्लायर' : 'Lead Multiplier'}</div>
-                </div>
-                <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-3 text-center">
-                  <div className="text-[#0080FF] text-xl font-bold font-mono">1-on-1</div>
-                  <div className="text-[10px] text-gray-500 uppercase font-bold tracking-wider mt-0.5">{language === 'hi' ? 'सीधी जवाबदेही' : 'Direct Accountability'}</div>
-                </div>
-              </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-6">
-                <a 
-                  href="#contact-form" 
-                  className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-accent to-secondary text-black font-extrabold text-xs uppercase tracking-wider rounded-xl hover:opacity-90 transition-all text-center cursor-pointer shadow-lg shadow-accent/10"
-                >
-                  {t('hero.cta.bookCall', 'Book Free Strategy Call')}
-                </a>
-                <Link 
-                  to="/portfolio" 
-                  className="w-full sm:w-auto px-8 py-4 bg-white/5 border border-white/10 hover:border-accent hover:bg-accent/5 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all text-center"
-                >
-                  {t('hero.cta.exploreDemos', 'Explore Demo Designs')}
-                </Link>
+                {/* Card 2: Local Map Focus */}
+                <div className="bg-white/[0.01] border border-white/5 rounded-3xl p-5 flex flex-col justify-between h-48 relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-secondary/5 rounded-full blur-xl" />
+                  <div className="flex justify-between items-start">
+                    <div className="w-9 h-9 bg-secondary/10 rounded-xl flex items-center justify-center text-secondary">
+                      <MapPin className="w-5 h-5" />
+                    </div>
+                    <span className="text-[10px] font-mono font-bold text-[#00F0FF] uppercase tracking-widest">Maps pack</span>
+                  </div>
+                  <div>
+                    <div className="text-3xl font-bold text-white font-mono">#1 Pack</div>
+                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mt-1">Local Map Domination</h3>
+                    <p className="text-[10px] text-gray-500 mt-1">Be the answer when clients search "near me".</p>
+                  </div>
+                </div>
+
+                {/* Card 3: Credibility Story Badge */}
+                <div className="col-span-2 bg-gradient-to-br from-white/[0.02] to-white/[0.01] border border-white/5 rounded-3xl p-6 flex items-center justify-between">
+                  <div>
+                    <div className="text-[10px] font-mono text-gray-400 uppercase tracking-widest">ABOUT THE FREELANCER</div>
+                    <h4 className="text-base font-bold text-white mt-1">{cmsContent.hero.avatarName || "Harsh Patel, MBA Marketing"}</h4>
+                    <p className="text-xs text-gray-500 mt-1 max-w-[280px]">{cmsContent.hero.avatarDesc || "Combining deep strategic consumer psychology with clean, performance-optimized code files."}</p>
+                  </div>
+                  <div className="w-16 h-16 bg-accent/15 border border-accent/20 rounded-2xl flex items-center justify-center text-accent text-lg font-bold shrink-0 shadow-sm">
+                    {cmsContent.hero.avatarLetters || "HP"}
+                  </div>
+                </div>
+
               </div>
             </div>
 
-            {/* Right Column Bento Box Grid */}
-            <div className="lg:col-span-5 grid grid-cols-2 gap-4">
-              
-              {/* Card 1: Speed Meter */}
-              <div className="bg-white/[0.01] border border-white/5 rounded-3xl p-5 flex flex-col justify-between h-48 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-16 h-16 bg-accent/5 rounded-full blur-xl" />
-                <div className="flex justify-between items-start">
-                  <div className="w-9 h-9 bg-accent/10 rounded-xl flex items-center justify-center text-accent">
-                    <Zap className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest bg-emerald-400/10 px-2 py-0.5 rounded">Core Web Vitals</span>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-white font-mono">99+</div>
-                  <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mt-1">Lighthouse Score</h3>
-                  <p className="text-[10px] text-gray-500 mt-1">Lightweight clean code beats heavy templates.</p>
-                </div>
-              </div>
-
-              {/* Card 2: Local Map Focus */}
-              <div className="bg-white/[0.01] border border-white/5 rounded-3xl p-5 flex flex-col justify-between h-48 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-16 h-16 bg-secondary/5 rounded-full blur-xl" />
-                <div className="flex justify-between items-start">
-                  <div className="w-9 h-9 bg-secondary/10 rounded-xl flex items-center justify-center text-secondary">
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] font-mono font-bold text-[#00F0FF] uppercase tracking-widest">Maps pack</span>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-white font-mono">#1 Pack</div>
-                  <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mt-1">Local Map Domination</h3>
-                  <p className="text-[10px] text-gray-500 mt-1">Be the answer when clients search "near me".</p>
-                </div>
-              </div>
-
-              {/* Card 3: Credibility Story Badge */}
-              <div className="col-span-2 bg-gradient-to-br from-white/[0.02] to-white/[0.01] border border-white/5 rounded-3xl p-6 flex items-center justify-between">
-                <div>
-                  <div className="text-[10px] font-mono text-gray-400 uppercase tracking-widest">ABOUT THE FREELANCER</div>
-                  <h4 className="text-base font-bold text-white mt-1">Harsh Patel, MBA Marketing</h4>
-                  <p className="text-xs text-gray-500 mt-1 max-w-[280px]">Combining deep strategic consumer psychology with clean, performance-optimized code files.</p>
-                </div>
-                <div className="w-16 h-16 bg-accent/15 border border-accent/20 rounded-2xl flex items-center justify-center text-accent text-lg font-bold shrink-0 shadow-sm">
-                  HP
-                </div>
-              </div>
-
-            </div>
           </div>
-
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 2. THE 12 PILLARS - INTERACTIVE SERVICES HUB */}
-      <section className="py-24 relative" id="services">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center mb-16">
-            <span className="inline-flex items-center space-x-1.5 bg-accent/10 text-accent px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
-              <span>Our Mastery Suite</span>
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold font-heading text-white tracking-tight">
-              12 High-Performance Services
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto mt-3 text-base">
-              Tailored growth services engineered to build digital credibility, rank on Google, generate verified leads, and maintain site health.
-            </p>
-          </div>
+      {cmsContent.visibility.showServices && (
+        <section className="py-24 relative" id="services">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div className="text-center mb-16">
+              <span className="inline-flex items-center space-x-1.5 bg-accent/10 text-accent px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+                <span>Our Mastery Suite</span>
+              </span>
+              <h2 className="text-3xl md:text-5xl font-bold font-heading text-white tracking-tight">
+                {cmsContent.services.title || "12 High-Performance Services"}
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto mt-3 text-base">
+                {cmsContent.services.subtitle || "Tailored growth services engineered to build digital credibility, rank on Google, generate verified leads, and maintain site health."}
+              </p>
+            </div>
 
-          {/* Interactive Tags Selector */}
-          <div className="flex justify-center mb-12 overflow-x-auto pb-2 scrollbar-none gap-2">
-            {[
-              { id: 'all', label: 'All Services' },
-              { id: 'Design', label: 'Custom Design' },
-              { id: 'SEO', label: 'Search Optimization' },
-              { id: 'Marketing', label: 'Direct Lead Gen' },
-              { id: 'Maintenance', label: 'Speed & Uptime' }
-            ].map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveServiceTab(tab.id as any)}
-                className={`px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border whitespace-nowrap cursor-pointer ${
-                  activeServiceTab === tab.id 
-                    ? 'bg-accent text-black border-accent font-extrabold shadow-md shadow-accent/10' 
-                    : 'bg-white/5 text-gray-400 border-white/10 hover:text-white hover:bg-white/10'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Services Grid (3 Columns Desktop, 1 Mobile) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {servicePillars
-              .filter(s => activeServiceTab === 'all' || s.category === activeServiceTab)
-              .map((service, index) => (
-                <motion.div
-                  key={service.id}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="bg-white/[0.01] border border-white/5 rounded-3xl p-6 flex flex-col justify-between group hover:border-accent/40 hover:bg-white/[0.02] transition-all duration-300"
+            {/* Interactive Tags Selector */}
+            <div className="flex justify-center mb-12 overflow-x-auto pb-2 scrollbar-none gap-2">
+              {[
+                { id: 'all', label: 'All Services' },
+                { id: 'Design', label: 'Custom Design' },
+                { id: 'SEO', label: 'Search Optimization' },
+                { id: 'Marketing', label: 'Direct Lead Gen' },
+                { id: 'Maintenance', label: 'Speed & Uptime' }
+              ].map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveServiceTab(tab.id as any)}
+                  className={`px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border whitespace-nowrap cursor-pointer ${
+                    activeServiceTab === tab.id 
+                      ? 'bg-accent text-black border-accent font-extrabold shadow-md shadow-accent/10' 
+                      : 'bg-white/5 text-gray-400 border-white/10 hover:text-white hover:bg-white/10'
+                  }`}
                 >
-                  <div>
-                    {/* Header: Title & Starting Price */}
-                    <div className="flex items-start justify-between mb-4">
-                      <span className="text-[10px] font-mono uppercase tracking-widest text-gray-400 bg-white/5 px-2.5 py-1 rounded-md">
-                        {service.category}
-                      </span>
-                      <span className="text-xs font-bold text-accent bg-accent/10 px-3 py-1 rounded-full">
-                        {service.price}
-                      </span>
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Services Grid (3 Columns Desktop, 1 Mobile) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {servicePillars
+                .filter(s => activeServiceTab === 'all' || s.category === activeServiceTab)
+                .map((service, index) => (
+                  <motion.div
+                    key={service.id}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                    className="bg-white/[0.01] border border-white/5 rounded-3xl p-6 flex flex-col justify-between group hover:border-accent/40 hover:bg-white/[0.02] transition-all duration-300"
+                  >
+                    <div>
+                      {/* Header: Title & Starting Price */}
+                      <div className="flex items-start justify-between mb-4">
+                        <span className="text-[10px] font-mono uppercase tracking-widest text-gray-400 bg-white/5 px-2.5 py-1 rounded-md">
+                          {service.category}
+                        </span>
+                        <span className="text-xs font-bold text-accent bg-accent/10 px-3 py-1 rounded-full">
+                          {service.price}
+                        </span>
+                      </div>
+
+                      <h3 className="text-lg font-bold text-white group-hover:text-accent transition-colors">
+                        {service.title}
+                      </h3>
+                      
+                      <p className="text-gray-400 text-xs mt-3 leading-relaxed">
+                        {service.desc}
+                      </p>
+
+                      {/* Benefit Bullets */}
+                      <ul className="space-y-2 mt-6 pt-5 border-t border-white/5">
+                        {service.benefits.map((b, bIdx) => (
+                          <li key={bIdx} className="text-[11px] text-gray-300 flex items-center">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-accent mr-2 shrink-0" />
+                            <span>{b}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
 
-                    <h3 className="text-lg font-bold text-white group-hover:text-accent transition-colors">
-                      {service.title}
-                    </h3>
-                    
-                    <p className="text-gray-400 text-xs mt-3 leading-relaxed">
-                      {service.desc}
-                    </p>
+                    {/* Immediate CTA inside Card */}
+                    <div className="mt-8">
+                      <a
+                        href={`https://wa.me/917067363208?text=Hello%20Harsh%20Digital%20Studios%2C%20I%20want%20to%20discuss%20your%20service%3A%20${encodeURIComponent(service.title)}%20for%20my%20business%21`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full inline-flex items-center justify-center gap-1.5 py-3 bg-white/5 hover:bg-accent hover:text-black border border-white/5 text-[11px] text-gray-300 font-bold uppercase rounded-xl transition-all"
+                      >
+                        <span>Inquire Now</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+                  </motion.div>
+                ))}
+            </div>
 
-                    {/* Benefit Bullets */}
-                    <ul className="space-y-2 mt-6 pt-5 border-t border-white/5">
-                      {service.benefits.map((b, bIdx) => (
-                        <li key={bIdx} className="text-[11px] text-gray-300 flex items-center">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-accent mr-2 shrink-0" />
-                          <span>{b}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Immediate CTA inside Card */}
-                  <div className="mt-8">
-                    <a
-                      href={`https://wa.me/917067363208?text=Hello%20Harsh%20Digital%20Studios%2C%20I%20want%20to%20discuss%20your%20service%3A%20${encodeURIComponent(service.title)}%20for%20my%20business%21`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full inline-flex items-center justify-center gap-1.5 py-3 bg-white/5 hover:bg-accent hover:text-black border border-white/5 text-[11px] text-gray-300 font-bold uppercase rounded-xl transition-all"
-                    >
-                      <span>Inquire Now</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-                </motion.div>
-              ))}
           </div>
-
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 3. WEBSITE DESIGN GALLERY */}
       <section className="py-24 bg-transparent border-t border-white/5 relative" id="demo-showcase">
@@ -851,114 +857,118 @@ export default function Home() {
       </section>
 
       {/* 4. WHY CHOOSE HARSH PATEL - TRUST & TOOL MASTERY */}
-      <section className="py-24 bg-transparent border-t border-white/5 relative" id="about-credentials">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Story column */}
-            <div className="space-y-6">
-              <span className="inline-flex items-center space-x-1.5 bg-accent/10 text-accent px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
-                <span>The Brain Behind HDS</span>
-              </span>
-              
-              <h2 className="text-3xl md:text-4xl font-bold font-heading text-white tracking-tight">
-                Harsh Patel<br />
-                <span className="text-gray-400">B.Com, MBA Marketing Expert</span>
-              </h2>
+      {cmsContent.visibility.showAbout && (
+        <section className="py-24 bg-transparent border-t border-white/5 relative" id="about-credentials">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Story column */}
+              <div className="space-y-6">
+                <span className="inline-flex items-center space-x-1.5 bg-accent/10 text-accent px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+                  <span>The Brain Behind HDS</span>
+                </span>
+                
+                <h2 className="text-3xl md:text-4xl font-bold font-heading text-white tracking-tight">
+                  {cmsContent.about.title || "Harsh Patel"}<br />
+                  <span className="text-gray-400">{cmsContent.about.subtitle || "B.Com, MBA Marketing Expert"}</span>
+                </h2>
 
-              <p className="text-gray-400 text-sm leading-relaxed font-sans">
-                Many developers know how to write code, but very few understand how local buyers think. With a Bachelor of Commerce (B.Com) and an MBA in Marketing, I don't just build sites that look visually clean—I engineer high-converting digital pipelines designed to build deep consumer trust and generate active inbound phone calls.
-              </p>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  {cmsContent.about.description || "Many developers know how to write code, but very few understand how local buyers think. With a Bachelor of Commerce (B.Com) and an MBA in Marketing, I don't just build sites that look visually clean—I engineer high-converting digital pipelines designed to build deep consumer trust and generate active inbound phone calls."}
+                </p>
 
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-accent/10 text-accent rounded-xl flex items-center justify-center shrink-0 mt-1">
-                    <Award className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-white">Certified Digital Marketer</h4>
-                    <p className="text-xs text-gray-500 mt-0.5">Specialized in Search Engine Optimization, local GBP, and consumer action optimization in local B2C markets.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-secondary/10 text-secondary rounded-xl flex items-center justify-center shrink-0 mt-1">
-                    <HeartHandshake className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-white">Full-Stack Freelancer Independence</h4>
-                    <p className="text-xs text-gray-500 mt-0.5">Zero massive corporate overheads, zero telephone games with lazy middlemen. You deal directly with the coder and strategist.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Tool Mastery Grid */}
-            <div className="bg-white/[0.01] border border-white/5 rounded-[32px] p-8">
-              <h3 className="text-base font-bold text-white mb-6 uppercase tracking-wider font-mono">Core Tool Mastery</h3>
-              
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {[
-                  { name: "Google Search Console", level: "Expert", desc: "Rank tracking & schemas" },
-                  { name: "Google Analytics 4", level: "Expert", desc: "User action logging" },
-                  { name: "GBP Optimization", level: "Expert", desc: "Maps pack ranks" },
-                  { name: "Meta Business Suite", level: "Expert", desc: "Direct response ads" },
-                  { name: "Canva Pro", level: "Pro", desc: "Aesthetic branding" },
-                  { name: "GitHub", level: "Pro", desc: "Secure deployment" },
-                  { name: "Cloudflare CDN", level: "Expert", desc: "Global speed index" },
-                  { name: "Hostinger Panel", level: "Pro", desc: "Reliable cloud servers" },
-                  { name: "Supabase Backend", level: "Pro", desc: "Secure CRM databases" }
-                ].map((tool, idx) => (
-                  <div key={idx} className="bg-white/5 border border-white/5 p-4 rounded-2xl flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 bg-accent/10 text-accent rounded-xl flex items-center justify-center shrink-0 mt-1">
+                      <Award className="w-5 h-5" />
+                    </div>
                     <div>
-                      <div className="text-xs font-bold text-white">{tool.name}</div>
-                      <p className="text-[10px] text-gray-500 mt-1">{tool.desc}</p>
-                    </div>
-                    <div className="mt-3 text-[10px] font-mono font-bold text-accent bg-accent/10 px-2 py-0.5 rounded self-start">
-                      {tool.level}
+                      <h4 className="text-sm font-bold text-white">{cmsContent.about.bullet1Title || "Certified Digital Marketer"}</h4>
+                      <p className="text-xs text-gray-500 mt-0.5">{cmsContent.about.bullet1Desc || "Specialized in Search Engine Optimization, local GBP, and consumer action optimization in local B2C markets."}</p>
                     </div>
                   </div>
-                ))}
+
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 bg-secondary/10 text-secondary rounded-xl flex items-center justify-center shrink-0 mt-1">
+                      <HeartHandshake className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-white">{cmsContent.about.bullet2Title || "Full-Stack Freelancer Independence"}</h4>
+                      <p className="text-xs text-gray-500 mt-0.5">{cmsContent.about.bullet2Desc || "Zero massive corporate overheads, zero telephone games with lazy middlemen. You deal directly with the coder and strategist."}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Tool Mastery Grid */}
+              <div className="bg-white/[0.01] border border-white/5 rounded-[32px] p-8">
+                <h3 className="text-base font-bold text-white mb-6 uppercase tracking-wider font-mono">Core Tool Mastery</h3>
+                
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  {[
+                    { name: "Google Search Console", level: "Expert", desc: "Rank tracking & schemas" },
+                    { name: "Google Analytics 4", level: "Expert", desc: "User action logging" },
+                    { name: "GBP Optimization", level: "Expert", desc: "Maps pack ranks" },
+                    { name: "Meta Business Suite", level: "Expert", desc: "Direct response ads" },
+                    { name: "Canva Pro", level: "Pro", desc: "Aesthetic branding" },
+                    { name: "GitHub", level: "Pro", desc: "Secure deployment" },
+                    { name: "Cloudflare CDN", level: "Expert", desc: "Global speed index" },
+                    { name: "Hostinger Panel", level: "Pro", desc: "Reliable cloud servers" },
+                    { name: "Supabase Backend", level: "Pro", desc: "Secure CRM databases" }
+                  ].map((tool, idx) => (
+                    <div key={idx} className="bg-white/5 border border-white/5 p-4 rounded-2xl flex flex-col justify-between">
+                      <div>
+                        <div className="text-xs font-bold text-white">{tool.name}</div>
+                        <p className="text-[10px] text-gray-500 mt-1">{tool.desc}</p>
+                      </div>
+                      <div className="mt-3 text-[10px] font-mono font-bold text-accent bg-accent/10 px-2 py-0.5 rounded self-start">
+                        {tool.level}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
 
       {/* 5. HOW WE WORK - THE WEBSITE PROCESS */}
-      <section className="py-24 bg-transparent border-t border-white/5 relative" id="process">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center mb-16">
-            <span className="inline-flex items-center space-x-1.5 bg-secondary/10 text-secondary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
-              <span>Our Blueprint</span>
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold font-heading text-white tracking-tight">
-              Our 4-Step Launch Process
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto mt-3 text-base">
-              From raw concept to front-page organic Google rankings, here is how we work with local Chhattisgarh businesses.
-            </p>
-          </div>
+      {cmsContent.visibility.showProcess && (
+        <section className="py-24 bg-transparent border-t border-white/5 relative" id="process">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div className="text-center mb-16">
+              <span className="inline-flex items-center space-x-1.5 bg-secondary/10 text-secondary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+                <span>Our Blueprint</span>
+              </span>
+              <h2 className="text-3xl md:text-5xl font-bold font-heading text-white tracking-tight">
+                {cmsContent.process.title || "Our 4-Step Launch Process"}
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto mt-3 text-base">
+                {cmsContent.process.subtitle || "From raw concept to front-page organic Google rankings, here is how we work with local Chhattisgarh businesses."}
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { step: "01", title: "Discovery & Strategy Plan", desc: "We analyze your top local competitors, audit your current brand presence, find local keyword gaps, and design a transparent project roadmap." },
-              { step: "02", title: "Premium Visual UI Design", desc: "We build custom, modern page layouts. No boring templates. We craft tailored, brand-specific aesthetics, typography pairings, and clean assets." },
-              { step: "03", title: "High-Speed & SEO Build", desc: "We write clean, lightweight code. We optimize Web Vitals, write semantic tags, configure schemas, and link Search Console dashboards." },
-              { step: "04", title: "Launch, Training & Handover", desc: "We deploy the site to fast cloud servers, optimize your Google Maps listing, set up analytics, and hand over simple Canva/admin control panels." }
-            ].map((proc, pIdx) => (
-              <div key={pIdx} className="bg-white/[0.01] border border-white/5 rounded-3xl p-6 relative group">
-                <span className="text-4xl font-extrabold font-mono text-accent/25 group-hover:text-accent transition-colors block mb-4">{proc.step}</span>
-                <h3 className="text-base font-bold text-white mb-2">{proc.title}</h3>
-                <p className="text-gray-500 text-xs leading-relaxed">{proc.desc}</p>
-              </div>
-            ))}
-          </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {(cmsContent.process.steps || [
+                { step: "01", title: "Discovery & Strategy Plan", desc: "We analyze your top local competitors, audit your current brand presence, find local keyword gaps, and design a transparent project roadmap." },
+                { step: "02", title: "Premium Visual UI Design", desc: "We build custom, modern page layouts. No boring templates. We craft tailored, brand-specific aesthetics, typography pairings, and clean assets." },
+                { step: "03", title: "High-Speed & SEO Build", desc: "We write clean, lightweight code. We optimize Web Vitals, write semantic tags, configure schemas, and link Search Console dashboards." },
+                { step: "04", title: "Launch, Training & Handover", desc: "We deploy the site to fast cloud servers, optimize your Google Maps listing, set up analytics, and hand over simple Canva/admin control panels." }
+              ]).map((proc, pIdx) => (
+                <div key={pIdx} className="bg-white/[0.01] border border-white/5 rounded-3xl p-6 relative group">
+                  <span className="text-4xl font-extrabold font-mono text-accent/25 group-hover:text-accent transition-colors block mb-4">{proc.step}</span>
+                  <h3 className="text-base font-bold text-white mb-2">{proc.title}</h3>
+                  <p className="text-gray-500 text-xs leading-relaxed">{proc.desc}</p>
+                </div>
+              ))}
+            </div>
 
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
 
       {/* 6. WORK IN PROGRESS - BUILDING SUCCESS STORIES */}
       <section className="py-24 bg-transparent border-t border-white/5 relative" id="testimonials">
@@ -1221,138 +1231,142 @@ export default function Home() {
       </section>
 
       {/* 8. DYNAMIC INSIGHTS / LATEST BLOG PREVIEWS */}
-      <section className="py-24 bg-transparent border-t border-white/5 relative" id="insights">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 gap-4">
-            <div>
-              <span className="inline-flex items-center space-x-1.5 bg-[#00F0FF]/10 text-[#00F0FF] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
-                <span>Free Knowledge</span>
+      {cmsContent.visibility.showBlog && (
+        <section className="py-24 bg-transparent border-t border-white/5 relative" id="insights">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 gap-4">
+              <div>
+                <span className="inline-flex items-center space-x-1.5 bg-[#00F0FF]/10 text-[#00F0FF] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+                  <span>Free Knowledge</span>
+                </span>
+                <h2 className="text-3xl md:text-5xl font-bold font-heading text-white tracking-tight">
+                  {cmsContent.blog.title || "Latest Growth Insights"}
+                </h2>
+                <p className="text-gray-400 mt-2 max-w-xl text-sm">
+                  {cmsContent.blog.subtitle || "Practical, actionable advice written specifically for local Chhattisgarh business owners on web design and SEO."}
+                </p>
+              </div>
+
+              <Link
+                to="/blog"
+                className="text-accent text-xs font-bold uppercase tracking-wider hover:underline flex items-center gap-1 shrink-0"
+              >
+                <span>Explore All Insights</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {(cmsContent.blog.posts || [
+                {
+                  id: "raigarh-local-business-website-2026",
+                  title: "Why Every Local Business in Raigarh Needs a Professional Website in 2026",
+                  tag: "Web Design",
+                  time: "12 min read",
+                  desc: "Explore how a premium, SEO-optimized business website drives high-intent client inquiries 24/7. Stop renting social spaces and secure your brand."
+                },
+                {
+                  id: "google-business-profile-optimization-guide-2026",
+                  title: "Google Business Profile Optimization: Complete Maps Dominance Blueprint",
+                  tag: "Local SEO & GBP",
+                  time: "14 min read",
+                  desc: "Discover how to optimize your Google Business Profile to rank #1 on Google Maps, generate direct calls, and attract local showroom traffic."
+                },
+                {
+                  id: "website-vs-instagram-for-local-business-2026",
+                  title: "Website vs Instagram: Which One Actually Brings More Customers?",
+                  tag: "Marketing Strategy",
+                  time: "11 min read",
+                  desc: "Compare organic social feeds with custom website funnels. Learn why high-intent Google search traffic delivers far better conversions."
+                }
+              ]).map(art => (
+                <div key={art.id} className="bg-white/[0.01] border border-white/5 rounded-3xl p-6 flex flex-col justify-between hover:border-accent/30 transition-all">
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="px-2.5 py-0.5 rounded bg-accent/10 text-accent text-[9px] font-bold uppercase tracking-widest">{art.tag}</span>
+                      <span className="text-[10px] text-gray-500 font-mono">{art.time}</span>
+                    </div>
+
+                    <h3 className="text-base font-bold text-white mb-2 line-clamp-2">{art.title}</h3>
+                    <p className="text-gray-400 text-xs leading-relaxed line-clamp-3 mb-6">{art.desc}</p>
+                  </div>
+
+                  <Link
+                    to="/blog"
+                    className="text-accent text-xs font-bold hover:underline inline-flex items-center gap-1 self-start"
+                  >
+                    <span>Read Guide</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+              ))}
+            </div>
+
+          </div>
+        </section>
+      )}
+
+      {/* 9. 20+ HIGH-IMPACT LOCAL SEO FAQ SECTION */}
+      {cmsContent.visibility.showFAQ && (
+        <section className="py-24 bg-transparent border-t border-white/5 relative" id="faqs">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div className="text-center mb-16">
+              <span className="inline-flex items-center space-x-1.5 bg-accent/10 text-accent px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+                <span>SEO Answer Engine</span>
               </span>
               <h2 className="text-3xl md:text-5xl font-bold font-heading text-white tracking-tight">
-                Latest Growth Insights
+                {cmsContent.faqs?.title || "Frequently Asked Questions"}
               </h2>
-              <p className="text-gray-400 mt-2 max-w-xl text-sm">
-                Practical, actionable advice written specifically for local Chhattisgarh business owners on web design and SEO.
+              <p className="text-gray-400 mt-2 text-sm">
+                {cmsContent.faqs?.subtitle || "Answering everything about domain ownership, local rankings, pricing structures, and website maintenance."}
               </p>
             </div>
 
-            <Link
-              to="/blog"
-              className="text-accent text-xs font-bold uppercase tracking-wider hover:underline flex items-center gap-1 shrink-0"
-            >
-              <span>Explore All Insights</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                id: "raigarh-local-business-website-2026",
-                title: "Why Every Local Business in Raigarh Needs a Professional Website in 2026",
-                tag: "Web Design",
-                time: "12 min read",
-                desc: "Explore how a premium, SEO-optimized business website drives high-intent client inquiries 24/7. Stop renting social spaces and secure your brand."
-              },
-              {
-                id: "google-business-profile-optimization-guide-2026",
-                title: "Google Business Profile Optimization: Complete Maps Dominance Blueprint",
-                tag: "Local SEO & GBP",
-                time: "14 min read",
-                desc: "Discover how to optimize your Google Business Profile to rank #1 on Google Maps, generate direct calls, and attract local showroom traffic."
-              },
-              {
-                id: "website-vs-instagram-for-local-business-2026",
-                title: "Website vs Instagram: Which One Actually Brings More Customers?",
-                tag: "Marketing Strategy",
-                time: "11 min read",
-                desc: "Compare organic social feeds with custom website funnels. Learn why high-intent Google search traffic delivers far better conversions."
-              }
-            ].map(art => (
-              <div key={art.id} className="bg-white/[0.01] border border-white/5 rounded-3xl p-6 flex flex-col justify-between hover:border-accent/30 transition-all">
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="px-2.5 py-0.5 rounded bg-accent/10 text-accent text-[9px] font-bold uppercase tracking-widest">{art.tag}</span>
-                    <span className="text-[10px] text-gray-500 font-mono">{art.time}</span>
-                  </div>
-
-                  <h3 className="text-base font-bold text-white mb-2 line-clamp-2">{art.title}</h3>
-                  <p className="text-gray-400 text-xs leading-relaxed line-clamp-3 mb-6">{art.desc}</p>
-                </div>
-
-                <Link
-                  to="/blog"
-                  className="text-accent text-xs font-bold hover:underline inline-flex items-center gap-1 self-start"
-                >
-                  <span>Read Guide</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* 9. 20+ HIGH-IMPACT LOCAL SEO FAQ SECTION */}
-      <section className="py-24 bg-transparent border-t border-white/5 relative" id="faqs">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center mb-16">
-            <span className="inline-flex items-center space-x-1.5 bg-accent/10 text-accent px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
-              <span>SEO Answer Engine</span>
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold font-heading text-white tracking-tight">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-gray-400 mt-2 text-sm">
-              Answering everything about domain ownership, local rankings, pricing structures, and website maintenance.
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            {faqs.map((faq, index) => {
-              const isExpanded = expandedFaqId === index;
-              return (
-                <div 
-                  key={index} 
-                  className="bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden transition-colors"
-                >
-                  <button
-                    onClick={() => setExpandedFaqId(isExpanded ? null : index)}
-                    className="w-full text-left p-6 flex justify-between items-center gap-4 focus:outline-none cursor-pointer hover:bg-white/[0.02] transition-colors"
+            <div className="space-y-4">
+              {faqs.map((faq, index) => {
+                const isExpanded = expandedFaqId === index;
+                return (
+                  <div 
+                    key={index} 
+                    className="bg-white/[0.01] border border-white/5 rounded-2xl overflow-hidden transition-colors"
                   >
-                    <span className="text-sm font-bold text-white leading-snug">{faq.q}</span>
-                    <span className="text-accent shrink-0">
-                      {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                    </span>
-                  </button>
+                    <button
+                      onClick={() => setExpandedFaqId(isExpanded ? null : index)}
+                      className="w-full text-left p-6 flex justify-between items-center gap-4 focus:outline-none cursor-pointer hover:bg-white/[0.02] transition-colors"
+                    >
+                      <span className="text-sm font-bold text-white leading-snug">{faq.q}</span>
+                      <span className="text-accent shrink-0">
+                        {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                      </span>
+                    </button>
 
-                  {isExpanded && (
-                    <div className="px-6 pb-6 pt-1 text-xs md:text-sm text-gray-400 leading-relaxed font-sans border-t border-white/5 bg-white/[0.005]">
-                      {faq.a}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                    {isExpanded && (
+                      <div className="px-6 pb-6 pt-1 text-xs md:text-sm text-gray-400 leading-relaxed font-sans border-t border-white/5 bg-white/[0.005]">
+                        {faq.a}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="mt-12 text-center bg-white/[0.02] border border-white/5 p-6 rounded-3xl">
+              <p className="text-xs text-gray-400">Still have questions specific to your business model?</p>
+              <a 
+                href="https://wa.me/917067363208?text=Hello%20Harsh%20Patel%2C%20I%20have%20some%20questions%20regarding%20web%20development%20for%20my%20business%2E"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline text-xs font-bold mt-2 inline-block"
+              >
+                Ask Harsh Patel directly on WhatsApp →
+              </a>
+            </div>
+
           </div>
-
-          <div className="mt-12 text-center bg-white/[0.02] border border-white/5 p-6 rounded-3xl">
-            <p className="text-xs text-gray-400">Still have questions specific to your business model?</p>
-            <a 
-              href="https://wa.me/917067363208?text=Hello%20Harsh%20Patel%2C%20I%20have%20some%20questions%20regarding%20web%20development%20for%20my%20business%2E"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline text-xs font-bold mt-2 inline-block"
-            >
-              Ask Harsh Patel directly on WhatsApp →
-            </a>
-          </div>
-
-        </div>
-      </section>
+        </section>
+      )}
 
     </PageTransition>
   );

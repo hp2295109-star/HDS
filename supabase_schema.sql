@@ -141,3 +141,33 @@ $$ LANGUAGE plpgsql;
 COMMENT ON TABLE public.portfolio_projects IS 'Showcase projects crafted by High-Conversion Digital Studio.';
 COMMENT ON TABLE public.leads IS 'Form submissions and prospective client inquiries collected across the digital funnel.';
 COMMENT ON FUNCTION public.get_lead_stats() IS 'Aggregates status metrics across all leads in the database for secure CRM metrics retrieval.';
+
+-- ====================================================================
+-- 7. TABLE: website_cms
+-- ====================================================================
+CREATE TABLE IF NOT EXISTS public.website_cms (
+    id VARCHAR(50) PRIMARY KEY, -- 'published' or 'draft'
+    content JSONB NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Enable RLS on website_cms
+ALTER TABLE public.website_cms ENABLE ROW LEVEL SECURITY;
+
+-- Allow public read access to website_cms
+-- This is critical so the live website can fetch CMS content, and preview can fetch draft content
+CREATE POLICY "Allow public read access to website_cms"
+ON public.website_cms
+FOR SELECT
+TO public
+USING (true);
+
+-- Allow authenticated admin users full access (Insert, Update, Delete) to website_cms
+CREATE POLICY "Allow authenticated admin full access to website_cms"
+ON public.website_cms
+FOR ALL
+TO authenticated
+USING (true)
+WITH CHECK (true);
+
+COMMENT ON TABLE public.website_cms IS 'Content management system store for editing website copy, images, and visibility settings.';

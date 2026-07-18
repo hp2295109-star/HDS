@@ -5,6 +5,7 @@ import { ArrowRight, Instagram, Linkedin, Facebook, MessageCircle, Mail, Phone, 
 import { useSupabaseForm } from '../hooks/useSupabaseForm';
 import { supabaseService } from '../services/supabaseService';
 import { openSaaSModal } from './SaaSModals';
+import { useCMS } from '../hooks/useCMS';
 // @ts-ignore
 import Logo from '../assets/HDS_logo_embedded.svg';
 
@@ -21,6 +22,7 @@ const SocialIcon = ({ Icon, href, label }: { Icon: any, href: string, label: str
 );
 
 export default function Footer() {
+  const { cmsContent } = useCMS();
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
   const currentYear = new Date().getFullYear();
@@ -110,7 +112,7 @@ export default function Footer() {
               <img src={Logo} alt="Harsh Digital Studios" className="h-12 md:h-14 w-auto object-contain" />
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-xs">
-              Harsh Digital Studios is an AI-powered creative digital agency helping businesses grow with premium websites, SEO, Meta Ads, branding, and automation.
+              {cmsContent.footer.description}
             </p>
             <div className="mb-6 max-w-xs">
               <p className="text-xs font-bold uppercase tracking-wider text-accent mb-2">Subscribe to our newsletter</p>
@@ -151,11 +153,11 @@ export default function Footer() {
               )}
             </div>
             <div className="flex flex-wrap gap-3 mb-4">
-              <SocialIcon Icon={Instagram} href="https://www.instagram.com/harshdigitalstudios" label="Instagram" />
-              <SocialIcon Icon={Linkedin} href="#" label="LinkedIn" />
-              <SocialIcon Icon={Facebook} href="#" label="Facebook" />
-              <SocialIcon Icon={MessageCircle} href="https://wa.me/917067363208" label="WhatsApp" />
-              <SocialIcon Icon={Mail} href="mailto:harshpatelyt1060@gmail.com" label="Email" />
+              <SocialIcon Icon={Instagram} href={cmsContent.socials.instagram || "https://www.instagram.com/harshdigitalstudios"} label="Instagram" />
+              <SocialIcon Icon={Linkedin} href={cmsContent.socials.linkedin || "#"} label="LinkedIn" />
+              <SocialIcon Icon={Facebook} href={cmsContent.socials.facebook || "#"} label="Facebook" />
+              <SocialIcon Icon={MessageCircle} href={cmsContent.socials.whatsapp || "https://wa.me/917067363208"} label="WhatsApp" />
+              <SocialIcon Icon={Mail} href={`mailto:${cmsContent.contact.email || "harshpatelyt1060@gmail.com"}`} label="Email" />
             </div>
           </motion.div>
 
@@ -223,20 +225,20 @@ export default function Footer() {
             <h3 className="text-lg font-heading font-bold mb-6 text-white tracking-wide">Let's Connect</h3>
             <ul className="space-y-4">
               <li>
-                <a href="tel:+917067363208" className="flex items-start text-gray-400 hover:text-white transition-colors text-sm group">
+                <a href={`tel:${cmsContent.contact.phone || "+917067363208"}`} className="flex items-start text-gray-400 hover:text-white transition-colors text-sm group">
                   <Phone className="w-4 h-4 mr-3 mt-0.5 text-accent group-hover:scale-110 transition-transform" />
                   <span>
                     <span className="block font-medium">Phone</span>
-                    <span className="opacity-80">+91 70673 63208</span>
+                    <span className="opacity-80">{cmsContent.contact.phone || "+91 70673 63208"}</span>
                   </span>
                 </a>
               </li>
               <li>
-                <a href="mailto:harshpatelyt1060@gmail.com" className="flex items-start text-gray-400 hover:text-white transition-colors text-sm group">
+                <a href={`mailto:${cmsContent.contact.email || "harshpatelyt1060@gmail.com"}`} className="flex items-start text-gray-400 hover:text-white transition-colors text-sm group">
                   <Mail className="w-4 h-4 mr-3 mt-0.5 text-accent group-hover:scale-110 transition-transform" />
                   <span>
                     <span className="block font-medium">Email</span>
-                    <span className="opacity-80">harshpatelyt1060@gmail.com</span>
+                    <span className="opacity-80">{cmsContent.contact.email || "harshpatelyt1060@gmail.com"}</span>
                   </span>
                 </a>
               </li>
@@ -244,7 +246,7 @@ export default function Footer() {
                 <MapPin className="w-4 h-4 mr-3 mt-0.5 text-accent" />
                 <span>
                   <span className="block font-medium">Location</span>
-                  <span className="opacity-80">India</span>
+                  <span className="opacity-80">{cmsContent.contact.address || "India"}</span>
                 </span>
               </li>
               <li className="flex items-start text-gray-400 text-sm">
@@ -273,7 +275,7 @@ export default function Footer() {
         >
           {/* Left */}
           <div className="text-gray-500 text-xs font-medium">
-            &copy; {currentYear} Harsh Digital Studios. All Rights Reserved.
+            &copy; {currentYear} Harsh Digital Studios. {cmsContent.footer.rights || "All Rights Reserved."}
           </div>
           
           {/* Center */}

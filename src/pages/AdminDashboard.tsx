@@ -16,6 +16,7 @@ import { supabaseService } from '../services/supabaseService';
 import PageTransition from '../components/PageTransition';
 import { Lead, WebsiteAudit, ContactMessage, Newsletter, BookedCall } from '../types/supabase';
 import { useTheme } from '../components/ThemeProvider';
+import CMSEditor from '../components/CMSEditor';
 
 // Static default projects to populate Portfolio state if empty
 const DEFAULT_PROJECTS = [
@@ -66,7 +67,7 @@ export default function AdminDashboard() {
   const { theme, setTheme } = useTheme();
 
   // Active Main Sidebar Tab
-  const [activeTab, setActiveTab] = useState<'home' | 'portfolio' | 'leads' | 'settings'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'portfolio' | 'leads' | 'settings' | 'cms'>('home');
   
   // Leads tab sub-view (we group leads, audits, calls, messages, newsletters to keep the sidebar extremely clean like Supabase/Linear!)
   const [leadsSubView, setLeadsSubView] = useState<'leads' | 'audits' | 'messages' | 'calls' | 'newsletters'>('leads');
@@ -823,6 +824,7 @@ export default function AdminDashboard() {
                     { id: 'home', label: 'Dashboard Home', icon: LayoutDashboard },
                     { id: 'portfolio', label: `Portfolio (${projects.length})`, icon: Briefcase },
                     { id: 'leads', label: `Leads Hub (${leads.length})`, icon: Users, badge: newLeadsCount },
+                    { id: 'cms', label: 'Website CMS', icon: Globe },
                     { id: 'settings', label: 'System Settings', icon: SettingsIcon }
                   ].map(item => {
                     const Icon = item.icon;
@@ -897,6 +899,7 @@ export default function AdminDashboard() {
                   {activeTab === 'home' && 'SaaS Console'}
                   {activeTab === 'portfolio' && 'Portfolio Projects Engine'}
                   {activeTab === 'leads' && 'Global CRM Leads Hub'}
+                  {activeTab === 'cms' && 'Website CMS Content Engine'}
                   {activeTab === 'settings' && 'System Configuration'}
                 </h1>
                 <p className="text-[10px] text-text-tertiary hidden sm:block mt-0.5">
@@ -1871,6 +1874,13 @@ export default function AdminDashboard() {
 
                 </div>
 
+              </motion.div>
+            )}
+
+            {/* TAB 5: WEBSITE CMS EDITOR */}
+            {activeTab === 'cms' && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                <CMSEditor />
               </motion.div>
             )}
 
