@@ -87,8 +87,8 @@ export default function Portfolio() {
                 <div className={`h-56 w-full bg-gradient-to-br ${project.color} flex items-center justify-center relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500`}>
                   <div className="absolute inset-0 bg-transparent/40 backdrop-blur-[2px]"></div>
                   <div className="relative z-10 text-center">
-                    <span className="text-2xl font-bold font-heading text-white">{project.title}</span>
-                    <p className="text-xs text-white/70 mt-2 font-mono uppercase tracking-widest">{project.type}</p>
+                    <span className="text-2xl font-bold font-heading text-neutral-50">{project.title}</span>
+                    <p className="text-xs text-neutral-200 mt-2 font-mono uppercase tracking-widest">{project.type}</p>
                   </div>
                   
                   {/* Overlay Link */}
@@ -98,7 +98,7 @@ export default function Portfolio() {
                     rel="noopener noreferrer"
                     className="absolute inset-0 z-20 flex items-center justify-center bg-neutral-950/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   >
-                    <span className="flex items-center text-white font-medium px-6 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+                    <span className="flex items-center text-neutral-50 font-medium px-6 py-3 rounded-full bg-white/10 backdrop-blur-md border border-neutral-200/20">
                       Visit Live Demo <ExternalLink className="w-4 h-4 ml-2" />
                     </span>
                   </a>
@@ -111,11 +111,11 @@ export default function Portfolio() {
                       {project.type}
                     </span>
                   </div>
-                  <h3 className="text-2xl font-bold font-heading mb-4 text-white">{project.title}</h3>
+                  <h3 className="text-2xl font-bold font-heading mb-4 text-text-primary">{project.title}</h3>
                   
                   <div className="flex flex-wrap gap-2 mb-6">
                     {project.services.map((service, sIndex) => (
-                      <span key={sIndex} className="px-3 py-1 bg-white/5 border border-white/10 text-gray-400 text-xs rounded-full">
+                      <span key={sIndex} className="px-3 py-1 bg-btn-bg border border-btn-border text-text-secondary text-xs rounded-full">
                         {service}
                       </span>
                     ))}
@@ -127,7 +127,7 @@ export default function Portfolio() {
                       href={project.url} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="w-full inline-flex items-center justify-center px-4 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all"
+                      className="w-full inline-flex items-center justify-center px-4 py-2.5 bg-btn-bg hover:bg-btn-hover-bg border border-btn-border text-btn-text font-bold text-xs uppercase tracking-wider rounded-xl transition-all"
                     >
                       <span>Live Demo</span>
                       <ExternalLink className="w-3.5 h-3.5 ml-2" />
@@ -159,16 +159,16 @@ export default function Portfolio() {
 
           {/* Sticky Contact Sidebar */}
           <div className="lg:w-80 flex-shrink-0">
-            <div className="sticky top-32 bg-transparent p-8 rounded-3xl shadow-sm border border-white/10">
-              <h3 className="text-xl font-bold font-heading mb-2 text-white">Start Your Project</h3>
-              <p className="text-gray-400 text-sm mb-8">Ready to build something amazing? Reach out to us directly.</p>
+            <div className="sticky top-32 bg-transparent p-8 rounded-3xl shadow-sm border border-card-border">
+              <h3 className="text-xl font-bold font-heading mb-2 text-text-primary">Start Your Project</h3>
+              <p className="text-text-secondary text-sm mb-8">Ready to build something amazing? Reach out to us directly.</p>
               
               <div className="space-y-4">
                 <a 
                   href="https://wa.me/917067363208" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center w-full p-4 rounded-xl bg-white/5 hover:bg-[#25D366]/10 text-white hover:text-[#25D366] border border-white/5 transition-colors group"
+                  className="flex items-center w-full p-4 rounded-xl bg-btn-bg hover:bg-[#25D366]/10 text-text-primary hover:text-[#25D366] border border-btn-border transition-colors group"
                 >
                   <div className="w-10 h-10 rounded-full bg-transparent flex items-center justify-center shadow-sm mr-4 group-hover:scale-110 transition-transform">
                     <MessageCircle className="w-5 h-5" />
@@ -178,7 +178,7 @@ export default function Portfolio() {
                 
                 <a 
                   href="tel:+917067363208"
-                  className="flex items-center w-full p-4 rounded-xl bg-white/5 hover:bg-accent/10 text-white hover:text-accent border border-white/5 transition-colors group"
+                  className="flex items-center w-full p-4 rounded-xl bg-btn-bg hover:bg-accent/10 text-text-primary hover:text-accent border border-btn-border transition-colors group"
                 >
                   <div className="w-10 h-10 rounded-full bg-transparent flex items-center justify-center shadow-sm mr-4 group-hover:scale-110 transition-transform">
                     <Phone className="w-5 h-5" />
@@ -188,7 +188,7 @@ export default function Portfolio() {
                 
                 <a 
                   href="mailto:harshpatelyt1060@gmail.com"
-                  className="flex items-center w-full p-4 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/5 transition-colors group"
+                  className="flex items-center w-full p-4 rounded-xl bg-btn-bg hover:bg-btn-hover-bg text-text-primary border border-btn-border transition-colors group"
                 >
                   <div className="w-10 h-10 rounded-full bg-transparent flex items-center justify-center shadow-sm mr-4 group-hover:scale-110 transition-transform">
                     <Mail className="w-5 h-5" />

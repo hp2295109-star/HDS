@@ -24,6 +24,16 @@
   --color-gray-300: var(--gray-300);
   --color-gray-400: var(--gray-400);
   --color-gray-500: var(--gray-500);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --color-btn-bg: var(--btn-bg);
+  --color-btn-text: var(--btn-text);
+  --color-btn-border: var(--btn-border);
+  --color-btn-hover-bg: var(--btn-hover-bg);
 }
 
 @layer base {
@@ -43,6 +53,16 @@
     --gray-300: #d1d5db;
     --gray-400: #9ca3af;
     --gray-500: #6b7280;
+
+    --text-primary: #ffffff;
+    --text-secondary: #e2e8f0;
+    --text-tertiary: #94a3b8;
+    --card-bg: #09090d;
+    --card-border: rgba(255, 255, 255, 0.08);
+    --btn-bg: rgba(255, 255, 255, 0.05);
+    --btn-text: #ffffff;
+    --btn-border: rgba(255, 255, 255, 0.1);
+    --btn-hover-bg: rgba(255, 255, 255, 0.1);
   }
   
   .light {
@@ -53,14 +73,24 @@
     --bg-base: #F8FAFC;
     --surface: rgba(0, 0, 0, 0.04);
     --surface-hover: rgba(0, 0, 0, 0.08);
-    --border: rgba(0, 0, 0, 0.1);
+    --border: rgba(0, 0, 0, 0.12);
 
     --text-white: #0F172A;
     --text-black: #ffffff;
     
-    --gray-300: #64748b;
-    --gray-400: #475569;
-    --gray-500: #334155;
+    --gray-300: #475569;
+    --gray-400: #334155;
+    --gray-500: #1e293b;
+
+    --text-primary: #0F172A;
+    --text-secondary: #334155;
+    --text-tertiary: #64748B;
+    --card-bg: #ffffff;
+    --card-border: rgba(0, 0, 0, 0.08);
+    --btn-bg: rgba(0, 0, 0, 0.03);
+    --btn-text: #0F172A;
+    --btn-border: rgba(0, 0, 0, 0.15);
+    --btn-hover-bg: rgba(0, 0, 0, 0.07);
   }
 
   body {

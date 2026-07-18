@@ -400,7 +400,7 @@ export const supabaseService = {
       return false;
     }
     try {
-      const { error } = await supabase.from('leads').update({ message: notes }).eq('id', id); // message acts as notes/description or custom notes col
+      const { error } = await supabase.from('leads').update({ notes }).eq('id', id);
       if (error) throw error;
       return true;
     } catch (err) {

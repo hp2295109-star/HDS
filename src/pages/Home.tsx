@@ -655,7 +655,7 @@ export default function Home() {
                 className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full border transition-all cursor-pointer ${
                   galleryFilter === tab
                     ? "bg-accent text-black border-accent"
-                    : "bg-white/[0.02] text-gray-400 border-white/5 hover:bg-white/[0.05] hover:text-white"
+                    : "bg-btn-bg text-text-secondary border-btn-border hover:bg-btn-hover-bg hover:text-text-primary"
                 }`}
               >
                 {tab}
@@ -678,7 +678,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="bg-[#09090D] border border-white/10 rounded-[32px] overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-0 shadow-2xl hover:border-accent/30 hover:shadow-[0_0_50px_rgba(0,240,255,0.06)] transition-all duration-500 group"
+                  className="bg-card-bg border border-card-border rounded-[32px] overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-0 shadow-2xl hover:border-accent/30 hover:shadow-[0_0_50px_rgba(0,240,255,0.06)] transition-all duration-500 group"
                 >
                   {/* Left: Beautiful Mockup with actual image */}
                   <div className="lg:col-span-7 relative min-h-[320px] sm:min-h-[400px] overflow-hidden flex flex-col justify-between">
@@ -713,17 +713,17 @@ export default function Home() {
                         <span className="px-3 py-1 bg-amber-400/10 border border-amber-400/20 text-amber-300 font-mono text-[10px] uppercase tracking-widest rounded-full font-bold">
                           💎 {featured.tagline.toUpperCase()}
                         </span>
-                        <h3 className="text-2xl sm:text-3xl font-extrabold font-heading text-white mt-4 tracking-tight leading-tight">
+                        <h3 className="text-2xl sm:text-3xl font-extrabold font-heading text-neutral-50 mt-4 tracking-tight leading-tight">
                           Elevating Luxury Retail & Jewellery brands.
                         </h3>
-                        <p className="text-gray-300 text-xs sm:text-sm mt-3 leading-relaxed">
+                        <p className="text-neutral-300 text-xs sm:text-sm mt-3 leading-relaxed">
                           A curated digital showroom featuring high-res collection catalogs, real-time gold rates, and automatic WhatsApp inquiries.
                         </p>
                       </div>
                     </div>
 
                     {/* Bottom mock ribbon */}
-                    <div className="relative z-10 pt-4 border-t border-white/10 flex flex-wrap justify-between items-center gap-3 text-[10px] text-gray-400 font-mono">
+                    <div className="relative z-10 pt-4 border-t border-white/10 flex flex-wrap justify-between items-center gap-3 text-[10px] text-neutral-300 font-mono">
                       <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                         <span>LIVE GOLD RATE: ₹7,250/g (24K)</span>
@@ -739,26 +739,26 @@ export default function Home() {
                         <span className="px-2.5 py-1 bg-accent/10 border border-accent/20 text-accent font-mono text-[9px] uppercase tracking-widest rounded-full">
                           Featured Demo
                         </span>
-                        <span className="px-2.5 py-1 bg-white/5 border border-white/10 text-gray-400 font-mono text-[9px] uppercase tracking-widest rounded-full">
+                        <span className="px-2.5 py-1 bg-btn-bg border border-btn-border text-text-secondary font-mono text-[9px] uppercase tracking-widest rounded-full">
                           Portfolio Project
                         </span>
                       </div>
 
-                      <h3 className="text-2xl sm:text-3xl font-extrabold text-white font-heading tracking-tight mb-2">
+                      <h3 className="text-2xl sm:text-3xl font-extrabold text-text-primary font-heading tracking-tight mb-2">
                         {featured.title}
                       </h3>
-                      <p className="text-xs sm:text-sm text-gray-400 font-mono mb-4 text-accent">
+                      <p className="text-xs sm:text-sm font-mono mb-4 text-accent">
                         Industry: {featured.industry}
                       </p>
                       
-                      <p className="text-gray-300 text-xs sm:text-sm leading-relaxed mb-6">
+                      <p className="text-text-secondary text-xs sm:text-sm leading-relaxed mb-6">
                         {featured.desc}
                       </p>
 
-                      <div className="space-y-3 pt-4 border-t border-white/5 mb-8">
-                        <h4 className="text-[10px] uppercase font-bold text-gray-400 tracking-widest mb-1">Key Conversion Highlights:</h4>
+                      <div className="space-y-3 pt-4 border-t border-card-border mb-8">
+                        <h4 className="text-[10px] uppercase font-bold text-text-tertiary tracking-widest mb-1">Key Conversion Highlights:</h4>
                         {featured.features.map((feat, idx) => (
-                          <div key={idx} className="flex items-start text-xs text-gray-300">
+                          <div key={idx} className="flex items-start text-xs text-text-secondary">
                             <CheckCircle2 className="w-4 h-4 text-accent mr-2 shrink-0 mt-0.5" />
                             <span>{feat}</span>
                           </div>
@@ -778,7 +778,7 @@ export default function Home() {
                       </a>
                       <button
                         onClick={() => handleRequestSimilar(featured.title, featured.industry)}
-                        className="flex-1 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center cursor-pointer"
+                        className="flex-1 py-4 bg-btn-bg hover:bg-btn-hover-bg border border-btn-border text-btn-text text-xs font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center cursor-pointer"
                       >
                         Request Similar Website
                       </button>
@@ -828,10 +828,10 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: (index % 3) * 0.05 }}
                     whileHover={{ y: -8, transition: { duration: 0.2, ease: "easeOut" } }}
-                    className="bg-[#09090D] border border-white/5 rounded-3xl overflow-hidden flex flex-col justify-between shadow-lg hover:border-accent/30 hover:shadow-[0_15px_30px_rgba(0,240,255,0.03)] transition-all duration-300 group"
+                    className="bg-card-bg border border-card-border rounded-3xl overflow-hidden flex flex-col justify-between shadow-lg hover:border-accent/30 hover:shadow-[0_15px_30px_rgba(0,240,255,0.03)] transition-all duration-300 group"
                   >
                     {/* Card Thumbnail Area */}
-                    <div className="relative overflow-hidden aspect-[16:10] w-full border-b border-white/5">
+                    <div className="relative overflow-hidden aspect-[16:10] w-full border-b border-card-border">
                       <img
                         src={projectImages[project.id]}
                         alt={`${project.title} Mockup`}
@@ -846,12 +846,12 @@ export default function Home() {
                           <span className="w-2 h-2 rounded-full bg-yellow-500/50 block"></span>
                           <span className="w-2 h-2 rounded-full bg-green-500/50 block"></span>
                         </div>
-                        <div className="text-[9px] text-gray-300 font-mono px-3 py-0.5 rounded-full max-w-[140px] truncate bg-black/40 border border-white/5">
+                        <div className="text-[9px] text-neutral-200 font-mono px-3 py-0.5 rounded-full max-w-[140px] truncate bg-black/40 border border-white/5">
                           {project.url.replace("https://", "")}
                         </div>
                         <span className="text-[8px] text-emerald-400 font-mono bg-emerald-500/20 px-1.5 py-0.5 rounded font-semibold border border-emerald-500/30">100/100</span>
                       </div>
-
+ 
                       {/* Gradient Overlay for Title/Icon over image */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-4">
                         <div className="flex justify-between items-end">
@@ -859,7 +859,7 @@ export default function Home() {
                             <span className="inline-flex items-center text-[8px] font-extrabold uppercase tracking-widest text-accent bg-accent/10 border border-accent/25 px-2.5 py-0.5 rounded-full mb-1">
                               {project.industry}
                             </span>
-                            <h4 className="text-base font-extrabold text-white font-heading tracking-tight leading-tight group-hover:text-accent transition-colors">
+                            <h4 className="text-base font-extrabold text-neutral-50 font-heading tracking-tight leading-tight group-hover:text-accent transition-colors">
                               {project.title}
                             </h4>
                           </div>
@@ -869,36 +869,36 @@ export default function Home() {
                         </div>
                       </div>
                     </div>
-
+ 
                     {/* Card Content Area */}
                     <div className="p-6 flex-grow flex flex-col justify-between">
                       <div>
                         <div className="flex items-center justify-between gap-2 mb-2">
-                          <span className="text-[10px] font-mono text-gray-500">Tagline: {project.tagline}</span>
-                          <span className="px-2 py-0.5 bg-white/5 border border-white/10 text-[9px] font-mono text-gray-400 rounded-full shrink-0">
+                          <span className="text-[10px] font-mono text-text-tertiary">Tagline: {project.tagline}</span>
+                          <span className="px-2 py-0.5 bg-btn-bg border border-btn-border text-[9px] font-mono text-text-tertiary rounded-full shrink-0">
                             Portfolio Project
                           </span>
                         </div>
                         
-                        <p className="text-xs text-gray-300 leading-relaxed mb-4 line-clamp-3">
+                        <p className="text-xs text-text-secondary leading-relaxed mb-4 line-clamp-3">
                           {project.desc}
                         </p>
-
+ 
                         <div className="flex flex-wrap gap-1.5 mb-6">
                           {project.features.slice(0, 2).map((feat, fIdx) => (
-                            <span key={fIdx} className="text-[9px] text-gray-400 bg-white/5 px-2.5 py-1 rounded-md border border-white/5">
+                            <span key={fIdx} className="text-[9px] text-text-tertiary bg-btn-bg px-2.5 py-1 rounded-md border border-btn-border">
                               {feat}
                             </span>
                           ))}
                         </div>
                       </div>
-
+ 
                       <div className="space-y-2.5">
                         <a
                           href={project.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-full py-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-center text-[11px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5"
+                          className="w-full py-3 bg-btn-bg hover:bg-btn-hover-bg border border-btn-border text-btn-text text-center text-[11px] font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5"
                         >
                           <span>View Live Demo</span>
                           <ArrowUpRight className="w-3.5 h-3.5 text-accent" />
@@ -1089,7 +1089,7 @@ export default function Home() {
       <section className="py-24 bg-transparent border-t border-white/5 relative" id="contact-form">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="bg-[#0B0F19] border border-accent/20 rounded-[40px] p-8 md:p-12 relative overflow-hidden shadow-[0_0_80px_rgba(0,240,255,0.1)]">
+          <div className="bg-card-bg border border-card-border rounded-[40px] p-8 md:p-12 relative overflow-hidden shadow-[0_0_80px_rgba(0,240,255,0.05)]">
             <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-accent/5 rounded-full blur-[90px] pointer-events-none" />
             
             <div className="max-w-3xl mx-auto text-center mb-10">
@@ -1097,10 +1097,10 @@ export default function Home() {
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>{language === 'hi' ? 'फ्री डिजिटल ग्रोथ ऑडिट' : 'Free Digital Growth Audit'}</span>
               </span>
-              <h2 className="text-2xl md:text-4xl font-bold font-heading text-white">
+              <h2 className="text-2xl md:text-4xl font-bold font-heading text-text-primary">
                 {language === 'hi' ? 'आइए आपके स्थानीय व्यवसाय को बढ़ाएं' : "Let's Fuel Your Local Business"}
               </h2>
-              <p className="text-gray-400 text-xs md:text-sm mt-2 max-w-xl mx-auto leading-relaxed">
+              <p className="text-text-secondary text-xs md:text-sm mt-2 max-w-xl mx-auto leading-relaxed">
                 {language === 'hi'
                   ? 'नीचे दिए गए सुरक्षित फॉर्म को भरें। हर्ष पटेल व्यक्तिगत रूप से आपकी ऑनलाइन उपस्थिति का विश्लेषण करेंगे और आपको 90 दिनों का विस्तार ब्लूप्रिंट व्हाट्सएप/कॉल पर साझा करेंगे।'
                   : 'Fill out our secure CRM form below. Harsh Patel will manually analyze your online presence and call/WhatsApp you with a tailored 90-day expansion blueprint.'}
@@ -1112,10 +1112,10 @@ export default function Home() {
                 <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/25 rounded-full flex items-center justify-center text-emerald-400 mx-auto mb-4">
                   <CheckCircle2 className="w-8 h-8 animate-bounce" />
                 </div>
-                <h3 className="text-lg font-bold text-white">
+                <h3 className="text-lg font-bold text-text-primary">
                   {language === 'hi' ? 'लीड सुरक्षित रूप से सिंक हुई!' : 'Lead Securely Routed!'}
                 </h3>
-                <p className="text-xs text-gray-400 mt-2">
+                <p className="text-xs text-text-secondary mt-2">
                   {language === 'hi'
                     ? 'धन्यवाद! आपकी आवश्यकताएं HDS CRM के साथ सिंक हो गई हैं। हर्ष पटेल 2 घंटे के भीतर व्हाट्सएप के माध्यम से आपसे संपर्क करेंगे।'
                     : 'Thank you! Your requirements have been synchronized with the HDS CRM. Harsh Patel will contact you via WhatsApp within 2 hours.'}
@@ -1142,7 +1142,7 @@ export default function Home() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-text-secondary mb-2">
                       {language === 'hi' ? 'पूरा नाम / मालिक' : 'Full Name / Owner'}
                     </label>
                     <input
@@ -1151,12 +1151,12 @@ export default function Home() {
                       value={leadName}
                       onChange={(e) => setLeadName(e.target.value)}
                       placeholder={language === 'hi' ? 'जैसे: हर्ष पटेल' : 'e.g. Harsh Patel'}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-accent"
+                      className="w-full px-4 py-3 bg-btn-bg border border-btn-border rounded-xl text-xs text-text-primary focus:outline-none focus:border-accent placeholder:text-text-tertiary"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-text-secondary mb-2">
                       {language === 'hi' ? 'व्यवसाय का नाम' : 'Business Name'}
                     </label>
                     <input
@@ -1164,14 +1164,14 @@ export default function Home() {
                       value={leadBusiness}
                       onChange={(e) => setLeadBusiness(e.target.value)}
                       placeholder={language === 'hi' ? 'जैसे: अपैक्स जिम एंड फिटनेस' : 'e.g. Apex Gym & Fitness'}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-accent"
+                      className="w-full px-4 py-3 bg-btn-bg border border-btn-border rounded-xl text-xs text-text-primary focus:outline-none focus:border-accent placeholder:text-text-tertiary"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-text-secondary mb-2">
                       {language === 'hi' ? 'फ़ोन नंबर (व्हाट्सएप)' : 'Phone Number (WhatsApp)'}
                     </label>
                     <input
@@ -1180,12 +1180,12 @@ export default function Home() {
                       value={leadPhone}
                       onChange={(e) => setLeadPhone(e.target.value)}
                       placeholder="e.g. +91 70673 63208"
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-accent"
+                      className="w-full px-4 py-3 bg-btn-bg border border-btn-border rounded-xl text-xs text-text-primary focus:outline-none focus:border-accent placeholder:text-text-tertiary"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-text-secondary mb-2">
                       {language === 'hi' ? 'ईमेल पता' : 'Email Address'}
                     </label>
                     <input
@@ -1193,68 +1193,68 @@ export default function Home() {
                       value={leadEmail}
                       onChange={(e) => setLeadEmail(e.target.value)}
                       placeholder="e.g. name@company.com"
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-accent"
+                      className="w-full px-4 py-3 bg-btn-bg border border-btn-border rounded-xl text-xs text-text-primary focus:outline-none focus:border-accent placeholder:text-text-tertiary"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-text-secondary mb-2">
                       {language === 'hi' ? 'आवश्यक सेवा' : 'Required Service'}
                     </label>
                     <select
                       value={leadService}
                       onChange={(e) => setLeadService(e.target.value)}
-                      className="w-full px-4 py-3 bg-[#0B0F19] border border-white/10 rounded-xl text-xs text-gray-300 focus:outline-none"
+                      className="w-full px-4 py-3 bg-card-bg border border-btn-border rounded-xl text-xs text-text-primary focus:outline-none focus:border-accent"
                     >
-                      <option value="Business Website Design">Business Website Design</option>
-                      <option value="Landing Page Design">Landing Page Design</option>
-                      <option value="Website Redesign">Website Redesign</option>
-                      <option value="Search Engine Optimization (SEO)">Search Engine Optimization (SEO)</option>
-                      <option value="Local SEO">Local SEO</option>
-                      <option value="Google Business Profile Optimization">Google Business Profile (GBP)</option>
-                      <option value="Meta Ads">Meta Ads Campaigns</option>
-                      <option value="Website Speed Optimization">Speed Optimization</option>
-                      <option value="Free Website Audit">Free Website Audit</option>
+                      <option value="Business Website Design" className="bg-card-bg text-text-primary">Business Website Design</option>
+                      <option value="Landing Page Design" className="bg-card-bg text-text-primary">Landing Page Design</option>
+                      <option value="Website Redesign" className="bg-card-bg text-text-primary">Website Redesign</option>
+                      <option value="Search Engine Optimization (SEO)" className="bg-card-bg text-text-primary">Search Engine Optimization (SEO)</option>
+                      <option value="Local SEO" className="bg-card-bg text-text-primary">Local SEO</option>
+                      <option value="Google Business Profile Optimization" className="bg-card-bg text-text-primary">Google Business Profile (GBP)</option>
+                      <option value="Meta Ads" className="bg-card-bg text-text-primary">Meta Ads Campaigns</option>
+                      <option value="Website Speed Optimization" className="bg-card-bg text-text-primary">Speed Optimization</option>
+                      <option value="Free Website Audit" className="bg-card-bg text-text-primary">Free Website Audit</option>
                     </select>
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-text-secondary mb-2">
                       {language === 'hi' ? 'अनुमानित बजट' : 'Estimated Budget'}
                     </label>
                     <select
                       value={leadBudget}
                       onChange={(e) => setLeadBudget(e.target.value)}
-                      className="w-full px-4 py-3 bg-[#0B0F19] border border-white/10 rounded-xl text-xs text-gray-300 focus:outline-none"
+                      className="w-full px-4 py-3 bg-card-bg border border-btn-border rounded-xl text-xs text-text-primary focus:outline-none focus:border-accent"
                     >
-                      <option value="Under ₹10k">Under ₹10k</option>
-                      <option value="₹10k - ₹25k">₹10k - ₹25k</option>
-                      <option value="₹25k - ₹50k">₹25k - ₹50k</option>
-                      <option value="Above ₹50k">Above ₹50k</option>
+                      <option value="Under ₹10k" className="bg-card-bg text-text-primary">Under ₹10k</option>
+                      <option value="₹10k - ₹25k" className="bg-card-bg text-text-primary">₹10k - ₹25k</option>
+                      <option value="₹25k - ₹50k" className="bg-card-bg text-text-primary">₹25k - ₹50k</option>
+                      <option value="Above ₹50k" className="bg-card-bg text-text-primary">Above ₹50k</option>
                     </select>
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                    <label className="block text-[10px] font-bold uppercase tracking-wider text-text-secondary mb-2">
                       {language === 'hi' ? 'लक्ष्य शहर / क्षेत्र' : 'Target Market / City'}
                     </label>
                     <select
                       value={leadCity}
                       onChange={(e) => setLeadCity(e.target.value)}
-                      className="w-full px-4 py-3 bg-[#0B0F19] border border-white/10 rounded-xl text-xs text-gray-300 focus:outline-none"
+                      className="w-full px-4 py-3 bg-card-bg border border-btn-border rounded-xl text-xs text-text-primary focus:outline-none focus:border-accent"
                     >
-                      <option value="Raigarh">Raigarh</option>
-                      <option value="Tamnar">Tamnar</option>
-                      <option value="Kharsia">Kharsia</option>
-                      <option value="Other Chhattisgarh">Other Chhattisgarh</option>
+                      <option value="Raigarh" className="bg-card-bg text-text-primary">Raigarh</option>
+                      <option value="Tamnar" className="bg-card-bg text-text-primary">Tamnar</option>
+                      <option value="Kharsia" className="bg-card-bg text-text-primary">Kharsia</option>
+                      <option value="Other Chhattisgarh" className="bg-card-bg text-text-primary">Other Chhattisgarh</option>
                     </select>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-text-secondary mb-2">
                     {language === 'hi' ? 'अतिरिक्त आवश्यकताएं / संदेश' : 'Specific Requirements / Target Competitor'}
                   </label>
                   <textarea
@@ -1262,12 +1262,12 @@ export default function Home() {
                     value={leadMessage}
                     onChange={(e) => setLeadMessage(e.target.value)}
                     placeholder={language === 'hi' ? 'संक्षेप में हमें बताएं कि आपका व्यवसाय क्या है या शीर्ष प्रतिद्वंद्वी की वेबसाइट का लिंक दें...' : "Briefly tell us what you do or link your top competitor's website..."}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-accent resize-none"
+                    className="w-full px-4 py-3 bg-btn-bg border border-btn-border rounded-xl text-xs text-text-primary focus:outline-none focus:border-accent resize-none placeholder:text-text-tertiary"
                   ></textarea>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-white/5">
-                  <div className="flex items-center space-x-2 text-[10px] text-gray-500">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-card-border">
+                  <div className="flex items-center space-x-2 text-[10px] text-text-tertiary">
                     <Shield className="w-4 h-4 text-accent" />
                     <span>
                       {language === 'hi' ? 'सुरक्षित एन्क्रिप्शन सक्षम है। आपकी जानकारी गोपनीय रहेगी।' : 'Secure encryption enabled. Your info is never sold.'}
