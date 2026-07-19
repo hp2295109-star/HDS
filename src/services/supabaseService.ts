@@ -201,11 +201,74 @@ export const supabaseService = {
   },
 
   /**
-   * 7. Fetch published blog posts
+   * 7. Fetch published blog posts (and local seeded fallback)
    */
   async getBlogPosts(): Promise<BlogPost[]> {
+    const defaultBlogs: BlogPost[] = [
+      {
+        id: "raigarh-local-business-website-2026",
+        title: "Why Every Local Business in Raigarh Needs a Professional Website in 2026",
+        slug: "raigarh-local-business-website-2026",
+        thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+        excerpt: "Relying on word-of-mouth or social media is no longer enough for local businesses in Raigarh. Explore how a professional, SEO-optimized business website drives high-intent client inquiries 24/7.",
+        content: `Raigarh, Chhattisgarh is undergoing a massive digital shift. From local retail outlets near Subhash Chowk to healthcare clinics in Kelo Vihar, local business owners are realizing that word-of-mouth and simple social media profiles are no longer sufficient to guarantee sustainable growth. In 2026, over 93% of customer journeys start with a search on Google or AI engines. If your business doesn't own a mobile responsive website, you are invisible to the highest-paying customers in your area.\n\n### The Myth of Social Media Sufficiency\nMany local business owners in Raigarh make the mistake of believing that a free Facebook page or an Instagram handle is a complete substitute for website development. While social platforms are great for engagement, they come with fatal flaws: algorithmic lockouts, lack of control, and poor search intent.\n\nOn Instagram, users are casually scrolling through a feed of photos. They are not actively looking to hire or buy. However, when someone searches Google for 'best clinical dermatologist in Raigarh' or 'premium salon near me', they have extreme buying intent. They want a fast, informative, and authoritative local business website.\n\n### Crucial Elements of a High-Converting Local Business Website\nTo convert passive local visitors into paying customers, your website must be designed with deliberate user-experience (UX) principles:\n- **Mobile Responsiveness**: Over 85% of local searches are done on smartphones.\n- **Visible Call-To-Actions (CTAs)**: Tells visitors exactly what to do (e.g., 'Book Appointment' or 'Call Now').\n- **Google Maps Integration**: Shows Google and local customers your exact operating location.\n- **WhatsApp Ordering**: Enables direct, friction-free customer support.`,
+        category: "Web Design",
+        published: true,
+        created_at: "2026-07-10T00:00:00.000Z",
+        publish_date: "2026-07-10",
+        tags: "Web Design, Website Development, Raigarh",
+        meta_title: "Why Raigarh Businesses Need a Professional Website | Harsh Digital Studios",
+        meta_description: "Explore why a professional website design and Local SEO are critical for business growth in Raigarh, Chhattisgarh in 2026. Stand out from local competitors.",
+        canonical_url: "https://harshdigitalstudios.com/blog/raigarh-local-business-website-2026",
+        author: "Harsh Patel",
+        reading_time: "12 min read"
+      },
+      {
+        id: "google-business-profile-optimization-guide-2026",
+        title: "Google Business Profile Optimization: Complete Maps Dominance Blueprint",
+        slug: "google-business-profile-optimization-guide-2026",
+        thumbnail: "https://images.unsplash.com/photo-1572021335469-31706a17aaef?auto=format&fit=crop&w=800&q=80",
+        excerpt: "Discover how to optimize your Google Business Profile (formerly GMB) to dominate Google Maps, attract local customers, build credibility, and generate phone calls.",
+        content: `If you run a physical showroom, clinic, salon, restaurant, or service business in Raigarh, Chhattisgarh, there is one free tool that can generate more leads than almost any other: Google Business Profile (GBP). Formerly known as Google My Business, a fully optimized profile is the foundation of local SEO.\n\n### Claim and Verify Your Profile\nEnsure your business is 100% verified via video or postcard to establish ownership. This gives you full control over your address, operation hours, photos, and customer reviews.\n\n### Essential Optimization Steps\n1. **Exact Business Name**: Use your real business name. Avoid stuffing random keywords into the title.\n2. **Precise Category Match**: Set your primary category to match your core service (e.g., 'Dentist' or 'Luxury Salon').\n3. **Geo-Targeted Photos**: Upload high-resolution photos of your storefront, team, and products regularly.\n4. **NAP Consistency**: Ensure your Name, Address, and Phone number are identical across all local directory platforms.`,
+        category: "SEO",
+        published: true,
+        created_at: "2026-07-08T00:00:00.000Z",
+        publish_date: "2026-07-08",
+        tags: "Local SEO, Google Business Profile, Google Maps, Raigarh",
+        meta_title: "Google Business Profile Map Dominance Blueprint 2026",
+        meta_description: "Learn how to optimize your Google My Business profile to rank #1 on Google Maps, generate inbound calls, and drive customer traffic in Raigarh.",
+        canonical_url: "https://harshdigitalstudios.com/blog/google-business-profile-optimization-guide-2026",
+        author: "Harsh Patel",
+        reading_time: "14 min read"
+      },
+      {
+        id: "website-vs-instagram-for-local-business-2026",
+        title: "Website vs Instagram: Which One Actually Brings More Customers?",
+        slug: "website-vs-instagram-for-local-business-2026",
+        thumbnail: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80",
+        excerpt: "Compare organic social feeds with custom website funnels. Learn why high-intent Google search traffic delivers far better conversions.",
+        content: `In 2026, when local business owners in Raigarh look to establish an online presence, they often find themselves at a crossroads: Should they put all their effort into building an Instagram page, or should they invest in professional website development?\n\n### The Battle of Intent: Search vs Scrolling\nThe core difference between a custom website and an Instagram feed lies in the psychology of the user. When someone is browsing Instagram, they are in passive consumer mode. They are looking at friends' vacation photos, memes, or trending video reels. If they see your post about premium salon packages or local clinic services, it is an interruption.\n\nOn the other hand, when a consumer opens Google and types 'best dental doctor in Raigarh' or 'website development agency near me', they are in active buyer mode. They are experiencing a direct problem and are actively searching for a professional solution. This is called 'high-intent inbound traffic'.\n\n### The Algorithm Trap\nFor years, social media platforms allowed local businesses to enjoy free, organic reach. Today, the organic reach of an Instagram business post is less than 3%. This means if you have 5,000 local followers, less than 150 of them will actually see your new posts unless you pay for sponsored Meta Ads. You are trapped in a cycle of constant content creation just to maintain minimal visibility.\n\nA custom website with strong SEO is a permanent asset. Once ranked, it brings in high-intent visitors month after month with zero ongoing ad spend.`,
+        category: "Digital Marketing",
+        published: true,
+        created_at: "2026-07-05T00:00:00.000Z",
+        publish_date: "2026-07-05",
+        tags: "Digital Marketing, Social Media vs Website, Marketing Strategy",
+        meta_title: "Website vs Instagram: Direct Local Customer Generation 2026",
+        meta_description: "Compare website conversions with Instagram organic feed reach. Discover why owning your web design asset beats renting social space.",
+        canonical_url: "https://harshdigitalstudios.com/blog/website-vs-instagram-for-local-business-2026",
+        author: "Harsh Patel",
+        reading_time: "11 min read"
+      }
+    ];
+
+    if (!localStorage.getItem('hds_blog_posts')) {
+      localStorage.setItem('hds_blog_posts', JSON.stringify(defaultBlogs));
+    }
+
     if (!isSupabaseConfigured) {
-      return [];
+      const posts: BlogPost[] = JSON.parse(localStorage.getItem('hds_blog_posts') || '[]');
+      const nowStr = new Date().toISOString().split('T')[0];
+      return posts.filter(p => p.published && (!p.publish_date || p.publish_date <= nowStr));
     }
 
     try {
@@ -216,10 +279,211 @@ export const supabaseService = {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return data || [];
+      const nowStr = new Date().toISOString().split('T')[0];
+      const items = data || [];
+      const filtered = items.filter((p: any) => !p.publish_date || p.publish_date <= nowStr);
+      if (filtered.length === 0) {
+        const posts: BlogPost[] = JSON.parse(localStorage.getItem('hds_blog_posts') || '[]');
+        return posts.filter(p => p.published && (!p.publish_date || p.publish_date <= nowStr));
+      }
+      return filtered;
     } catch (err) {
       console.error('Error in getBlogPosts:', err);
-      return [];
+      const posts: BlogPost[] = JSON.parse(localStorage.getItem('hds_blog_posts') || '[]');
+      const nowStr = new Date().toISOString().split('T')[0];
+      return posts.filter(p => p.published && (!p.publish_date || p.publish_date <= nowStr));
+    }
+  },
+
+  /**
+   * Fetch all blog posts for Admin Panel (including drafts and scheduled)
+   */
+  async getBlogPostsAdmin(): Promise<BlogPost[]> {
+    const defaultBlogs: BlogPost[] = [
+      {
+        id: "raigarh-local-business-website-2026",
+        title: "Why Every Local Business in Raigarh Needs a Professional Website in 2026",
+        slug: "raigarh-local-business-website-2026",
+        thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+        excerpt: "Relying on word-of-mouth or social media is no longer enough for local businesses in Raigarh. Explore how a professional, SEO-optimized business website drives high-intent client inquiries 24/7.",
+        content: `Raigarh, Chhattisgarh is undergoing a massive digital shift. From local retail outlets near Subhash Chowk to healthcare clinics in Kelo Vihar, local business owners are realizing that word-of-mouth and simple social media profiles are no longer sufficient to guarantee sustainable growth. In 2026, over 93% of customer journeys start with a search on Google or AI engines. If your business doesn't own a mobile responsive website, you are invisible to the highest-paying customers in your area.\n\n### The Myth of Social Media Sufficiency\nMany local business owners in Raigarh make the mistake of believing that a free Facebook page or an Instagram handle is a complete substitute for website development. While social platforms are great for engagement, they come with fatal flaws: algorithmic lockouts, lack of control, and poor search intent.\n\nOn Instagram, users are casually scrolling through a feed of photos. They are not actively looking to hire or buy. However, when someone searches Google for 'best clinical dermatologist in Raigarh' or 'premium salon near me', they have extreme buying intent. They want a fast, informative, and authoritative local business website.\n\n### Crucial Elements of a High-Converting Local Business Website\nTo convert passive local visitors into paying customers, your website must be designed with deliberate user-experience (UX) principles:\n- **Mobile Responsiveness**: Over 85% of local searches are done on smartphones.\n- **Visible Call-To-Actions (CTAs)**: Tells visitors exactly what to do (e.g., 'Book Appointment' or 'Call Now').\n- **Google Maps Integration**: Shows Google and local customers your exact operating location.\n- **WhatsApp Ordering**: Enables direct, friction-free customer support.`,
+        category: "Web Design",
+        published: true,
+        created_at: "2026-07-10T00:00:00.000Z",
+        publish_date: "2026-07-10",
+        tags: "Web Design, Website Development, Raigarh",
+        meta_title: "Why Raigarh Businesses Need a Professional Website | Harsh Digital Studios",
+        meta_description: "Explore why a professional website design and Local SEO are critical for business growth in Raigarh, Chhattisgarh in 2026. Stand out from local competitors.",
+        canonical_url: "https://harshdigitalstudios.com/blog/raigarh-local-business-website-2026",
+        author: "Harsh Patel",
+        reading_time: "12 min read"
+      },
+      {
+        id: "google-business-profile-optimization-guide-2026",
+        title: "Google Business Profile Optimization: Complete Maps Dominance Blueprint",
+        slug: "google-business-profile-optimization-guide-2026",
+        thumbnail: "https://images.unsplash.com/photo-1572021335469-31706a17aaef?auto=format&fit=crop&w=800&q=80",
+        excerpt: "Discover how to optimize your Google Business Profile (formerly GMB) to dominate Google Maps, attract local customers, build credibility, and generate phone calls.",
+        content: `If you run a physical showroom, clinic, salon, restaurant, or service business in Raigarh, Chhattisgarh, there is one free tool that can generate more leads than almost any other: Google Business Profile (GBP). Formerly known as Google My Business, a fully optimized profile is the foundation of local SEO.\n\n### Claim and Verify Your Profile\nEnsure your business is 100% verified via video or postcard to establish ownership. This gives you full control over your address, operation hours, photos, and customer reviews.\n\n### Essential Optimization Steps\n1. **Exact Business Name**: Use your real business name. Avoid stuffing random keywords into the title.\n2. **Precise Category Match**: Set your primary category to match your core service (e.g., 'Dentist' or 'Luxury Salon').\n3. **Geo-Targeted Photos**: Upload high-resolution photos of your storefront, team, and products regularly.\n4. **NAP Consistency**: Ensure your Name, Address, and Phone number are identical across all local directory platforms.`,
+        category: "SEO",
+        published: true,
+        created_at: "2026-07-08T00:00:00.000Z",
+        publish_date: "2026-07-08",
+        tags: "Local SEO, Google Business Profile, Google Maps, Raigarh",
+        meta_title: "Google Business Profile Map Dominance Blueprint 2026",
+        meta_description: "Learn how to optimize your Google My Business profile to rank #1 on Google Maps, generate inbound calls, and drive customer traffic in Raigarh.",
+        canonical_url: "https://harshdigitalstudios.com/blog/google-business-profile-optimization-guide-2026",
+        author: "Harsh Patel",
+        reading_time: "14 min read"
+      },
+      {
+        id: "website-vs-instagram-for-local-business-2026",
+        title: "Website vs Instagram: Which One Actually Brings More Customers?",
+        slug: "website-vs-instagram-for-local-business-2026",
+        thumbnail: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80",
+        excerpt: "Compare organic social feeds with custom website funnels. Learn why high-intent Google search traffic delivers far better conversions.",
+        content: `In 2026, when local business owners in Raigarh look to establish an online presence, they often find themselves at a crossroads: Should they put all their effort into building an Instagram page, or should they invest in professional website development?\n\n### The Battle of Intent: Search vs Scrolling\nThe core difference between a custom website and an Instagram feed lies in the psychology of the user. When someone is browsing Instagram, they are in passive consumer mode. They are looking at friends' vacation photos, memes, or trending video reels. If they see your post about premium salon packages or local clinic services, it is an interruption.\n\nOn the other hand, when a consumer opens Google and types 'best dental doctor in Raigarh' or 'website development agency near me', they are in active buyer mode. They are experiencing a direct problem and are actively searching for a professional solution. This is called 'high-intent inbound traffic'.\n\n### The Algorithm Trap\nFor years, social media platforms allowed local businesses to enjoy free, organic reach. Today, the organic reach of an Instagram business post is less than 3%. This means if you have 5,000 local followers, less than 150 of them will actually see your new posts unless you pay for sponsored Meta Ads. You are trapped in a cycle of constant content creation just to maintain minimal visibility.\n\nA custom website with strong SEO is a permanent asset. Once ranked, it brings in high-intent visitors month after month with zero ongoing ad spend.`,
+        category: "Digital Marketing",
+        published: true,
+        created_at: "2026-07-05T00:00:00.000Z",
+        publish_date: "2026-07-05",
+        tags: "Digital Marketing, Social Media vs Website, Marketing Strategy",
+        meta_title: "Website vs Instagram: Direct Local Customer Generation 2026",
+        meta_description: "Compare website conversions with Instagram organic feed reach. Discover why owning your web design asset beats renting social space.",
+        canonical_url: "https://harshdigitalstudios.com/blog/website-vs-instagram-for-local-business-2026",
+        author: "Harsh Patel",
+        reading_time: "11 min read"
+      }
+    ];
+
+    if (!localStorage.getItem('hds_blog_posts')) {
+      localStorage.setItem('hds_blog_posts', JSON.stringify(defaultBlogs));
+    }
+
+    if (!isSupabaseConfigured) {
+      return JSON.parse(localStorage.getItem('hds_blog_posts') || '[]');
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      if (!data || data.length === 0) {
+        return JSON.parse(localStorage.getItem('hds_blog_posts') || '[]');
+      }
+      return data;
+    } catch (err) {
+      console.error('Error in getBlogPostsAdmin:', err);
+      return JSON.parse(localStorage.getItem('hds_blog_posts') || '[]');
+    }
+  },
+
+  /**
+   * Save (Insert/Update) a blog post (supports both draft, published, scheduled)
+   */
+  async saveBlogPost(post: BlogPost): Promise<boolean> {
+    if (!isSupabaseConfigured) {
+      const posts: BlogPost[] = JSON.parse(localStorage.getItem('hds_blog_posts') || '[]');
+      if (post.id) {
+        const idx = posts.findIndex(p => p.id === post.id);
+        if (idx !== -1) {
+          posts[idx] = { ...posts[idx], ...post, created_at: posts[idx].created_at || new Date().toISOString() };
+        } else {
+          posts.push({ ...post, created_at: new Date().toISOString() });
+        }
+      } else {
+        const newPost = {
+          ...post,
+          id: 'post-' + Math.random().toString(36).substr(2, 9),
+          created_at: new Date().toISOString()
+        };
+        posts.push(newPost);
+      }
+      localStorage.setItem('hds_blog_posts', JSON.stringify(posts));
+      return true;
+    }
+
+    try {
+      const dbPost: any = {
+        title: post.title,
+        slug: post.slug,
+        thumbnail: post.thumbnail,
+        content: post.content,
+        excerpt: post.excerpt,
+        category: post.category,
+        published: post.published === true,
+        publish_date: post.publish_date || null,
+        tags: post.tags || '',
+        meta_title: post.meta_title || '',
+        meta_description: post.meta_description || '',
+        canonical_url: post.canonical_url || '',
+        author: post.author || 'Harsh Patel',
+        reading_time: post.reading_time || '5 min read',
+        is_draft: post.is_draft === true
+      };
+
+      if (post.id && !post.id.startsWith('post-')) {
+        const { error } = await supabase
+          .from('blog_posts')
+          .update(dbPost)
+          .eq('id', post.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from('blog_posts')
+          .insert([dbPost]);
+        if (error) throw error;
+      }
+      return true;
+    } catch (err) {
+      console.error('Error saving blog post to Supabase:', err);
+      // Fallback to localStorage
+      const posts: BlogPost[] = JSON.parse(localStorage.getItem('hds_blog_posts') || '[]');
+      if (post.id) {
+        const idx = posts.findIndex(p => p.id === post.id);
+        if (idx !== -1) {
+          posts[idx] = { ...posts[idx], ...post, created_at: posts[idx].created_at || new Date().toISOString() };
+        } else {
+          posts.push({ ...post, created_at: new Date().toISOString() });
+        }
+      } else {
+        const newPost = {
+          ...post,
+          id: 'post-' + Math.random().toString(36).substr(2, 9),
+          created_at: new Date().toISOString()
+        };
+        posts.push(newPost);
+      }
+      localStorage.setItem('hds_blog_posts', JSON.stringify(posts));
+      return true;
+    }
+  },
+
+  /**
+   * Delete a blog post
+   */
+  async deleteBlogPost(id: string): Promise<boolean> {
+    const posts: BlogPost[] = JSON.parse(localStorage.getItem('hds_blog_posts') || '[]');
+    const filtered = posts.filter(p => p.id !== id);
+    localStorage.setItem('hds_blog_posts', JSON.stringify(filtered));
+
+    if (!isSupabaseConfigured || id.startsWith('post-')) {
+      return true;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('blog_posts')
+        .delete()
+        .eq('id', id);
+      if (error) throw error;
+      return true;
+    } catch (err) {
+      console.error('Error deleting blog post from Supabase:', err);
+      return true;
     }
   },
 

@@ -78,6 +78,14 @@ export interface BlogPost {
   category: string;
   published: boolean;
   created_at?: string;
+  publish_date?: string;
+  tags?: string;
+  meta_title?: string;
+  meta_description?: string;
+  canonical_url?: string;
+  author?: string;
+  reading_time?: string;
+  is_draft?: boolean;
 }
 
 export interface PortfolioProject {

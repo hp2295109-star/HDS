@@ -14,9 +14,11 @@ import {
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { supabaseService } from '../services/supabaseService';
 import PageTransition from '../components/PageTransition';
-import { Lead, WebsiteAudit, ContactMessage, Newsletter, BookedCall } from '../types/supabase';
+import { Lead, WebsiteAudit, ContactMessage, Newsletter, BookedCall, BlogPost } from '../types/supabase';
 import { useTheme } from '../components/ThemeProvider';
 import CMSEditor from '../components/CMSEditor';
+import BlogManager from '../components/BlogManager';
+import SEODashboard from '../components/SEODashboard';
 
 // Static default projects to populate Portfolio state if empty
 const DEFAULT_PROJECTS = [
@@ -67,7 +69,7 @@ export default function AdminDashboard() {
   const { theme, setTheme } = useTheme();
 
   // Active Main Sidebar Tab
-  const [activeTab, setActiveTab] = useState<'home' | 'portfolio' | 'leads' | 'settings' | 'cms'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'portfolio' | 'leads' | 'settings' | 'cms' | 'blogs' | 'seo'>('home');
   
   // Leads tab sub-view (we group leads, audits, calls, messages, newsletters to keep the sidebar extremely clean like Supabase/Linear!)
   const [leadsSubView, setLeadsSubView] = useState<'leads' | 'audits' | 'messages' | 'calls' | 'newsletters'>('leads');
@@ -87,6 +89,32 @@ export default function AdminDashboard() {
 
   // Portfolio projects state synced dynamically
   const [projects, setProjects] = useState<any[]>([]);
+
+  // Blogs State Sync
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [isBlogModalOpen, setIsBlogModalOpen] = useState(false);
+  const [editingBlog, setEditingBlog] = useState<BlogPost | null>(null);
+  const [blogForm, setBlogForm] = useState<Partial<BlogPost>>({
+    id: '',
+    title: '',
+    slug: '',
+    thumbnail: '',
+    content: '',
+    excerpt: '',
+    category: 'Web Design',
+    published: false,
+    publish_date: '',
+    tags: '',
+    meta_title: '',
+    meta_description: '',
+    canonical_url: '',
+    author: 'Harsh Patel',
+    reading_time: '5 min read',
+    is_draft: true
+  });
+  const [blogSearch, setBlogSearch] = useState('');
+  const [blogCategoryFilter, setBlogCategoryFilter] = useState('All');
+  const [blogStatusFilter, setBlogStatusFilter] = useState('all');
 
   // Project Editing State
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
@@ -194,13 +222,14 @@ export default function AdminDashboard() {
     if (!isAuthenticated) return;
     setCrmLoading(true);
     try {
-      const [leadsData, auditsData, msgsData, newsData, callsData, projectsData] = await Promise.all([
+      const [leadsData, auditsData, msgsData, newsData, callsData, projectsData, blogsData] = await Promise.all([
         supabaseService.getAllLeads(),
         supabaseService.getAllAudits(),
         supabaseService.getAllMessages(),
         supabaseService.getAllNewsletterSubscribers(),
         supabaseService.getAllBookedCalls(),
-        supabaseService.getPortfolioProjects()
+        supabaseService.getPortfolioProjects(),
+        supabaseService.getBlogPostsAdmin()
       ]);
 
       setLeads(leadsData || []);
@@ -209,6 +238,7 @@ export default function AdminDashboard() {
       setNewsletters(newsData || []);
       setCalls(callsData || []);
       setProjects(projectsData || []);
+      setBlogs(blogsData || []);
     } catch (err) {
       console.error('Error loading CRM stats:', err);
     } finally {
@@ -824,7 +854,9 @@ export default function AdminDashboard() {
                     { id: 'home', label: 'Dashboard Home', icon: LayoutDashboard },
                     { id: 'portfolio', label: `Portfolio (${projects.length})`, icon: Briefcase },
                     { id: 'leads', label: `Leads Hub (${leads.length})`, icon: Users, badge: newLeadsCount },
+                    { id: 'blogs', label: `Insights & Blogs (${blogs.length})`, icon: Edit3 },
                     { id: 'cms', label: 'Website CMS', icon: Globe },
+                    { id: 'seo', label: 'SEO Dashboard', icon: Search },
                     { id: 'settings', label: 'System Settings', icon: SettingsIcon }
                   ].map(item => {
                     const Icon = item.icon;
@@ -899,7 +931,9 @@ export default function AdminDashboard() {
                   {activeTab === 'home' && 'SaaS Console'}
                   {activeTab === 'portfolio' && 'Portfolio Projects Engine'}
                   {activeTab === 'leads' && 'Global CRM Leads Hub'}
+                  {activeTab === 'blogs' && 'SEO Insights & Blog Management'}
                   {activeTab === 'cms' && 'Website CMS Content Engine'}
+                  {activeTab === 'seo' && 'Search Engine Optimization Studio'}
                   {activeTab === 'settings' && 'System Configuration'}
                 </h1>
                 <p className="text-[10px] text-text-tertiary hidden sm:block mt-0.5">
@@ -1881,6 +1915,20 @@ export default function AdminDashboard() {
             {activeTab === 'cms' && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
                 <CMSEditor />
+              </motion.div>
+            )}
+
+            {/* TAB 6: BLOG MANAGER */}
+            {activeTab === 'blogs' && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                <BlogManager onBlogSaved={() => fetchData()} />
+              </motion.div>
+            )}
+
+            {/* TAB 7: SEO DASHBOARD */}
+            {activeTab === 'seo' && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                <SEODashboard />
               </motion.div>
             )}
 
