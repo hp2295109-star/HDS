@@ -126,47 +126,38 @@ export default function Services() {
             {servicesData.map((service, index) => {
               const IconComponent = service.icon;
               return (
-                <div
+                <Link
                   key={index}
-                  className="bg-white/[0.02] border border-white/10 rounded-[24px] p-8 flex flex-col justify-between h-full transition-all duration-300 hover:border-accent hover:-translate-y-[5px] group shadow-sm backdrop-blur-md"
+                  to={service.link}
+                  className="bg-white/[0.02] border border-white/10 rounded-[24px] p-8 flex flex-col h-full transition-all duration-300 hover:border-accent hover:-translate-y-[5px] group shadow-sm backdrop-blur-md"
                 >
-                  <div>
-                    {/* Premium Icon Container */}
-                    <div className="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center mb-6 text-accent group-hover:bg-accent/20 transition-all duration-300">
-                      <IconComponent className="w-7 h-7 group-hover:scale-105 transition-transform duration-300" />
-                    </div>
-                    
-                    {/* Service Title */}
-                    <h3 className="text-xl font-bold font-heading mb-3 text-white">
-                      {service.title}
-                    </h3>
-                    
-                    {/* Short Description (2-3 lines) */}
-                    <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                      {service.desc}
-                    </p>
-                    
-                    {/* 3 Key Features */}
-                    <div className="border-t border-white/5 pt-6 mb-8">
-                      <ul className="space-y-3">
-                        {service.features.map((feature, fIdx) => (
-                          <li key={fIdx} className="flex items-center text-sm text-gray-300">
-                            <CheckCircle2 className="w-4 h-4 text-accent mr-3 shrink-0" />
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                  {/* Premium Icon Container */}
+                  <div className="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center mb-6 text-accent group-hover:bg-accent/20 transition-all duration-300">
+                    <IconComponent className="w-7 h-7 group-hover:scale-105 transition-transform duration-300" />
                   </div>
                   
-                  {/* Learn More Button */}
-                  <Link 
-                    to={service.link}
-                    className="w-full text-center py-3 bg-white/5 border border-white/10 hover:bg-accent hover:text-black hover:border-accent text-white rounded-xl font-semibold text-sm transition-all duration-300"
-                  >
-                    Learn More
-                  </Link>
-                </div>
+                  {/* Service Title */}
+                  <h3 className="text-xl font-bold font-heading mb-3 text-white group-hover:text-accent transition-colors duration-300">
+                    {service.title}
+                  </h3>
+                  
+                  {/* Short Description (2-3 lines) */}
+                  <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                    {service.desc}
+                  </p>
+                  
+                  {/* 3 Key Features */}
+                  <div className="border-t border-white/5 pt-6 mt-auto">
+                    <ul className="space-y-3">
+                      {service.features.map((feature, fIdx) => (
+                        <li key={fIdx} className="flex items-center text-sm text-gray-300">
+                          <CheckCircle2 className="w-4 h-4 text-accent mr-3 shrink-0" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Link>
               );
             })}
           </div>
