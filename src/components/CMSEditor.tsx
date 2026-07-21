@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   cmsService, CMSContent, defaultCMSContent, 
   CMSBlogPost, CMSFaqItem, CMSTimelineItem, CMSServicePillar, CMSProcessStep 
@@ -7,8 +8,9 @@ import {
   Save, Upload, Eye, CheckCircle2, AlertCircle, Trash2, Plus, 
   HelpCircle, ToggleLeft, ToggleRight, ArrowUpRight, ArrowDownRight, RefreshCw, 
   Settings, Image as ImageIcon, Sparkles, BookOpen, Layers, List, Phone, Link2, 
-  ShieldCheck, Globe, Check, Info, FileText
+  ShieldCheck, Globe, Check, Info, FileText, HardDrive, X
 } from 'lucide-react';
+import MediaLibrary from './MediaLibrary';
 
 export default function CMSEditor() {
   const [content, setContent] = useState<CMSContent>(defaultCMSContent);
@@ -25,6 +27,8 @@ export default function CMSEditor() {
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadingImageKey, setUploadingImageKey] = useState<string | null>(null);
+  const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
+  const [activePickerKeyPath, setActivePickerKeyPath] = useState<string[] | null>(null);
 
   // For nested list editing
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -152,6 +156,23 @@ export default function CMSEditor() {
     } finally {
       setUploadingImageKey(null);
     }
+  };
+
+  // Select Image helper from central Media Library
+  const handleImageSelect = (url: string) => {
+    if (!activePickerKeyPath) return;
+    updateContent(prev => {
+      const copy = JSON.parse(JSON.stringify(prev));
+      let obj = copy;
+      for (let i = 0; i < activePickerKeyPath.length - 1; i++) {
+        obj = obj[activePickerKeyPath[i]];
+      }
+      obj[activePickerKeyPath[activePickerKeyPath.length - 1]] = url;
+      return copy;
+    });
+    showFeedback('success', 'Selected asset applied successfully!');
+    setIsMediaPickerOpen(false);
+    setActivePickerKeyPath(null);
   };
 
   if (loading) {
@@ -579,7 +600,20 @@ export default function CMSEditor() {
                             </div>
 
                             <div>
-                              <label className="block text-[9px] uppercase font-bold text-text-tertiary mb-1">Image URL</label>
+                              <div className="flex items-center justify-between mb-1">
+                                <label className="block text-[9px] uppercase font-bold text-text-tertiary">Image URL</label>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setActivePickerKeyPath(['about', 'timeline', index.toString(), 'image']);
+                                    setIsMediaPickerOpen(true);
+                                  }}
+                                  className="text-[9px] text-accent font-bold hover:underline flex items-center gap-1 cursor-pointer bg-transparent border-none"
+                                >
+                                  <HardDrive className="w-2.5 h-2.5" />
+                                  <span>Select from Library</span>
+                                </button>
+                              </div>
                               <div className="flex gap-2">
                                 <input
                                   type="text"
@@ -1408,6 +1442,44 @@ export default function CMSEditor() {
 
         </div>
       </div>
+
+      {/* Media Picker Modal Overlay */}
+      <AnimatePresence>
+        {isMediaPickerOpen && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-card-bg border border-card-border rounded-2xl w-full max-w-5xl h-[85vh] p-6 relative flex flex-col justify-between"
+            >
+              <div className="flex items-center justify-between border-b border-card-border pb-4 mb-4 shrink-0">
+                <div className="flex items-center gap-2">
+                  <HardDrive className="w-5 h-5 text-accent" />
+                  <h3 className="text-sm font-bold text-text-primary font-mono uppercase tracking-tight">Select CMS Asset</h3>
+                </div>
+                <button 
+                  onClick={() => setIsMediaPickerOpen(false)}
+                  className="p-1 hover:bg-neutral-900 rounded-lg text-text-tertiary hover:text-text-primary transition-all cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              
+              <div className="flex-1 overflow-y-auto">
+                <MediaLibrary 
+                  mode="select" 
+                  allowedTypes={['image', 'icon']} 
+                  onSelect={(url) => {
+                    handleImageSelect(url);
+                  }} 
+                  onClose={() => setIsMediaPickerOpen(false)}
+                />
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

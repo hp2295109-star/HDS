@@ -4,7 +4,7 @@ import {
   Search, User, Clock, Calendar, ArrowLeft, Tag, CheckCircle2, ChevronRight, 
   MessageSquare, ArrowRight, BookOpen, ChevronLeft 
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import PageTransition from '../components/PageTransition';
 import { supabaseService } from '../services/supabaseService';
 import { BlogPost } from '../types/supabase';
@@ -39,6 +39,8 @@ interface StructuredArticle {
 }
 
 export default function Blog() {
+  const { slug } = useParams();
+  const navigate = useNavigate();
   const [articles, setArticles] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedArticleId, setSelectedArticleId] = useState<string | null>(null);
@@ -49,6 +51,15 @@ export default function Blog() {
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const POSTS_PER_PAGE = 4;
+
+  // Synchronize state with URL slug
+  useEffect(() => {
+    if (slug) {
+      setSelectedArticleId(slug);
+    } else {
+      setSelectedArticleId(null);
+    }
+  }, [slug]);
 
   // Load published blog posts on mount
   useEffect(() => {
@@ -119,7 +130,11 @@ export default function Blog() {
 
   // Smooth scroll back to top of page when opening or closing an article
   const handleArticleSelect = (id: string | null) => {
-    setSelectedArticleId(id);
+    if (id) {
+      navigate(`/blog/${id}`);
+    } else {
+      navigate('/blog');
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

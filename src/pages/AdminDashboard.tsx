@@ -19,6 +19,9 @@ import { useTheme } from '../components/ThemeProvider';
 import CMSEditor from '../components/CMSEditor';
 import BlogManager from '../components/BlogManager';
 import SEODashboard from '../components/SEODashboard';
+import AnalyticsDashboard from '../components/AnalyticsDashboard';
+import MediaLibrary from '../components/MediaLibrary';
+import { HardDrive } from 'lucide-react';
 
 // Static default projects to populate Portfolio state if empty
 const DEFAULT_PROJECTS = [
@@ -69,7 +72,7 @@ export default function AdminDashboard() {
   const { theme, setTheme } = useTheme();
 
   // Active Main Sidebar Tab
-  const [activeTab, setActiveTab] = useState<'home' | 'portfolio' | 'leads' | 'settings' | 'cms' | 'blogs' | 'seo'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'portfolio' | 'leads' | 'settings' | 'cms' | 'blogs' | 'seo' | 'analytics' | 'media'>('home');
   
   // Leads tab sub-view (we group leads, audits, calls, messages, newsletters to keep the sidebar extremely clean like Supabase/Linear!)
   const [leadsSubView, setLeadsSubView] = useState<'leads' | 'audits' | 'messages' | 'calls' | 'newsletters'>('leads');
@@ -856,6 +859,8 @@ export default function AdminDashboard() {
                     { id: 'leads', label: `Leads Hub (${leads.length})`, icon: Users, badge: newLeadsCount },
                     { id: 'blogs', label: `Insights & Blogs (${blogs.length})`, icon: Edit3 },
                     { id: 'cms', label: 'Website CMS', icon: Globe },
+                    { id: 'analytics', label: 'Website Analytics', icon: Activity },
+                    { id: 'media', label: 'Media Library', icon: HardDrive },
                     { id: 'seo', label: 'SEO Dashboard', icon: Search },
                     { id: 'settings', label: 'System Settings', icon: SettingsIcon }
                   ].map(item => {
@@ -934,6 +939,8 @@ export default function AdminDashboard() {
                   {activeTab === 'blogs' && 'SEO Insights & Blog Management'}
                   {activeTab === 'cms' && 'Website CMS Content Engine'}
                   {activeTab === 'seo' && 'Search Engine Optimization Studio'}
+                  {activeTab === 'analytics' && 'Website Analytics Center'}
+                  {activeTab === 'media' && 'Cloud Storage & Media Library'}
                   {activeTab === 'settings' && 'System Configuration'}
                 </h1>
                 <p className="text-[10px] text-text-tertiary hidden sm:block mt-0.5">
@@ -1929,6 +1936,20 @@ export default function AdminDashboard() {
             {activeTab === 'seo' && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
                 <SEODashboard />
+              </motion.div>
+            )}
+
+            {/* TAB 8: WEBSITE ANALYTICS */}
+            {activeTab === 'analytics' && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                <AnalyticsDashboard />
+              </motion.div>
+            )}
+
+            {/* TAB 9: MEDIA LIBRARY */}
+            {activeTab === 'media' && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                <MediaLibrary />
               </motion.div>
             )}
 

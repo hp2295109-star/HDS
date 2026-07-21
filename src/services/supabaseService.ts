@@ -1,5 +1,6 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { Lead, ContactMessage, Newsletter, WebsiteAudit, BookedCall, Testimonial, BlogPost, PortfolioProject } from '../types/supabase';
+import { analyticsTracker } from './analyticsTracker';
 
 // Helper to simulate network latency for fallback mode
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -16,6 +17,7 @@ export const supabaseService = {
     if (!isSupabaseConfigured) {
       console.log('SIMULATION: Submitting Lead to Supabase', lead);
       await sleep(1000);
+      analyticsTracker.trackConversion('Lead Submission');
       return { success: true, data: { id: 'simulated-lead-id', ...lead } };
     }
 
@@ -42,6 +44,7 @@ export const supabaseService = {
         .select();
 
       if (error) throw error;
+      analyticsTracker.trackConversion('Lead Submission');
       return { success: true, data };
     } catch (err: any) {
       console.error('Error in submitLead:', err);
@@ -56,6 +59,7 @@ export const supabaseService = {
     if (!isSupabaseConfigured) {
       console.log('SIMULATION: Submitting Contact Message to Supabase', msg);
       await sleep(1000);
+      analyticsTracker.trackConversion('Contact Message');
       return { success: true, data: { id: 'simulated-message-id', ...msg } };
     }
 
@@ -75,6 +79,7 @@ export const supabaseService = {
         .select();
 
       if (error) throw error;
+      analyticsTracker.trackConversion('Contact Message');
       return { success: true, data };
     } catch (err: any) {
       console.error('Error in submitContactMessage:', err);
@@ -89,6 +94,7 @@ export const supabaseService = {
     if (!isSupabaseConfigured) {
       console.log('SIMULATION: Submitting Newsletter to Supabase', newsletter);
       await sleep(1000);
+      analyticsTracker.trackConversion('Newsletter Subscribe');
       return { success: true, data: { id: 'simulated-newsletter-id', ...newsletter } };
     }
 
@@ -103,6 +109,7 @@ export const supabaseService = {
         .select();
 
       if (error) throw error;
+      analyticsTracker.trackConversion('Newsletter Subscribe');
       return { success: true, data };
     } catch (err: any) {
       console.error('Error in submitNewsletter:', err);
@@ -117,6 +124,7 @@ export const supabaseService = {
     if (!isSupabaseConfigured) {
       console.log('SIMULATION: Submitting Website Audit to Supabase', audit);
       await sleep(1000);
+      analyticsTracker.trackConversion('Free Website Audit');
       return { success: true, data: { id: 'simulated-audit-id', ...audit } };
     }
 
@@ -137,6 +145,7 @@ export const supabaseService = {
         .select();
 
       if (error) throw error;
+      analyticsTracker.trackConversion('Free Website Audit');
       return { success: true, data };
     } catch (err: any) {
       console.error('Error in submitWebsiteAudit:', err);
@@ -151,6 +160,7 @@ export const supabaseService = {
     if (!isSupabaseConfigured) {
       console.log('SIMULATION: Submitting Booked Call to Supabase', call);
       await sleep(1000);
+      analyticsTracker.trackConversion('Booked Call');
       return { success: true, data: { id: 'simulated-booking-id', ...call } };
     }
 
@@ -171,6 +181,7 @@ export const supabaseService = {
         .select();
 
       if (error) throw error;
+      analyticsTracker.trackConversion('Booked Call');
       return { success: true, data };
     } catch (err: any) {
       console.error('Error in submitBookedCall:', err);

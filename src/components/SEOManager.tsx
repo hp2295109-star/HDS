@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { supabaseService } from '../services/supabaseService';
+import { BlogPost } from '../types/supabase';
 
 export default function SEOManager() {
   const location = useLocation();
   const [updateTick, setUpdateTick] = useState(0);
+  const [blogPost, setBlogPost] = useState<BlogPost | null>(null);
 
   // Re-run whenever location changes or whenever user updates settings in the SEO Dashboard
   useEffect(() => {
@@ -13,6 +16,44 @@ export default function SEOManager() {
     window.addEventListener('hds_seo_settings_updated', handleUpdate);
     return () => window.removeEventListener('hds_seo_settings_updated', handleUpdate);
   }, []);
+
+  // Synchronize blog post from route when on /blog/:slug
+  useEffect(() => {
+    const path = location.pathname;
+    if (path.startsWith('/blog/') && path.length > 6) {
+      const slug = path.substring(6);
+      
+      let found = false;
+      // Try local storage cache first
+      try {
+        const cached = localStorage.getItem('hds_blog_posts');
+        if (cached) {
+          const posts = JSON.parse(cached) as BlogPost[];
+          const post = posts.find(p => p.slug === slug || p.id === slug);
+          if (post) {
+            setBlogPost(post);
+            found = true;
+          }
+        }
+      } catch (e) {
+        console.error("Failed to read cached blog posts in SEOManager", e);
+      }
+
+      // If not found or to keep fresh, fetch asynchronously
+      if (!found) {
+        supabaseService.getBlogPosts().then(posts => {
+          const post = posts.find(p => p.slug === slug || p.id === slug);
+          if (post) {
+            setBlogPost(post);
+          }
+        }).catch(err => {
+          console.error("Failed to load blog posts in SEOManager:", err);
+        });
+      }
+    } else {
+      setBlogPost(null);
+    }
+  }, [location.pathname, updateTick]);
 
   useEffect(() => {
     const path = location.pathname;
@@ -54,11 +95,20 @@ export default function SEOManager() {
     let keywords = customGlobal?.keywords || "website designer in raigarh, website design in raigarh, seo services in raigarh, google business profile expert in raigarh, social media marketing in raigarh, harsh patel, digital marketer raigarh, web designer kharsia, local seo tamnar, custom website chhattisgarh, landing page designer raigarh";
     const canonicalBase = customGlobal?.canonicalUrl || "https://harshdigitalstudios.com";
     const canonical = `${canonicalBase}${path}`;
-    const ogImage = customGlobal?.ogImage || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80";
+    let ogImage = customGlobal?.ogImage || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80";
     const twitterCard = customGlobal?.twitterCard || "summary_large_image";
 
     // Dynamic mapping for specific views (incorporating user's custom base settings when appropriate)
-    if (path === '/') {
+    if (path.startsWith('/blog/') && path.length > 6 && blogPost) {
+      title = blogPost.meta_title || blogPost.title;
+      desc = blogPost.meta_description || blogPost.excerpt || blogPost.content.slice(0, 160).replace(/[#*`\n]/g, '') + '...';
+      if (blogPost.thumbnail) {
+        ogImage = blogPost.thumbnail;
+      }
+      if (blogPost.tags) {
+        keywords = `${blogPost.tags}, ${keywords}`;
+      }
+    } else if (path === '/') {
       title = customGlobal?.siteTitle || "Harsh Patel | Premium Website Designer & SEO Specialist Raigarh";
       desc = customGlobal?.metaDesc || "Stop Posting. Start Building Your Brand. Premium custom websites and elite local SEO services in Raigarh, Tamnar, Kharsia, and Chhattisgarh by Harsh Patel (MBA). Book a free consultation.";
     } else if (path === '/about') {
@@ -269,7 +319,28 @@ export default function SEOManager() {
     }
 
     // Blog Schema
-    if (customBlog) {
+    if (path.startsWith('/blog/') && path.length > 6 && blogPost) {
+      schemas.push({
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": blogPost.title,
+        "image": blogPost.thumbnail || ogImage,
+        "author": {
+          "@type": "Person",
+          "name": blogPost.author || "Harsh Patel"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": customOrg?.name || "Harsh Digital Studios",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://harshdigitalstudios.com/logo.png"
+          }
+        },
+        "datePublished": blogPost.publish_date || new Date().toISOString().split('T')[0],
+        "description": blogPost.meta_description || blogPost.excerpt || blogPost.content.slice(0, 150).replace(/[#*`\n]/g, '') + '...'
+      });
+    } else if (customBlog) {
       schemas.push({
         "@context": "https://schema.org",
         "@type": "BlogPosting",

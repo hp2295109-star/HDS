@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Plus, Edit, Trash2, Search, Filter, Globe, Calendar, FileText, Check, 
   Clock, Share2, FileCode, Link2, User, Tag, ChevronDown, Eye, CheckCircle2, 
-  AlertCircle, Bold, Italic, List, Quote, Heading, Code, ArrowLeft, RefreshCw, Sparkles
+  AlertCircle, Bold, Italic, List, Quote, Heading, Code, ArrowLeft, RefreshCw, Sparkles,
+  HardDrive, X
 } from 'lucide-react';
 import { supabaseService } from '../services/supabaseService';
 import { BlogPost } from '../types/supabase';
+import MediaLibrary from './MediaLibrary';
 
 interface BlogManagerProps {
   onBlogSaved?: () => void;
@@ -46,6 +49,84 @@ export default function BlogManager({ onBlogSaved }: BlogManagerProps) {
   
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
+
+  // Helper to automatically update sitemapXml with published blogs
+  const updateSitemapWithBlogs = (allBlogs: BlogPost[]) => {
+    try {
+      const storedGlobal = localStorage.getItem('hds_seo_global');
+      let globalSeo: any = null;
+      if (storedGlobal) {
+        globalSeo = JSON.parse(storedGlobal);
+      } else {
+        globalSeo = {
+          siteTitle: "Harsh Patel | Premium Freelance Website Designer & SEO Expert Raigarh",
+          metaDesc: "Harsh Patel (MBA) is an award-winning freelance website designer & local SEO specialist in Raigarh, Chhattisgarh. Build custom fast-loading websites, rank high on Google, and grow your brand.",
+          keywords: "website designer in raigarh, website design in raigarh, seo services in raigarh, google business profile expert in raigarh, social media marketing in raigarh, harsh patel, digital marketer raigarh, web designer kharsia, local seo tamnar, custom website chhattisgarh, landing page designer raigarh",
+          canonicalUrl: "https://harshdigitalstudios.com",
+          ogImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+          twitterCard: "summary_large_image",
+          robotsTxt: "User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /admin-dashboard/\n\nSitemap: https://harshdigitalstudios.com/sitemap.xml",
+          sitemapXml: ""
+        };
+      }
+
+      // Generate the dynamic part of the sitemap
+      const nowStr = new Date().toISOString().split('T')[0];
+      const publishedBlogs = allBlogs.filter(blog => blog.published && !blog.is_draft && (!blog.publish_date || blog.publish_date <= nowStr));
+
+      // Standard static pages
+      const staticPages = [
+        { loc: 'https://harshdigitalstudios.com/', changefreq: 'weekly', priority: '1.0', lastmod: '2026-07-19' },
+        { loc: 'https://harshdigitalstudios.com/about', changefreq: 'monthly', priority: '0.8', lastmod: '2026-07-19' },
+        { loc: 'https://harshdigitalstudios.com/services', changefreq: 'monthly', priority: '0.8', lastmod: '2026-07-19' },
+        { loc: 'https://harshdigitalstudios.com/pricing', changefreq: 'monthly', priority: '0.8', lastmod: '2026-07-19' },
+        { loc: 'https://harshdigitalstudios.com/portfolio', changefreq: 'monthly', priority: '0.8', lastmod: '2026-07-19' },
+        { loc: 'https://harshdigitalstudios.com/blog', changefreq: 'daily', priority: '0.8', lastmod: '2026-07-19' },
+        { loc: 'https://harshdigitalstudios.com/faq', changefreq: 'monthly', priority: '0.8', lastmod: '2026-07-19' },
+        { loc: 'https://harshdigitalstudios.com/contact', changefreq: 'monthly', priority: '0.8', lastmod: '2026-07-19' },
+        { loc: 'https://harshdigitalstudios.com/testimonials', changefreq: 'monthly', priority: '0.8', lastmod: '2026-07-19' },
+        { loc: 'https://harshdigitalstudios.com/business-growth-calculator', changefreq: 'monthly', priority: '0.8', lastmod: '2026-07-19' }
+      ];
+
+      let xmlLines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+      ];
+
+      // Add static pages
+      staticPages.forEach(p => {
+        xmlLines.push('  <url>');
+        xmlLines.push(`    <loc>${p.loc}</loc>`);
+        xmlLines.push(`    <lastmod>${p.lastmod}</lastmod>`);
+        xmlLines.push(`    <changefreq>${p.changefreq}</changefreq>`);
+        xmlLines.push(`    <priority>${p.priority}</priority>`);
+        xmlLines.push('  </url>');
+      });
+
+      // Add dynamic blog posts
+      publishedBlogs.forEach(blog => {
+        const blogUrl = `https://harshdigitalstudios.com/blog/${blog.slug}`;
+        const lastmod = blog.publish_date || nowStr;
+        xmlLines.push('  <url>');
+        xmlLines.push(`    <loc>${blogUrl}</loc>`);
+        xmlLines.push(`    <lastmod>${lastmod}</lastmod>`);
+        xmlLines.push('    <changefreq>monthly</changefreq>');
+        xmlLines.push('    <priority>0.8</priority>');
+        xmlLines.push('  </url>');
+      });
+
+      xmlLines.push('</urlset>');
+
+      globalSeo.sitemapXml = xmlLines.join('\n');
+      localStorage.setItem('hds_seo_global', JSON.stringify(globalSeo));
+      
+      // Emit event to update SEO settings across components if needed
+      window.dispatchEvent(new Event('hds_seo_settings_updated'));
+    } catch (e) {
+      console.error('Failed to update sitemap with blogs', e);
+    }
+  };
 
   // Load blogs on mount
   useEffect(() => {
@@ -57,6 +138,7 @@ export default function BlogManager({ onBlogSaved }: BlogManagerProps) {
     try {
       const data = await supabaseService.getBlogPostsAdmin();
       setBlogs(data || []);
+      updateSitemapWithBlogs(data || []);
     } catch (err: any) {
       setError(err.message || 'Failed to load blog posts');
     } finally {
@@ -569,7 +651,17 @@ export default function BlogManager({ onBlogSaved }: BlogManagerProps) {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-mono font-bold text-text-tertiary uppercase">Featured Image URL</label>
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-mono font-bold text-text-tertiary uppercase">Featured Image URL</label>
+                    <button
+                      type="button"
+                      onClick={() => setIsMediaPickerOpen(true)}
+                      className="text-[9px] text-accent font-bold hover:underline flex items-center gap-1 cursor-pointer bg-transparent border-none"
+                    >
+                      <HardDrive className="w-2.5 h-2.5" />
+                      <span>Select from Library</span>
+                    </button>
+                  </div>
                   <input
                     type="text"
                     value={form.thumbnail}
@@ -946,6 +1038,45 @@ export default function BlogManager({ onBlogSaved }: BlogManagerProps) {
           </div>
         </div>
       )}
+
+      {/* Media Picker Modal Overlay */}
+      <AnimatePresence>
+        {isMediaPickerOpen && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-card-bg border border-card-border rounded-2xl w-full max-w-5xl h-[85vh] p-6 relative flex flex-col justify-between"
+            >
+              <div className="flex items-center justify-between border-b border-card-border pb-4 mb-4 shrink-0">
+                <div className="flex items-center gap-2">
+                  <HardDrive className="w-5 h-5 text-accent" />
+                  <h3 className="text-sm font-bold text-text-primary font-mono uppercase tracking-tight">Select Media Asset</h3>
+                </div>
+                <button 
+                  onClick={() => setIsMediaPickerOpen(false)}
+                  className="p-1 hover:bg-neutral-900 rounded-lg text-text-tertiary hover:text-text-primary transition-all cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              
+              <div className="flex-1 overflow-y-auto">
+                <MediaLibrary 
+                  mode="select" 
+                  allowedTypes={['image', 'icon']} 
+                  onSelect={(url) => {
+                    setForm(prev => ({ ...prev, thumbnail: url }));
+                    setIsMediaPickerOpen(false);
+                  }} 
+                  onClose={() => setIsMediaPickerOpen(false)}
+                />
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

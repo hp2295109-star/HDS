@@ -30,6 +30,7 @@ import AdminLogin from './pages/AdminLogin';
 import { useState, useEffect } from 'react';
 import { supabase, isSupabaseConfigured } from './lib/supabase';
 import { Loader2 } from 'lucide-react';
+import { analyticsTracker } from './services/analyticsTracker';
 
 function AdminRedirect() {
   const navigate = useNavigate();
@@ -70,6 +71,11 @@ function AdminRedirect() {
 function AnimatedRoutes() {
   const location = useLocation();
   
+  // Track page views on route change
+  useEffect(() => {
+    analyticsTracker.trackPageView(location.pathname, document.title || 'Harsh Digital Studios');
+  }, [location.pathname]);
+  
   return (
     <AnimatePresence mode="wait">
       <div key={location.pathname}>
@@ -80,6 +86,7 @@ function AnimatedRoutes() {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<Blog />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/testimonials" element={<Testimonials />} />
@@ -95,6 +102,11 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
+  // Initialize analytics tracker
+  useEffect(() => {
+    analyticsTracker.init();
+  }, []);
+
   return (
     <ThemeProvider>
       <LanguageProvider>
