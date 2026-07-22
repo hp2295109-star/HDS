@@ -121,6 +121,7 @@ export default function AdminDashboard() {
 
   // Project Editing State
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+  const [isProjectMediaPickerOpen, setIsProjectMediaPickerOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<any | null>(null);
   const [projectForm, setProjectForm] = useState({
     id: '',
@@ -2060,7 +2061,17 @@ export default function AdminDashboard() {
                 </div>
 
                 <div>
-                  <label className="block text-[9px] font-bold uppercase text-text-secondary mb-1">Thumbnail Image URL</label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-[9px] font-bold uppercase text-text-secondary">Thumbnail Image URL</label>
+                    <button
+                      type="button"
+                      onClick={() => setIsProjectMediaPickerOpen(true)}
+                      className="px-2 py-0.5 bg-neutral-900 border border-card-border hover:border-accent/40 rounded text-[9px] font-bold text-accent hover:text-white transition-all flex items-center gap-1 cursor-pointer"
+                    >
+                      <HardDrive className="w-3 h-3 text-accent" />
+                      <span>Select from Library</span>
+                    </button>
+                  </div>
                   <input
                     type="url"
                     value={projectForm.thumbnail}
@@ -2334,6 +2345,47 @@ export default function AdminDashboard() {
                 >
                   Confirm Delete
                 </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* ==========================================
+          MODAL D: MEDIA LIBRARY PICKER FOR PROJECTS
+          ========================================== */}
+      <AnimatePresence>
+        {isProjectMediaPickerOpen && (
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-[110] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-card-bg border border-card-border rounded-2xl w-full max-w-5xl h-[85vh] p-6 relative flex flex-col justify-between shadow-2xl"
+            >
+              <div className="flex items-center justify-between border-b border-card-border pb-4 mb-4 shrink-0">
+                <div className="flex items-center gap-2">
+                  <HardDrive className="w-5 h-5 text-accent" />
+                  <h3 className="text-sm font-bold text-text-primary font-mono uppercase tracking-tight">Select Project Image Asset</h3>
+                </div>
+                <button 
+                  onClick={() => setIsProjectMediaPickerOpen(false)}
+                  className="p-1 hover:bg-neutral-900 rounded-lg text-text-tertiary hover:text-text-primary transition-all cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              
+              <div className="flex-1 overflow-y-auto">
+                <MediaLibrary 
+                  mode="select" 
+                  allowedTypes={['image', 'icon']} 
+                  onSelect={(url) => {
+                    setProjectForm(prev => ({ ...prev, thumbnail: url }));
+                    setIsProjectMediaPickerOpen(false);
+                  }} 
+                  onClose={() => setIsProjectMediaPickerOpen(false)}
+                />
               </div>
             </motion.div>
           </div>

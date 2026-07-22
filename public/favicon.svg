@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="hdsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00E5FF" />
+      <stop offset="50%" stop-color="#7C3AED" />
+      <stop offset="100%" stop-color="#EC4899" />
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F0F17" />
+      <stop offset="100%" stop-color="#050508" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#bgGrad)" stroke="#1F1F2E" stroke-width="8" />
+  <path d="M140 120 V392 M140 256 H250 M250 120 V392" stroke="url(#hdsGrad)" stroke-width="44" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  <path d="M300 120 C380 120 410 170 410 256 C410 342 380 392 300 392" stroke="url(#hdsGrad)" stroke-width="44" stroke-linecap="round" fill="none" />
+  <circle cx="390" cy="140" r="18" fill="#00E5FF" />
+</svg>

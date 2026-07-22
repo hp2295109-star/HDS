@@ -1,0 +1,27 @@
+{
+  "name": "Harsh Digital Studios",
+  "short_name": "HDS",
+  "description": "Harsh Digital Studios - High-Performance Website Development, Local SEO & AI Automation in Raigarh, Chhattisgarh.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0A0A",
+  "theme_color": "#00E5FF",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

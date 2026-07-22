@@ -14,6 +14,7 @@ import BackgroundParticles from './components/BackgroundParticles';
 import { ThemeProvider } from './components/ThemeProvider';
 import { LanguageProvider } from './components/LanguageProvider';
 import SEOManager from './components/SEOManager';
+import ErrorBoundary from './components/ErrorBoundary';
 
 import Home from './pages/Home';
 import About from './pages/About';
@@ -27,6 +28,7 @@ import Testimonials from './pages/Testimonials';
 import BusinessGrowthCalculator from './pages/BusinessGrowthCalculator';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
+import NotFound from './pages/NotFound';
 import { useState, useEffect } from 'react';
 import { supabase, isSupabaseConfigured } from './lib/supabase';
 import { Loader2 } from 'lucide-react';
@@ -95,6 +97,7 @@ function AnimatedRoutes() {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </AnimatePresence>
@@ -108,24 +111,26 @@ export default function App() {
   }, []);
 
   return (
-    <ThemeProvider>
-      <LanguageProvider>
-        <BrowserRouter>
-          <SEOManager />
-          <ScrollToTop />
-          <MouseGlow />
-          <BackgroundParticles />
-          <div className="flex flex-col min-h-screen relative z-10">
-            <Navbar />
-            <main className="flex-grow pt-24">
-              <AnimatedRoutes />
-            </main>
-            <Footer />
-            <AIAssistant />
-            <SaaSModals />
-          </div>
-        </BrowserRouter>
-      </LanguageProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <LanguageProvider>
+          <BrowserRouter>
+            <SEOManager />
+            <ScrollToTop />
+            <MouseGlow />
+            <BackgroundParticles />
+            <div className="flex flex-col min-h-screen relative z-10">
+              <Navbar />
+              <main className="flex-grow pt-24">
+                <AnimatedRoutes />
+              </main>
+              <Footer />
+              <AIAssistant />
+              <SaaSModals />
+            </div>
+          </BrowserRouter>
+        </LanguageProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }

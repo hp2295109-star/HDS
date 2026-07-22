@@ -7,6 +7,7 @@ export interface MediaItem {
   type: 'image' | 'video' | 'pdf' | 'icon';
   folderId: string | null;
   size: number;
+  dimensions?: string;
   created_at: string;
 }
 
@@ -281,6 +282,16 @@ class MediaService {
       fileUrl = await this.readFileAsDataURL(file);
     }
 
+    // Detect dimensions if image/icon
+    let dimensions: string | undefined = undefined;
+    if (type === 'image' || type === 'icon') {
+      try {
+        dimensions = await this.getImageDimensions(fileUrl);
+      } catch (e) {
+        // ignore
+      }
+    }
+
     const newItem: MediaItem = {
       id: 'm-' + Math.random().toString(36).substring(2, 9),
       name: file.name,
@@ -288,6 +299,7 @@ class MediaService {
       type,
       folderId,
       size: file.size,
+      dimensions,
       created_at: new Date().toISOString()
     };
 
@@ -308,6 +320,61 @@ class MediaService {
     items.unshift(newItem);
     localStorage.setItem('hds_media_items', JSON.stringify(items));
     return newItem;
+  }
+
+  private getImageDimensions(url: string): Promise<string> {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        resolve(`${img.naturalWidth} × ${img.naturalHeight}px`);
+      };
+      img.onerror = () => {
+        resolve('');
+      };
+      img.src = url;
+    });
+  }
+
+  // Replace existing file content/url while keeping or updating record
+  async replaceFile(existingItemId: string, newFile: File): Promise<MediaItem | null> {
+    const items = await this.getItems();
+    const existing = items.find(i => i.id === existingItemId);
+    if (!existing) return null;
+
+    const uploaded = await this.uploadFile(newFile, existing.folderId);
+    
+    // Update existing item with new file attributes
+    existing.name = newFile.name;
+    existing.url = uploaded.url;
+    existing.type = uploaded.type;
+    existing.size = uploaded.size;
+    existing.dimensions = uploaded.dimensions;
+    existing.created_at = new Date().toISOString();
+
+    if (this.useSupabaseDb) {
+      try {
+        await supabase
+          .from('media_items')
+          .update({
+            name: existing.name,
+            url: existing.url,
+            type: existing.type,
+            size: existing.size,
+            dimensions: existing.dimensions,
+            created_at: existing.created_at
+          })
+          .eq('id', existingItemId);
+
+        // Remove the temporary uploaded duplicate record
+        await supabase.from('media_items').delete().eq('id', uploaded.id);
+      } catch (e) {
+        console.error('Supabase replaceFile error:', e);
+      }
+    }
+
+    const updatedItems = items.filter(i => i.id !== uploaded.id).map(i => i.id === existingItemId ? existing : i);
+    localStorage.setItem('hds_media_items', JSON.stringify(updatedItems));
+    return existing;
   }
 
   private readFileAsDataURL(file: File): Promise<string> {

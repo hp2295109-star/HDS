@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Folder, FolderPlus, FileText, Image as ImageIcon, Video, File, Search, 
   Copy, Check, Trash2, Edit2, Upload, X, ArrowLeft, ExternalLink, Grid, 
-  List, ChevronRight, HardDrive, Plus, Info, CornerDownRight, CheckCircle2, AlertCircle
+  List, ChevronRight, HardDrive, Plus, Info, CornerDownRight, CheckCircle2, AlertCircle, RefreshCw
 } from 'lucide-react';
 import { mediaService, MediaItem, MediaFolder } from '../services/mediaService';
 
@@ -25,10 +25,11 @@ export default function MediaLibrary({
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   
-  // Navigation & Filtering State
+  // Navigation, Filtering & Sorting State
   const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeType, setActiveType] = useState<string>('all'); // all, image, video, pdf, icon
+  const [sortOption, setSortOption] = useState<'newest' | 'oldest' | 'size' | 'name'>('newest');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   
   // Selected file details state (for right sidebar preview)
@@ -46,9 +47,10 @@ export default function MediaLibrary({
   
   const [movingItemId, setMovingItemId] = useState<string | null>(null);
   
-  // Drag-and-drop state
+  // Drag-and-drop & replace state
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const replaceFileInputRef = useRef<HTMLInputElement>(null);
 
   // Status Alerts
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
@@ -207,6 +209,27 @@ export default function MediaLibrary({
     }
   };
 
+  const handleReplaceFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !activeItem) return;
+    setUploading(true);
+    try {
+      const updated = await mediaService.replaceFile(activeItem.id, file);
+      if (updated) {
+        setItems(prev => prev.map(item => item.id === activeItem.id ? updated : item));
+        setActiveItem(updated);
+        showFeedback('success', `File replaced with "${file.name}"`);
+      } else {
+        showFeedback('error', 'Failed to replace file.');
+      }
+    } catch (e) {
+      showFeedback('error', 'Error replacing file.');
+    } finally {
+      setUploading(false);
+      if (e.target) e.target.value = '';
+    }
+  };
+
   const copyToClipboard = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
     setCopiedId(id);
@@ -243,6 +266,20 @@ export default function MediaLibrary({
     const isAllowed = allowedTypes.includes(item.type);
 
     return matchesFolder && matchesSearch && matchesType && isAllowed;
+  }).sort((a, b) => {
+    if (sortOption === 'newest') {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    }
+    if (sortOption === 'oldest') {
+      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+    }
+    if (sortOption === 'size') {
+      return b.size - a.size;
+    }
+    if (sortOption === 'name') {
+      return a.name.localeCompare(b.name);
+    }
+    return 0;
   });
 
   // Calculate current folder's breadcrumbs
@@ -366,6 +403,17 @@ export default function MediaLibrary({
               })}
 
               <div className="border-l border-card-border pl-1.5 ml-1.5 flex items-center gap-1.5">
+                <select
+                  value={sortOption}
+                  onChange={(e) => setSortOption(e.target.value as any)}
+                  className="bg-neutral-950 border border-card-border rounded-xl px-2 py-1.5 text-[10px] font-mono text-text-secondary focus:outline-none focus:border-accent cursor-pointer"
+                >
+                  <option value="newest">Sort: Newest First</option>
+                  <option value="oldest">Sort: Oldest First</option>
+                  <option value="size">Sort: Size (Largest)</option>
+                  <option value="name">Sort: Name (A-Z)</option>
+                </select>
+
                 <button
                   onClick={() => setViewMode('grid')}
                   className={`p-1.5 rounded-lg border transition-all ${viewMode === 'grid' ? 'bg-neutral-900 border-card-border text-accent' : 'border-transparent text-text-tertiary'}`}
@@ -819,6 +867,12 @@ export default function MediaLibrary({
                   <span className="text-text-secondary">{formatBytes(activeItem.size)}</span>
                 </div>
               </div>
+              {activeItem.dimensions && (
+                <div>
+                  <span className="text-text-tertiary block font-bold uppercase tracking-wider text-[8px]">Dimensions</span>
+                  <span className="text-text-secondary">{activeItem.dimensions}</span>
+                </div>
+              )}
               <div>
                 <span className="text-text-tertiary block font-bold uppercase tracking-wider text-[8px]">Uploaded On</span>
                 <span className="text-text-secondary">{new Date(activeItem.created_at).toLocaleString()}</span>
@@ -840,6 +894,25 @@ export default function MediaLibrary({
                     {copiedId === activeItem.id ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                   </button>
                 </div>
+              </div>
+
+              {/* Replace file action */}
+              <div className="pt-2 border-t border-card-border/60 space-y-1.5">
+                <span className="text-text-tertiary block font-bold uppercase tracking-wider text-[8px]">Replace File Asset</span>
+                <button
+                  onClick={() => replaceFileInputRef.current?.click()}
+                  disabled={uploading}
+                  className="w-full py-1.5 bg-neutral-900 border border-card-border hover:border-accent/40 rounded-lg text-[10px] font-bold text-text-secondary hover:text-text-primary transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                >
+                  <RefreshCw className="w-3 h-3 text-accent" />
+                  <span>Upload Replacement File</span>
+                </button>
+                <input
+                  type="file"
+                  ref={replaceFileInputRef}
+                  className="hidden"
+                  onChange={handleReplaceFile}
+                />
               </div>
 
               {/* Move to folder action */}
